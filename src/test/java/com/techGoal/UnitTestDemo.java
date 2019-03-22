@@ -17,6 +17,6 @@ import org.testng.annotations.Test;
 public class UnitTestDemo extends BaseTest {
     @Test
     public void test(){
-        log.info("test------------------1");
+        log.info("test----------");
     }
 }
