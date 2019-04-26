@@ -1,0 +1,97 @@
+<configuration>
+    <contextName>techGoal</contextName>
+    <conversionRule conversionWord="tracelogid"
+                    converterClass="com.techGoal.utils.logbackUtil.TraceLogIdConvert"/>
+
+    <property resource="config.properties"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="utf-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+            <!-- %.-1level 只显示信息级别的首字母,%-5level 左对齐显示信息级别全称 -->
+            <!-- 如需自定义关键字，用 %mdc{键名} 表示,程序中用MDC.put("键名","键值")设置，可动态设置 [%logger:%line]-->
+            <Pattern>%red(%d{yyyy-MM-dd HH:mm:ss}) %boldCyan([%thread]) %highlight(%-5level) [%tracelogid] %boldMagenta(%logger{10}) %line --%mdc{client} %gray(%msg%n)
+            </Pattern>
+            <charset>utf-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- error 级别日志文件 -->
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logger.logRoot}/${logger.name}-error.log</File>
+        <encoder>
+            <Pattern>[%date] [%-5level] [%tracelogid] %c{40} %line --%mdc{client} %msg%n</Pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logger.logRoot}/${logger.name}-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>512MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 普通日志文件,排除错误日志 -->
+    <appender name="logfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logger.logRoot}/${logger.name}.log</File>
+        <encoder>
+            <Pattern>[%date] [%-5level] [%tracelogid] %c{40} %line --%mdc{client} %msg%n</Pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logger.logRoot}/${logger.name}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>512MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 外部jar包 日志级别设置 -->
+
+    <!--打印sql日志，调试使用，name，更改为对应mapper包名-->
+    <!--<logger level="${logger.sql.logLevel}" name="com.techGoal.mapper"/>-->
+
+    <logger level="${logger.alibaba.logLevel}" name="com.alibaba"/>
+    <logger level="${logger.outside.logLevel}" name="java.sql"/>
+    <logger level="${logger.outside.logLevel}" name="org.mybatis.spring"/>
+    <logger level="${logger.outside.logLevel}" name="com.ibatis"/>
+    <logger level="${logger.outside.logLevel}" name="com.ctrip"/>
+    <logger level="${logger.outside.logLevel}" name="com.mchange"/>
+    <logger level="${logger.outside.logLevel}" name="com.mangofactory"/>
+    <logger level="${logger.outside.logLevel}" name="ch.qos.logback"/>
+    <logger level="${logger.outside.logLevel}" name="jndi"/>
+    <logger level="${logger.outside.logLevel}" name="org.jdbcdslog"/>
+    <logger level="${logger.outside.logLevel}" name="kafka"/>
+    <logger level="${logger.outside.logLevel}" name="org.apache"/>
+    <logger level="${logger.outside.logLevel}" name="org.springframework"/>
+    <logger level="${logger.outside.logLevel}" name="io.lettuce.core"/>
+    <logger level="${logger.outside.logLevel}" name="reactor"/>
+    <logger level="${logger.logLevel}" name="com.techGoal"/>
+
+    <logger name="jdbc.sqlonly" level="ERROR">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="jdbc.audit" level="ERROR">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="jdbc.resultset" level="ERROR">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="jdbc.connection" level="ERROR">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <root level="${logger.logLevel}">
+        <appender-ref ref="STDOUT"/>
+        <!-- 默认 -->
+        <appender-ref ref="logfile"/>
+        <!-- 只打印错误日志 -->
+        <appender-ref ref="error"/>
+    </root>
+</configuration>

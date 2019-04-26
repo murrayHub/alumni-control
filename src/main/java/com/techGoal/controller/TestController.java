@@ -41,7 +41,7 @@ public class TestController {
 //        String name = redisManager.queryObjectByKey("name");
 //        redisManager.insertObject("123", "numberExam");
 //        String numberExam = redisManager.queryObjectByKey("numberExam");
-//        log.info("name={},numberExam={}", name,numberExam);
+        log.info("userLogin={}", userLogin);
         return new AjaxResult(userLogin);
     }
 }
