@@ -55,7 +55,7 @@
     <!-- 外部jar包 日志级别设置 -->
 
     <!--打印sql日志，调试使用，name，更改为对应mapper包名-->
-    <!--<logger level="${logger.sql.logLevel}" name="com.techGoal.mapper"/>-->
+    <logger level="${logger.sql.logLevel}" name="com.techGoal.mapper"/>
 
     <logger level="${logger.alibaba.logLevel}" name="com.alibaba"/>
     <logger level="${logger.outside.logLevel}" name="java.sql"/>
@@ -74,18 +74,8 @@
     <logger level="${logger.outside.logLevel}" name="reactor"/>
     <logger level="${logger.logLevel}" name="com.techGoal"/>
 
-    <logger name="jdbc.sqlonly" level="ERROR">
-        <appender-ref ref="STDOUT"/>
-    </logger>
-    <logger name="jdbc.audit" level="ERROR">
-        <appender-ref ref="STDOUT"/>
-    </logger>
-    <logger name="jdbc.resultset" level="ERROR">
-        <appender-ref ref="STDOUT"/>
-    </logger>
-    <logger name="jdbc.connection" level="ERROR">
-        <appender-ref ref="STDOUT"/>
-    </logger>
+
+
 
     <root level="${logger.logLevel}">
         <appender-ref ref="STDOUT"/>
@@ -94,4 +84,28 @@
         <!-- 只打印错误日志 -->
         <appender-ref ref="error"/>
     </root>
+
+    <logger name="jdbc.sqlonly" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="jdbc.resultset" level="ERROR" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <!-- 执行之后的返回结果 -->
+    <logger name="jdbc.resultsettable" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="jdbc.connection" level="OFF" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <!-- sql 以及耗费的执行时间 -->
+    <logger name="jdbc.sqltiming" level="OFF" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="jdbc.audit" level="OFF" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
 </configuration>

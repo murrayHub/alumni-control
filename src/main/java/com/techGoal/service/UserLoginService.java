@@ -3,6 +3,8 @@ package com.techGoal.service;
 
 import com.techGoal.pojo.dao.UserLogin;
 
+import java.util.List;
+
 /**
  * description : 用户登录业务层
  * <p>
@@ -14,4 +16,10 @@ import com.techGoal.pojo.dao.UserLogin;
  */
 public interface UserLoginService {
     UserLogin getUserLoginInfo();
+
+    void setValue(UserLogin userLogin);
+
+    void setValue3(UserLogin userLogin);
+
+    List<UserLogin> getUserLoginList();
 }

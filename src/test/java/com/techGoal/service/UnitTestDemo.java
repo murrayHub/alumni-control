@@ -1,4 +1,4 @@
-package com.techGoal;
+package com.techGoal.service;
 
 import com.techGoal.frame.BaseTest;
 import lombok.extern.slf4j.Slf4j;

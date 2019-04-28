@@ -1,43 +1,21 @@
 package com.techGoal.pojo.dao;
 
-public class UserLogin {
+import lombok.Data;
+
+import javax.persistence.*;
+
+@Data
+@Table(name = "t_user_login")
+public class UserLogin{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SELECT LAST_INSERT_ID()")
     private Integer id;
 
+    @Column(name = "login_no")
     private String loginNo;
-
+    @Column(name = "pwd")
     private String pwd;
-
+    @Column(name = "user_id")
     private Long userId;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getLoginNo() {
-        return loginNo;
-    }
-
-    public void setLoginNo(String loginNo) {
-        this.loginNo = loginNo == null ? null : loginNo.trim();
-    }
-
-    public String getPwd() {
-        return pwd;
-    }
-
-    public void setPwd(String pwd) {
-        this.pwd = pwd == null ? null : pwd.trim();
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 }
