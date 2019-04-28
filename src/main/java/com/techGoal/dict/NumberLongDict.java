@@ -1,4 +1,4 @@
-package com.techGoal.utils;
+package com.techGoal.dict;
 
 /**
  * description : 数字字典（长整型）

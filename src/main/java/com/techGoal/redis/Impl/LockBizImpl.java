@@ -1,9 +1,9 @@
 package com.techGoal.redis.Impl;
 
+import com.techGoal.dict.NumberLongDict;
 import com.techGoal.enums.RedisLockEnum;
 import com.techGoal.redis.LockBiz;
 import com.techGoal.redis.RedisManager;
-import com.techGoal.utils.NumberLongDict;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
