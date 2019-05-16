@@ -16,7 +16,7 @@
         </commentGenerator>
         <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/techgoal" userId="root"
+                        connectionURL="jdbc:mysql://localhost:3306/alumni" userId="root"
                         password="root">
         </jdbcConnection>
         <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和
@@ -50,7 +50,7 @@
             <property name="enableSubPackages" value="false" />
         </javaClientGenerator>
         <!-- 指定数据库表 -->
-        <table tableName="t_user_login" domainObjectName="UserLogin"
+        <table tableName="region" domainObjectName="Region"
                enableInsert="true"
                enableSelectByPrimaryKey="true"
                enableUpdateByPrimaryKey="true"
