@@ -32,8 +32,11 @@ import java.util.UUID;
 @Component
 public class FileUpAndDownServiceImpl implements FileUpAndDownService {
 
+    /**
+     * 获取properties配置文件中的信息
+     */
     @Autowired
-    private MessageProperties config; //用来获取properties配置文件中的信息
+    private MessageProperties config;
 
     /**
      * 图片上传

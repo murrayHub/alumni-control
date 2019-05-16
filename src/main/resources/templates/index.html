@@ -7,7 +7,7 @@
 </head>
 <body>
 <form id="uploadForm" enctype="multipart/form-data">
-    文件:<input id="file" type="file" name="file"/>
+    文件:<input id="file" type="file" name="file" multiple="multiple"/>
 </form>
 <button id="upload">上传文件</button>
 </body>
@@ -23,10 +23,10 @@
                 processData: false,
                 contentType: false,
             }).success(function (data) {
-                if (data.result.code == 1000){
+                if (data.code == 1000){
                     alert("上传成功");
                 }else {
-                    alert(data.result.message);
+                    alert(data.message);
                 }
             }).error(function () {
                 alert("上传失败");
