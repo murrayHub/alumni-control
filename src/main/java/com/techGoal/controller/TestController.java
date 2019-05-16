@@ -16,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +32,7 @@ import java.util.List;
  */
 @Api(description = "test-测试Controller")
 @Slf4j
-@RestController
+@Controller
 @RequestMapping("root")
 public class TestController {
 
@@ -39,6 +40,13 @@ public class TestController {
     private UserLoginService userLoginService;
     @Autowired
     private RedisManager redisManager;
+
+
+    @ApiOperation("图片上传")
+    @RequestMapping("uploadPic")
+    public String uploadPic() {
+        return "index";
+    }
 
     @ApiOperation("仅仅是测试")
     @GetMapping("testForGet")

@@ -22,6 +22,10 @@ public enum ErrorCodeEnum implements ErrorCode {
      * 登陆密码错误
      */
     ERROR_CODE_000001("000001", "账户或密码错误"),
+    /**
+     * 文件上传失败
+     */
+    ERROR_CODE_000002("000002", "文件上传失败"),
 
 
     ;
