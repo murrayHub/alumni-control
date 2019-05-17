@@ -2,13 +2,14 @@ package com.techGoal.mapper;
 
 import com.techGoal.pojo.dao.RegionDo;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
 /**
  * 国家区域信息(分三级)
  */
-public interface RegionMapper {
+public interface RegionDoMapper extends Mapper<RegionDo> {
     /**
      * 按照<区域等级>查询
      *

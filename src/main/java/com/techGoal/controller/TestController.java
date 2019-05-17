@@ -4,11 +4,9 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.techGoal.dict.NumberDict;
-import com.techGoal.pojo.dao.UserLogin;
 import com.techGoal.pojo.dto.PageParamsDto;
 import com.techGoal.pojo.vo.UserLoginVo;
 import com.techGoal.redis.RedisManager;
-import com.techGoal.service.UserLoginService;
 import com.techGoal.utils.page.PageParamConvert;
 import com.techGoal.utils.page.PageRespDTO;
 import com.techGoal.utils.web.AjaxResult;
@@ -37,8 +35,6 @@ import java.util.List;
 public class TestController {
 
     @Autowired
-    private UserLoginService userLoginService;
-    @Autowired
     private RedisManager redisManager;
 
 
@@ -48,41 +44,7 @@ public class TestController {
         return "index";
     }
 
-    @ApiOperation("仅仅是测试")
-    @GetMapping("testForGet")
-    public AjaxResult testForGet() {
-        UserLogin userLogin = userLoginService.getUserLoginInfo();
-//        String name = redisManager.queryObjectByKey("name");
-//        redisManager.insertObject("123", "numberExam");
-//        String numberExam = redisManager.queryObjectByKey("numberExam");
-        log.info("userLogin={}", userLogin);
-        return new AjaxResult(userLogin);
-    }
 
-    @ApiOperation("仅仅是测试2")
-    @PostMapping("testForSetValue")
-    public AjaxResult testForSetValue(@RequestBody String value) {
-        UserLogin userLogin = new UserLogin();
-        userLogin.setId(NumberDict.ONE);
-        userLogin.setPwd(value);
-        userLoginService.setValue(userLogin);
-        return new AjaxResult();
-    }
-
-    /**
-     * 请求体传参
-     * @param value 请求参数
-     * @return
-     */
-    @ApiOperation("仅仅是测试3")
-    @PostMapping("testForSetValue3")
-    public AjaxResult testForSetValue3(@RequestBody String value) {
-        UserLogin userLogin = new UserLogin();
-        userLogin.setId(NumberDict.ONE);
-        userLogin.setPwd(value);
-        userLoginService.setValue3(userLogin);
-        return new AjaxResult();
-    }
 
 
     /**
@@ -90,7 +52,7 @@ public class TestController {
      * @param value 路径参数
      * @return
      */
-    @ApiOperation("仅仅是测试4")
+    /*@ApiOperation("仅仅是测试4")
     @PostMapping("testForSetValue4/{value}")
     public AjaxResult testForSetValue4(@PathVariable String value) {
         UserLogin userLogin = new UserLogin();
@@ -98,13 +60,13 @@ public class TestController {
         userLogin.setPwd(value);
         userLoginService.setValue3(userLogin);
         return new AjaxResult(userLogin);
-    }
+    }*/
 
     /**
      * 分页查询功能测试
      * @return
      */
-    @ApiOperation("仅仅是测试5")
+    /*@ApiOperation("仅仅是测试5")
     @PostMapping("testForSetValue4")
     public AjaxResult testForGetValue(@RequestBody PageParamsDto pageParamsDto){
 
@@ -130,6 +92,6 @@ public class TestController {
         result.setList(list1);
         pageRespDTOs.setList(result.getList());
         return new AjaxResult(pageRespDTOs);
-    }
+    }*/
 
 }

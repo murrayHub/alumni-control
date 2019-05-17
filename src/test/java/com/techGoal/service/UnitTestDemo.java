@@ -1,8 +1,10 @@
 package com.techGoal.service;
 
 import com.techGoal.frame.BaseTest;
-import com.techGoal.mapper.RegionMapper;
-import com.techGoal.pojo.dao.RegionDo;
+import com.techGoal.mapper.JobIndustryDoMapper;
+import com.techGoal.mapper.JobPositionDoMapper;
+import com.techGoal.mapper.RegionDoMapper;
+import com.techGoal.pojo.dao.JobPositionDo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
@@ -22,11 +24,21 @@ import java.util.List;
 public class UnitTestDemo extends BaseTest {
 
     @Autowired
-    private RegionMapper regionMapper;
+    private RegionDoMapper regionMapper;
+    @Autowired
+    private JobIndustryDoMapper jobIndustryDoMapper;
+    /**
+     * 职位信息
+     */
+    @Autowired
+    private JobPositionDoMapper jobPositionDoMapper;
 
     @Test
-    public void test(){
-        List<RegionDo> provinceList = regionMapper.selectCityByProId(Integer.valueOf(210000));
-        log.info("list----------{}",provinceList);
+    public void test() {
+
+        JobPositionDo jobPositionDo = new JobPositionDo();
+        jobPositionDo.setParentNo(Integer.valueOf(1012));
+        List<JobPositionDo> list = jobPositionDoMapper.select(jobPositionDo);
+        log.info("list----------{}", list);
     }
 }

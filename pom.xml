@@ -20,6 +20,17 @@
 		<java.version>1.8</java.version>
 		<jjwt.version>0.9.1</jjwt.version>
 		<mysql-connector-java.version>8.0.12</mysql-connector-java.version>
+		<!--  MyBatis Generator  -->
+		<!--  Java接口和实体类  -->
+		<targetJavaProject>${basedir}/src/main/java</targetJavaProject>
+		<targetMapperPackage>com.techGoal.mapper</targetMapperPackage>
+		<targetModelPackage>com.techGoal.pojo.dao</targetModelPackage>
+		<!--  XML生成路径  -->
+		<targetResourcesProject>${basedir}/src/main/resources</targetResourcesProject>
+		<targetXMLPackage>mapper</targetXMLPackage>
+		<!--  依赖版本  -->
+		<mapper.version>3.4.0</mapper.version>
+		<mysql.version>8.0.12</mysql.version>
 	</properties>
 
 	<dependencies>
@@ -221,24 +232,25 @@
 				<version>1.3.2</version>
 				<configuration>
 					<!--配置文件的位置-->
-					<configurationFile>src/main/resources/generatorConfig.xml</configurationFile>
-					<verbose>true</verbose>
+					<configurationFile>${basedir}/src/main/resources/generator/generatorConfig.xml</configurationFile>
 					<overwrite>true</overwrite>
+					<verbose>true</verbose>
 				</configuration>
-				<!--  generate是在每次package时候都会重新创建pojo,mapper文件，所以要注释掉！  -->
-				<!--<executions>
-                    <execution>
-                        <id>Generate MyBatis Artifacts</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>-->
 				<dependencies>
 					<dependency>
 						<groupId>org.mybatis.generator</groupId>
 						<artifactId>mybatis-generator-core</artifactId>
 						<version>1.3.2</version>
+					</dependency>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>${mysql.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>tk.mybatis</groupId>
+						<artifactId>mapper</artifactId>
+						<version>${mapper.version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>
