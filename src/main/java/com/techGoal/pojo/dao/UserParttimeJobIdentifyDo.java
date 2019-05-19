@@ -54,7 +54,7 @@ public class UserParttimeJobIdentifyDo {
     /**
      * 状态  0-失效 1-有效
      */
-    private Byte enabled;
+    private Integer enabled;
 
     /**
      * 创建人

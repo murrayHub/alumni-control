@@ -1,6 +1,5 @@
 package com.techGoal.service.impl;
 
-import com.techGoal.constant.RedisDict;
 import com.techGoal.enums.IDTypeEnum;
 import com.techGoal.redis.OrderIdManager;
 import com.techGoal.service.CreateBaseIDService;
@@ -59,17 +58,5 @@ public class CreateBaseIDServiceImpl implements CreateBaseIDService {
     @Override
     public Long createOperatorNo() {
         return baseIDBizImplBase.generateLongUserNoBy(IDTypeEnum.OPERATOR.getCode());
-    }
-
-    /**
-     * 创建订单号
-     *
-     * @return 订单号
-     */
-    @Override
-    public Long createOrderId() {
-        Long orderId = orderIdManager.orderIdCreate(RedisDict.ORDER_KEY);
-        log.info("创建订单号:{}", orderId);
-        return orderId;
     }
 }

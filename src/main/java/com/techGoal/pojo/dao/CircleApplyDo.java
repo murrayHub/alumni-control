@@ -48,7 +48,7 @@ public class CircleApplyDo {
     /**
      * 状态 1-已申请 2-已接收 3-已驳回
      */
-    private Byte state;
+    private Integer state;
 
     /**
      * 创建人

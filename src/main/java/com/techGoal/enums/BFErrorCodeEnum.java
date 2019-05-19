@@ -3,7 +3,7 @@ package com.techGoal.enums;
 import com.techGoal.exception.ErrorCode;
 
 /**
- * description : TODO
+ * description : 错误码-枚举类
  * <p>
  * </p>
  *

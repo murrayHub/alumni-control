@@ -30,13 +30,13 @@ public class FsAssociationUserConnDo {
     /**
      * 状态  0-未加入  1-已加入
      */
-    private Byte enabled;
+    private Integer enabled;
 
     /**
      * 状态  0-未删除  1-已删除
      */
     @Column(name = "is_delete")
-    private Byte isDelete;
+    private Integer isDelete;
 
     /**
      * 创建人

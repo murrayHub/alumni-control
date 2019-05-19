@@ -30,13 +30,13 @@ public class CircleUserDo {
     /**
      * 状态 0-未关联 1-已关联
      */
-    private Byte enable;
+    private Integer enable;
 
     /**
      * 状态 0-未删除 1-已删除
      */
     @Column(name = "is_delete")
-    private Byte isDelete;
+    private Integer isDelete;
 
     /**
      * 创建人

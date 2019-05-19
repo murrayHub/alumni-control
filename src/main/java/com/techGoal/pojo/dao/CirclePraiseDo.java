@@ -37,12 +37,12 @@ public class CirclePraiseDo {
      * 点赞类型 1-动态朋友圈 2-公告 3-活动
      */
     @Column(name = "praise_type")
-    private Byte praiseType;
+    private Integer praiseType;
 
     /**
      * 状态  0-未点赞  1-已点赞
      */
-    private Byte status;
+    private Integer status;
 
     /**
      * 点赞时间

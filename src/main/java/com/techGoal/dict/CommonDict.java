@@ -14,6 +14,7 @@ public class CommonDict {
     public static final String REQ_TIME_KEY = "REQ_TIME_KEY";
     public static final String UNDEFINED = "undefined";
     public static final String NULL = "null";
+    public static final String SYSTEM = "SYSTEM";
     /**
      * cookie-token
      */

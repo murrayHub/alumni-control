@@ -42,12 +42,12 @@ public class CircleCommentDo {
      * 状态 0-失效 1-有效(由动态发布者控制)
      */
     @Column(name = "vaild_status")
-    private Byte vaildStatus;
+    private Integer vaildStatus;
 
     /**
      * 状态 0-失效 1-有效(由评论者本人控制)
      */
-    private Byte enabled;
+    private Integer enabled;
 
     /**
      * 创建人

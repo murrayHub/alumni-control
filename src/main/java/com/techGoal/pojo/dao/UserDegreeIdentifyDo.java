@@ -55,7 +55,7 @@ public class UserDegreeIdentifyDo {
      * 学位类别编号 1-学士 2-硕士 3-博士 4-其他
      */
     @Column(name = "degree_no")
-    private Byte degreeNo;
+    private Integer degreeNo;
 
     /**
      * 专业名称
@@ -66,7 +66,7 @@ public class UserDegreeIdentifyDo {
     /**
      * 状态 0-失效 1-有效 
      */
-    private Byte enabled;
+    private Integer enabled;
 
     /**
      * 创建人

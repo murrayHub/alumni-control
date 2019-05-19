@@ -166,7 +166,6 @@ public class CacheServiceImpl implements CacheService {
                         cityMap.put(entry1.getKey(), entry1.getValue());
                     }
                 }
-
             }
         }
         return cityMap;

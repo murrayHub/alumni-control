@@ -37,7 +37,7 @@ public class MomentsTimeAxisDo {
      * 是否本人发布：0-否 1-是
      */
     @Column(name = "is_own")
-    private Byte isOwn;
+    private Integer isOwn;
 
     /**
      * 创建人

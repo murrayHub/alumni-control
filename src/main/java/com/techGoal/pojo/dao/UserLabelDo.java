@@ -30,7 +30,7 @@ public class UserLabelDo {
     /**
      * 状态  0-无效 1-有效
      */
-    private Byte status;
+    private Integer status;
 
     /**
      * 创建人

@@ -45,13 +45,13 @@ public class CircleMomentsDo {
     /**
      * 状态：1-成功 2-草稿 3-失败 4-撤回
      */
-    private Byte status;
+    private Integer status;
 
     /**
      * 评论权限 1:允许评论,0:不允许评论
      */
     @Column(name = "comment_flag")
-    private Byte commentFlag;
+    private Integer commentFlag;
 
     /**
      * 发布位置

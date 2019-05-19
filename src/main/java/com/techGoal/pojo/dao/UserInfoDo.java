@@ -30,7 +30,7 @@ public class UserInfoDo {
     /**
      * 性别：1-男 2-女
      */
-    private Byte gender;
+    private Integer gender;
 
     /**
      * 省
@@ -75,19 +75,19 @@ public class UserInfoDo {
      * 邮箱可见权限  0-所有人可见 1-仅关注我可见 2-仅自己可见
      */
     @Column(name = "email_auth")
-    private Byte emailAuth;
+    private Integer emailAuth;
 
     /**
      * 电话可见权限  0-所有人可见 1-仅关注我可见 2-仅自己可见
      */
     @Column(name = "phone_no_auth")
-    private Byte phoneNoAuth;
+    private Integer phoneNoAuth;
 
     /**
      * 微信号可见权限  0-所有人可见 1-仅关注我可见 2-仅自己可见
      */
     @Column(name = "weixin_no_auth")
-    private Byte weixinNoAuth;
+    private Integer weixinNoAuth;
 
     /**
      * 核心标签
@@ -104,7 +104,7 @@ public class UserInfoDo {
      * 认证状态  0-未认证 1-待审核 2-已认证 3-认证失败
      */
     @Column(name = "realname_status")
-    private Byte realnameStatus;
+    private Integer realnameStatus;
 
     /**
      * 创建人

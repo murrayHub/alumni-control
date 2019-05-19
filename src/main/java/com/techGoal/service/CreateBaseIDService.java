@@ -28,11 +28,4 @@ public interface CreateBaseIDService {
      * @return 操作员编号
      */
     Long createOperatorNo();
-
-    /**
-     * 创建订单号
-     *
-     * @return 订单号
-     */
-    Long createOrderId();
 }

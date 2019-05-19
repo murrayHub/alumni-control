@@ -30,12 +30,12 @@ public class UserPwdDo {
      * 密码类型  1-登录密码
      */
     @Column(name = "pwd_type")
-    private Byte pwdType;
+    private Integer pwdType;
 
     /**
      * 密码状态  1-正常，2-锁定，3-失效
      */
-    private Byte state;
+    private Integer state;
 
     /**
      * 备注

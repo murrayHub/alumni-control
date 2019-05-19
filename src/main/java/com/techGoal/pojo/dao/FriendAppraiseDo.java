@@ -42,12 +42,12 @@ public class FriendAppraiseDo {
      * 好友亲密度等级（1-5 共五档，用于控制评价字体大小）
      */
     @Column(name = "degree_of_intimacy")
-    private Byte degreeOfIntimacy;
+    private Integer degreeOfIntimacy;
 
     /**
      * 状态  0-无效 1-有效
      */
-    private Byte status;
+    private Integer status;
 
     /**
      * 评论时间

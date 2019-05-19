@@ -31,18 +31,18 @@ public class UserLoginLogDo {
      * 登录账号类型：1-手机号 2-邮箱
      */
     @Column(name = "login_type")
-    private Byte loginType;
+    private Integer loginType;
 
     /**
      * 登录账号状态：0-禁用，1-正常 2-锁定
      */
     @Column(name = "login_state")
-    private Byte loginState;
+    private Integer loginState;
 
     /**
      * 登录状态：0-登录失败 1-登录成功
      */
-    private Byte state;
+    private Integer state;
 
     /**
      * 登录IP
