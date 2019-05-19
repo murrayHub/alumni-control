@@ -1,23 +1,12 @@
 package com.techGoal.controller;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.google.common.collect.Lists;
-import com.techGoal.dict.NumberDict;
-import com.techGoal.pojo.dto.PageParamsDto;
-import com.techGoal.pojo.vo.UserLoginVo;
 import com.techGoal.redis.RedisManager;
-import com.techGoal.utils.page.PageParamConvert;
-import com.techGoal.utils.page.PageRespDTO;
-import com.techGoal.utils.web.AjaxResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * description : 测试专用
@@ -43,8 +32,6 @@ public class TestController {
     public String uploadPic() {
         return "index";
     }
-
-
 
 
     /**

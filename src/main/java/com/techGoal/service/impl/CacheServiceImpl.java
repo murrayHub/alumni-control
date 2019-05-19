@@ -4,10 +4,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.techGoal.dict.NumberDict;
-import com.techGoal.mapper.JobIndustryDoMapper;
-import com.techGoal.mapper.JobPositionDoMapper;
-import com.techGoal.mapper.RegionDoMapper;
-import com.techGoal.mapper.SchoolDoMapper;
+import com.techGoal.mapper.JobIndustryMapper;
+import com.techGoal.mapper.JobPositionMapper;
+import com.techGoal.mapper.RegionMapper;
+import com.techGoal.mapper.SchoolMapper;
 import com.techGoal.pojo.dao.JobIndustryDo;
 import com.techGoal.pojo.dao.JobPositionDo;
 import com.techGoal.pojo.dao.RegionDo;
@@ -63,24 +63,24 @@ public class CacheServiceImpl implements CacheService {
      * 全国区域信息
      */
     @Autowired
-    private RegionDoMapper regionMapper;
+    private RegionMapper regionMapper;
     /**
      * 全国高校信息
      */
     @Autowired
-    private SchoolDoMapper schoolDoMapper;
+    private SchoolMapper schoolMapper;
 
     /**
      * 行业信息
      */
     @Autowired
-    private JobIndustryDoMapper jobIndustryDoMapper;
+    private JobIndustryMapper jobIndustryMapper;
 
     /**
      * 职位信息
      */
     @Autowired
-    private JobPositionDoMapper jobPositionDoMapper;
+    private JobPositionMapper jobPositionMapper;
 
     // @PostConstruct
     public void initCacheData() {
@@ -181,14 +181,14 @@ public class CacheServiceImpl implements CacheService {
     public Set<SchoolProvinceDto> getAllSchoolProvince() {
         if (provinceCacheSet.size() == NumberDict.ZERO) {
             Set<String> provinceSet = Sets.newConcurrentHashSet();
-            List<SchoolDo> schoolDoList = schoolDoMapper.selectAll();
+            List<SchoolDo> schoolDoList = schoolMapper.selectAll();
             for (SchoolDo schoolDo : schoolDoList) {
                 provinceSet.add(schoolDo.getProvinceId());
             }
             for (String proId : provinceSet) {
                 SchoolDo schoolDo = new SchoolDo();
                 schoolDo.setProvinceId(proId);
-                List<SchoolDo> schoolList = schoolDoMapper.select(schoolDo);
+                List<SchoolDo> schoolList = schoolMapper.select(schoolDo);
                 if (!CollectionUtils.isEmpty(schoolList)) {
                     SchoolDo schoolDo1 = schoolList.get(NumberDict.ZERO);
                     SchoolProvinceDto schoolProvinceDto = new SchoolProvinceDto();
@@ -212,7 +212,7 @@ public class CacheServiceImpl implements CacheService {
     public List<SchoolDo> getAllSchoolInfoByProId(String proId) {
         SchoolDo schoolDo = new SchoolDo();
         schoolDo.setProvinceId(proId);
-        List<SchoolDo> schoolDoList = schoolDoMapper.select(schoolDo);
+        List<SchoolDo> schoolDoList = schoolMapper.select(schoolDo);
         return schoolDoList;
     }
 
@@ -226,7 +226,7 @@ public class CacheServiceImpl implements CacheService {
         if (levelOneIndustryList.size() == NumberDict.ZERO) {
             JobIndustryDo jobIndustryDo = new JobIndustryDo();
             jobIndustryDo.setParentNo(NumberDict.ZERO);
-            levelOneIndustryList = jobIndustryDoMapper.select(jobIndustryDo);
+            levelOneIndustryList = jobIndustryMapper.select(jobIndustryDo);
         }
         return levelOneIndustryList;
     }
@@ -240,7 +240,7 @@ public class CacheServiceImpl implements CacheService {
     public List<JobIndustryDo> getLevelTwoIndustry(String pid) {
         JobIndustryDo jobIndustryDo = new JobIndustryDo();
         jobIndustryDo.setParentNo(Integer.valueOf(pid));
-        return jobIndustryDoMapper.select(jobIndustryDo);
+        return jobIndustryMapper.select(jobIndustryDo);
     }
 
     /**
@@ -253,7 +253,7 @@ public class CacheServiceImpl implements CacheService {
         if (levelOnePositionList.size() == NumberDict.ZERO) {
             JobPositionDo jobPositionDo = new JobPositionDo();
             jobPositionDo.setParentNo(NumberDict.ZERO);
-            levelOnePositionList = jobPositionDoMapper.select(jobPositionDo);
+            levelOnePositionList = jobPositionMapper.select(jobPositionDo);
         }
         return levelOnePositionList;
     }
@@ -267,7 +267,7 @@ public class CacheServiceImpl implements CacheService {
     public List<JobPositionDo> getLevelTwoPosition(String pid) {
         JobPositionDo jobPositionDo = new JobPositionDo();
         jobPositionDo.setParentNo(Integer.valueOf(pid));
-        return jobPositionDoMapper.select(jobPositionDo);
+        return jobPositionMapper.select(jobPositionDo);
     }
 
 }

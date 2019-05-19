@@ -2,9 +2,7 @@ package com.techGoal.pojo.dao;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Table(name = "t_school")
@@ -13,6 +11,7 @@ public class SchoolDo {
      * 主键
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**

@@ -6,8 +6,8 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Data
-@Table(name = "t_attention_relation")
-public class AttentionRelationDo {
+@Table(name = "t_circle_user")
+public class CircleUserDo {
     /**
      * 主键
      */
@@ -16,22 +16,27 @@ public class AttentionRelationDo {
     private Long id;
 
     /**
+     * 圈编号
+     */
+    @Column(name = "circle_no")
+    private Long circleNo;
+
+    /**
      * 用户编号
      */
     @Column(name = "user_id")
     private Long userId;
 
     /**
-     * 目标对象
+     * 状态 0-未关联 1-已关联
      */
-    @Column(name = "target_object")
-    private Long targetObject;
+    private Byte enable;
 
     /**
-     * 关系类型：当目标对象为关注者，标示为1；当目标对象为被关注者，标示为2；当双方互相关注，标示为3
+     * 状态 0-未删除 1-已删除
      */
-    @Column(name = "relation_type")
-    private Integer relationType;
+    @Column(name = "is_delete")
+    private Byte isDelete;
 
     /**
      * 创建人

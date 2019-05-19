@@ -6,8 +6,8 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Data
-@Table(name = "t_attention_relation")
-public class AttentionRelationDo {
+@Table(name = "t_circle_apply")
+public class CircleApplyDo {
     /**
      * 主键
      */
@@ -16,22 +16,39 @@ public class AttentionRelationDo {
     private Long id;
 
     /**
-     * 用户编号
+     * 入圈申请编号
+     */
+    @Column(name = "apply_circle_id")
+    private Long applyCircleId;
+
+    /**
+     * 圈编号
+     */
+    @Column(name = "circle_no")
+    private Long circleNo;
+
+    /**
+     * 圈名称
+     */
+    @Column(name = "circle_name")
+    private String circleName;
+
+    /**
+     * 申请人
      */
     @Column(name = "user_id")
     private Long userId;
 
     /**
-     * 目标对象
+     * 申请描述
      */
-    @Column(name = "target_object")
-    private Long targetObject;
+    @Column(name = "apply_content")
+    private String applyContent;
 
     /**
-     * 关系类型：当目标对象为关注者，标示为1；当目标对象为被关注者，标示为2；当双方互相关注，标示为3
+     * 状态 1-已申请 2-已接收 3-已驳回
      */
-    @Column(name = "relation_type")
-    private Integer relationType;
+    private Byte state;
 
     /**
      * 创建人

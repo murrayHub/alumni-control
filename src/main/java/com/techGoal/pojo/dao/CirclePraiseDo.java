@@ -6,8 +6,8 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Data
-@Table(name = "t_attention_relation")
-public class AttentionRelationDo {
+@Table(name = "t_circle_praise")
+public class CirclePraiseDo {
     /**
      * 主键
      */
@@ -16,22 +16,39 @@ public class AttentionRelationDo {
     private Long id;
 
     /**
-     * 用户编号
+     * 点赞编号
+     */
+    @Column(name = "praise_id")
+    private Long praiseId;
+
+    /**
+     * 动态编号
+     */
+    @Column(name = "moments_id")
+    private Long momentsId;
+
+    /**
+     * 点赞者
      */
     @Column(name = "user_id")
     private Long userId;
 
     /**
-     * 目标对象
+     * 点赞类型 1-动态朋友圈 2-公告 3-活动
      */
-    @Column(name = "target_object")
-    private Long targetObject;
+    @Column(name = "praise_type")
+    private Byte praiseType;
 
     /**
-     * 关系类型：当目标对象为关注者，标示为1；当目标对象为被关注者，标示为2；当双方互相关注，标示为3
+     * 状态  0-未点赞  1-已点赞
      */
-    @Column(name = "relation_type")
-    private Integer relationType;
+    private Byte status;
+
+    /**
+     * 点赞时间
+     */
+    @Column(name = "praise_time")
+    private Date praiseTime;
 
     /**
      * 创建人

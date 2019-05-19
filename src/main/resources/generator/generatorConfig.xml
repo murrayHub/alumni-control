@@ -34,11 +34,11 @@
         <sqlMapGenerator targetPackage="${targetXMLPackage}"  targetProject="${targetResourcesProject}"/>
 
         <javaClientGenerator targetPackage="${targetMapperPackage}" targetProject="${targetJavaProject}" type="XMLMAPPER" />
-
-        <!--<table tableName="%" >-->
-            <!-- 生成所有表 -->
-            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
-        <!--</table>-->
+        <!-- 生成所有表 -->
+        <!--<table tableName="%" >
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>-->
+        <!-- 生成单表 -->
         <table tableName="t_job_position" domainObjectName="JobPositionDo"
                enableInsert="true"
                enableSelectByPrimaryKey="true"

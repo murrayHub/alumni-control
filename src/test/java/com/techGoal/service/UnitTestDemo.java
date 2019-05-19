@@ -1,9 +1,7 @@
 package com.techGoal.service;
 
 import com.techGoal.frame.BaseTest;
-import com.techGoal.mapper.JobIndustryDoMapper;
-import com.techGoal.mapper.JobPositionDoMapper;
-import com.techGoal.mapper.RegionDoMapper;
+import com.techGoal.mapper.JobPositionMapper;
 import com.techGoal.pojo.dao.JobPositionDo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +21,11 @@ import java.util.List;
 @Slf4j
 public class UnitTestDemo extends BaseTest {
 
-    @Autowired
-    private RegionDoMapper regionMapper;
-    @Autowired
-    private JobIndustryDoMapper jobIndustryDoMapper;
     /**
      * 职位信息
      */
     @Autowired
-    private JobPositionDoMapper jobPositionDoMapper;
+    private JobPositionMapper jobPositionDoMapper;
 
     @Test
     public void test() {

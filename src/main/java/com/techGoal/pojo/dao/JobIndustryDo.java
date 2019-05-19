@@ -11,6 +11,7 @@ public class JobIndustryDo {
      * 主键
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**

@@ -11,6 +11,7 @@ public class RegionDo {
      * 区域主键
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**

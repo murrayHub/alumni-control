@@ -1,5 +1,6 @@
 package com.techGoal.controller;
 
+import com.google.common.collect.Maps;
 import com.techGoal.service.FileUpAndDownService;
 import com.techGoal.service.IStatusMessage;
 import com.techGoal.utils.web.AjaxResult;
@@ -45,11 +46,12 @@ public class FileUploadController {
     @ResponseBody
     public AjaxResult setFileUpload(@RequestParam(value = "file", required = false) MultipartFile[] files) {
         AjaxResult result = new AjaxResult();
+        Map<String, Object> resultMap = Maps.newConcurrentMap();
         log.info("请求批量上传图片,图片数量:{}", files.length);
         try {
             if (files.length > 0) {
                 for (MultipartFile multipartFile : files) {
-                    Map<String, Object> resultMap = fileUpAndDownService.upload(multipartFile);
+                    resultMap = fileUpAndDownService.upload(multipartFile);
                     if (!IStatusMessage.SystemStatus.SUCCESS.getCode().equals(resultMap.get("code"))) {
                         result.setCode(Integer.valueOf(IStatusMessage.SystemStatus.FILE_UPLOAD_ERROR.getCode()));
                         result.setMessage((String) resultMap.get("msg"));
@@ -58,6 +60,7 @@ public class FileUploadController {
                     log.info(">>>>>>图片上传成功，图片名称：{}", resultMap.get("newFileName"));
                 }
                 result.setCode(1000);
+                result.setResult(resultMap);
                 log.info(">>>>>>图片批量上传成功");
             }else {
                 log.error(">>>>>>上传图片为空文件");

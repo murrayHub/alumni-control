@@ -6,8 +6,8 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Data
-@Table(name = "t_attention_relation")
-public class AttentionRelationDo {
+@Table(name = "t_login_info")
+public class LoginInfoDo {
     /**
      * 主键
      */
@@ -22,16 +22,33 @@ public class AttentionRelationDo {
     private Long userId;
 
     /**
-     * 目标对象
+     * 登录账号
      */
-    @Column(name = "target_object")
-    private Long targetObject;
+    @Column(name = "login_no")
+    private String loginNo;
 
     /**
-     * 关系类型：当目标对象为关注者，标示为1；当目标对象为被关注者，标示为2；当双方互相关注，标示为3
+     * 登录账号类型：1-手机号 2-邮箱
      */
-    @Column(name = "relation_type")
-    private Integer relationType;
+    @Column(name = "login_type")
+    private String loginType;
+
+    /**
+     * 登录账号状态：-1-禁用，0-待激活，1-正常，2-锁定
+     */
+    @Column(name = "login_state")
+    private String loginState;
+
+    /**
+     * 最后登录时间
+     */
+    @Column(name = "last_login_at")
+    private String lastLoginAt;
+
+    /**
+     * 备注
+     */
+    private String remark;
 
     /**
      * 创建人

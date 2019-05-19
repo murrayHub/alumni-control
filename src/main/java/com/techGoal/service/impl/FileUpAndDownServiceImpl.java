@@ -48,6 +48,7 @@ public class FileUpAndDownServiceImpl implements FileUpAndDownService {
     public Map<String, Object> uploadPicture(MultipartFile file) throws Exception {
         Map<String, Object> resMap = new HashMap<>();
         String[] IMAGE_TYPE = config.getImageType().split(",");
+        String picName = "";
         String path = null;
         boolean flag = false;
         for (String type : IMAGE_TYPE) {
@@ -85,6 +86,7 @@ public class FileUpAndDownServiceImpl implements FileUpAndDownService {
                 Thumbnails.of(oldFile).scale(config.getScaleRatio()).toFile(path);
                 // 显示路径
                 resMap.put("path", "/" + basedir + "/" + newUUID + "." + imageName);
+                picName = newUUID;
             } else {
                 path = config.getUpPath() + "/" + basedir + "/" + uuid + "." + imageName;
                 // 如果目录不存在则创建目录
@@ -100,6 +102,11 @@ public class FileUpAndDownServiceImpl implements FileUpAndDownService {
             resMap.put("oldFileName", oldFileName);
             resMap.put("newFileName", newFileName);
             resMap.put("fileSize", file.getSize());
+            if(StringUtils.isNotEmpty(picName)){
+                resMap.put("picName",picName);
+            }else {
+                resMap.put("picName",uuid);
+            }
             resMap.put("code", IStatusMessage.SystemStatus.SUCCESS.getCode());
         } else {
             resMap.put("result", "图片格式不正确,支持png|jpg|jpeg");

@@ -6,10 +6,7 @@ import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
-/**
- * 国家区域信息(分三级)
- */
-public interface RegionDoMapper extends Mapper<RegionDo> {
+public interface RegionMapper extends Mapper<RegionDo> {
     /**
      * 按照<区域等级>查询
      *
@@ -25,5 +22,4 @@ public interface RegionDoMapper extends Mapper<RegionDo> {
      * @return 结果集
      */
     List<RegionDo> selectCityByProId(@Param("proId") Integer proId);
-
 }

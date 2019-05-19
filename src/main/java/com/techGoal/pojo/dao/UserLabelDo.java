@@ -6,8 +6,8 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Data
-@Table(name = "t_attention_relation")
-public class AttentionRelationDo {
+@Table(name = "t_user_label")
+public class UserLabelDo {
     /**
      * 主键
      */
@@ -16,22 +16,21 @@ public class AttentionRelationDo {
     private Long id;
 
     /**
-     * 用户编号
+     * 标签编号
      */
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "label_id")
+    private Integer labelId;
 
     /**
-     * 目标对象
+     * 标签名称
      */
-    @Column(name = "target_object")
-    private Long targetObject;
+    @Column(name = "label_name")
+    private String labelName;
 
     /**
-     * 关系类型：当目标对象为关注者，标示为1；当目标对象为被关注者，标示为2；当双方互相关注，标示为3
+     * 状态  0-无效 1-有效
      */
-    @Column(name = "relation_type")
-    private Integer relationType;
+    private Byte status;
 
     /**
      * 创建人

@@ -6,8 +6,8 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Data
-@Table(name = "t_attention_relation")
-public class AttentionRelationDo {
+@Table(name = "t_circle_comment")
+public class CircleCommentDo {
     /**
      * 主键
      */
@@ -16,22 +16,38 @@ public class AttentionRelationDo {
     private Long id;
 
     /**
-     * 用户编号
+     * 评论编号
      */
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "comment_id")
+    private Long commentId;
 
     /**
-     * 目标对象
+     * 动态编号
      */
-    @Column(name = "target_object")
-    private Long targetObject;
+    @Column(name = "moments_id")
+    private Long momentsId;
 
     /**
-     * 关系类型：当目标对象为关注者，标示为1；当目标对象为被关注者，标示为2；当双方互相关注，标示为3
+     * 评论人
      */
-    @Column(name = "relation_type")
-    private Integer relationType;
+    @Column(name = "reviewer_id")
+    private Long reviewerId;
+
+    /**
+     * 内容
+     */
+    private String content;
+
+    /**
+     * 状态 0-失效 1-有效(由动态发布者控制)
+     */
+    @Column(name = "vaild_status")
+    private Byte vaildStatus;
+
+    /**
+     * 状态 0-失效 1-有效(由评论者本人控制)
+     */
+    private Byte enabled;
 
     /**
      * 创建人
