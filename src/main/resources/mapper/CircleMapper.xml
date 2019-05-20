@@ -17,4 +17,68 @@
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
   </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, circle_no, circle_host_no, circle_name, circle_theme, circle_label, image, create_by, update_by, create_at, update_at
+  </sql>
+
+  <select id="getCircleByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    <!-- CircleMapper.getCircleByName -->
+    select
+    <include refid="Base_Column_List" />
+    from t_circle
+    where circleName LIKE CONCAT(CONCAT('%',#{circleName},'%'))
+    order by create_at desc
+  </select>
+
+  <select id="getCircleByNameAndHostNo" resultMap="BaseResultMap" >
+    <!-- CircleMapper.getCircleByNameAndHostNo -->
+    select
+    <include refid="Base_Column_List" />
+    from t_circle
+    where circleName LIKE CONCAT(CONCAT('%',#{circleName},'%'))
+    and circle_host_no = #{circleHostNo,jdbcType=BIGINT}
+    order by create_at desc
+  </select>
+
+  <select id="getCircleByUserId" resultType="com.techGoal.pojo.dao.CircleDo" >
+    <!-- CircleMapper.getCircleByUserId -->
+    select
+    tc.circle_no AS circleNo,
+    tc.circle_host_no AS circleHostNo,
+    tc.circle_name AS circleName,
+    tc.circle_theme AS circleTheme,
+    tc.circle_label AS circleLabel,
+    tc.image AS image,
+    tc.create_at AS createAt
+    from t_circle AS tc
+    LEFT JOIN t_circle_user AS tcu
+    ON tc.circle_no = tcu.circle_no
+    LEFT JOIN t_user_info AS tui
+    ON tcu.user_id = tui.user_id
+    <where>
+      <if test="circleName != null">
+        AND tc.circleName LIKE CONCAT(CONCAT('%',#{circleName},'%'))
+      </if>
+      and tui.user_id = #{userId,jdbcType=BIGINT}
+    </where>
+    order by tc.create_at desc
+  </select>
+  
+  <select id="getAllCircleMembers" resultType="com.techGoal.pojo.dao.UserInfoDo" parameterType="com.techGoal.pojo.dao.CircleDo">
+    <!-- CircleMapper.getAllCircleMembers -->
+    SELECT
+    tui.user_id AS userId,
+    tui.user_real_name AS userRealName,
+    tui.person_image AS personImage
+    FROM t_circle AS tc
+    LEFT JOIN t_circle_user AS tcu
+    ON tc.circle_no = tcu.circle_no
+    LEFT JOIN t_user_info AS tui
+    ON tcu.user_id = tui.user_id
+    WHERE tc.circle_no = #{circleNo,jdbcType=BIGINT}
+    order by tcu.create_at desc
+  </select>
+
+
 </mapper>

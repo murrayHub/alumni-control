@@ -4,7 +4,7 @@ import com.techGoal.dict.NumberDict;
 import com.techGoal.enums.ErrorCodeEnum;
 import com.techGoal.exception.BizServiceException;
 import com.techGoal.pojo.vo.UserRegisterOneStepVo;
-import com.techGoal.pojo.vo.UserRegisterTwoStepVo;
+import com.techGoal.pojo.vo.UserInfoVo;
 import com.techGoal.service.UserLoginService;
 import com.techGoal.utils.validation.ParamValidate;
 import com.techGoal.utils.web.AjaxResult;
@@ -34,6 +34,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "注册")
 public class RegisterController {
 
+    /**
+     * 用户注册登录
+     */
     @Autowired
     private UserLoginService userLoginService;
 
@@ -64,17 +67,17 @@ public class RegisterController {
     /**
      * 用户注册第二步
      *
-     * @param userRegisterTwoStepVo 请求参数
+     * @param userInfoVo 请求参数
      * @return 结果
      */
     @WebEnhance(mode = WebResultModeEnum.AJAX)
     @PostMapping("/register-two-step")
     @ApiOperation(value = "用户注册第二步")
-    public AjaxResult registerTwoStep(@RequestBody UserRegisterTwoStepVo userRegisterTwoStepVo) {
+    public AjaxResult registerTwoStep(@RequestBody UserInfoVo userInfoVo) {
         AjaxResult result = new AjaxResult();
-        log.info("用户注册第二步,请求参数:{}", userRegisterTwoStepVo);
-        ParamValidate.validate(userRegisterTwoStepVo);
-        userLoginService.insertUserInfo(userRegisterTwoStepVo);
+        log.info("用户注册第二步,请求参数:{}", userInfoVo);
+        ParamValidate.validate(userInfoVo);
+        userLoginService.insertUserInfo(userInfoVo);
         log.info("用户注册第二步,完成");
         return result;
     }

@@ -17,4 +17,38 @@
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
   </resultMap>
+
+  <select id="circleApplyRecord" resultType="com.techGoal.pojo.dao.CircleApplyDo" parameterType="java.lang.Long">
+    <!-- CircleApplyMapper.circleApplyRecord -->
+    SELECT
+    tca.apply_circle_id AS applyCircleId,
+    tca.circle_no AS circleNo,
+    tca.circle_name AS circleName,
+    tca.user_id AS userId,
+    tca.apply_content AS applyContent,
+    tca.state AS state,
+    tca.create_at AS createAt
+    FROM t_circle_apply AS tca
+    LEFT JOIN t_circle AS tc
+    ON tca.circle_no = tc.circle_no
+    LEFT JOIN t_circle_user AS tcu
+    ON tc.circle_no = tcu.circle_no
+    LEFT JOIN t_user_info AS tui
+    ON tcu.user_id = tui.user_id
+    WHERE tui.user_id = #{userId,jdbcType=BIGINT} and tc.circle_host_no = #{userId,jdbcType=BIGINT}
+    and tcu.enable = 1 and tcu.is_delete = 0 and tc.enable = 1
+    order by tca.create_at desc
+  </select>
+  
+  <update id="handleCircleApply" parameterType="com.techGoal.pojo.dao.CircleApplyDo">
+    <!-- CircleApplyMapper.handleCircleApply -->
+    UPDATE
+    t_circle_apply
+    SET
+    state = #{state,jdbcType=TINYINT},
+    update_at = NOW(),
+    update_by = #{updateBy,jdbcType=VARCHAR}
+    WHERE apply_circle_id = #{applyCircleId,jdbcType=BIGINT}
+    and circle_no = #{circleNo,jdbcType=BIGINT}
+  </update>
 </mapper>

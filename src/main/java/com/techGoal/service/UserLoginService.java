@@ -1,7 +1,7 @@
 package com.techGoal.service;
 
 import com.techGoal.pojo.vo.UserRegisterOneStepVo;
-import com.techGoal.pojo.vo.UserRegisterTwoStepVo;
+import com.techGoal.pojo.vo.UserInfoVo;
 
 /**
  * description : 用户注册登录-服务层
@@ -29,7 +29,7 @@ public interface UserLoginService {
 
     /**
      * 插入用户个人信息
-     * @param userRegisterTwoStepVo 用户个人信息
+     * @param userInfoVo 用户个人信息
      */
-    void insertUserInfo(UserRegisterTwoStepVo userRegisterTwoStepVo);
+    void insertUserInfo(UserInfoVo userInfoVo);
 }

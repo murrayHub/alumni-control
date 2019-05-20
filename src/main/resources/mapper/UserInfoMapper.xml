@@ -27,4 +27,67 @@
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
   </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, user_id, user_real_name, gender, province, city, person_image, home_image, email, phone_no, weixin_no
+    , email_auth, phone_no_auth, weixin_no_auth, core_label, domain, realname_status, create_by, update_by, create_at, update_at
+  </sql>
+
+  <update id="modifyUserInfo" parameterType="com.techGoal.pojo.dao.UserInfoDo">
+    <!-- UserInfoMapper.modifyUserInfo -->
+    UPDATE
+    t_user_info
+    <set>
+      <if test="userRealName != null and userRealName != ''">
+        user_real_name = #{userRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="email != null and email != ''">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNo != null and phoneNo != ''">
+        phone_no = #{phoneNo,jdbcType=VARCHAR},
+      </if>
+      <if test="weixinNo != null and weixinNo != ''">
+        weixin_no = #{weixinNo,jdbcType=VARCHAR},
+      </if>
+      <if test="emailAuth != null">
+        email_auth = #{emailAuth,jdbcType=TINYINT},
+      </if>
+      <if test="phoneNoAuth != null">
+        phone_no_auth = #{phoneNoAuth,jdbcType=TINYINT},
+      </if>
+      <if test="weixinNoAuth != null">
+        weixin_no_auth = #{weixinNoAuth,jdbcType=TINYINT},
+      </if>
+      <if test="coreLabel != null and coreLabel != ''">
+        core_label = #{coreLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="domain != null">
+        domain = #{domain,jdbcType=INTEGER},
+      </if>
+      <if test="update_by != null and update_by != ''">
+        update_by = #{update_by,jdbcType=VARCHAR},
+      </if>
+        update_at = NOW()
+    </set>
+      WHERE user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  
+  <select id="queryUserByName" parameterType="com.techGoal.pojo.dao.UserInfoDo" resultMap="BaseResultMap">
+    <!-- UserInfoMapper.queryUserByName -->
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    t_user_info
+    WHERE  user_real_name LIKE CONCAT(CONCAT('%',#{userRealName},'%'))
+  </select>
 </mapper>

@@ -32,6 +32,11 @@ public final class RedisDict {
      */
     public static final String MOMENTS_NO_KEY = KEY.concat("MOMENTS_NO_CREATE_KEY");
 
+    /**
+     * 入圈申请编号
+     */
+    public static final String CIRCLE_APPLY_NO_KEY = KEY.concat("CIRCLE_APPLY_NO_CREATE_KEY");
+
     private RedisDict() {
 
     }

@@ -1,7 +1,6 @@
 package com.techGoal.service.impl;
 
 import com.techGoal.constant.RedisDict;
-import com.techGoal.dict.CommonDict;
 import com.techGoal.dict.NumberDict;
 import com.techGoal.dict.NumberStrDict;
 import com.techGoal.enums.ErrorCodeEnum;
@@ -12,8 +11,8 @@ import com.techGoal.mapper.UserPwdMapper;
 import com.techGoal.pojo.dao.LoginInfoDo;
 import com.techGoal.pojo.dao.UserInfoDo;
 import com.techGoal.pojo.dao.UserPwdDo;
+import com.techGoal.pojo.vo.UserInfoVo;
 import com.techGoal.pojo.vo.UserRegisterOneStepVo;
-import com.techGoal.pojo.vo.UserRegisterTwoStepVo;
 import com.techGoal.redis.OrderIdManager;
 import com.techGoal.service.UserLoginService;
 import lombok.extern.slf4j.Slf4j;
@@ -80,7 +79,7 @@ public class UserLoginServiceImpl implements UserLoginService {
      * @param userRegisterOneStepVo 用户登陆信息
      */
     @Override
-    @Transactional(rollbackFor = Exception.class )
+    @Transactional(rollbackFor = Exception.class)
     public void insertUserLoginInfo(UserRegisterOneStepVo userRegisterOneStepVo) {
         Long userNo = orderIdManager.orderIdCreate(RedisDict.USER_INFO_KEY);
         LoginInfoDo loginInfoDo = new LoginInfoDo();
@@ -89,7 +88,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         loginInfoDo.setUserId(userNo);
         loginInfoDo.setLoginState(NumberStrDict.ONE);
         loginInfoDo.setCreateAt(new Date());
-        loginInfoDo.setCreateBy(CommonDict.SYSTEM);
+        loginInfoDo.setCreateBy(String.valueOf(userNo));
         loginInfoMapper.insert(loginInfoDo);
 
         UserPwdDo userPwdDo = new UserPwdDo();
@@ -98,51 +97,57 @@ public class UserLoginServiceImpl implements UserLoginService {
         userPwdDo.setPwdType(NumberDict.ONE);
         userPwdDo.setState(NumberDict.ONE);
         userPwdDo.setCreateAt(new Date());
-        userPwdDo.setCreateBy(CommonDict.SYSTEM);
+        userPwdDo.setCreateBy(String.valueOf(userNo));
         userPwdMapper.insert(userPwdDo);
     }
 
     /**
      * 插入用户个人信息
      *
-     * @param userRegisterTwoStepVo 用户个人信息
+     * @param userInfoVo 用户个人信息
      */
     @Override
-    @Transactional(rollbackFor = Exception.class )
-    public void insertUserInfo(UserRegisterTwoStepVo userRegisterTwoStepVo) {
+    @Transactional(rollbackFor = Exception.class)
+    public void insertUserInfo(UserInfoVo userInfoVo) {
         UserInfoDo userInfoDo = new UserInfoDo();
-        userInfoDo.setUserId(Long.valueOf(userRegisterTwoStepVo.getUserId()));
-        userInfoDo.setUserRealName(userRegisterTwoStepVo.getUserRealName());
-        userInfoDo.setGender(Integer.valueOf(userRegisterTwoStepVo.getGender()));
-        userInfoDo.setProvince(Integer.valueOf(userRegisterTwoStepVo.getProvince()));
-        userInfoDo.setCity(Integer.valueOf(userRegisterTwoStepVo.getCity()));
-        userInfoDo.setEmail(userRegisterTwoStepVo.getEmail());
-        userInfoDo.setPhoneNo(userRegisterTwoStepVo.getPhoneNo());
-        userInfoDo.setWeixinNo(userRegisterTwoStepVo.getWeixinNo());
-        userInfoDo.setEmailAuth(Integer.valueOf(userRegisterTwoStepVo.getEmailAuth()));
-        userInfoDo.setPhoneNoAuth(Integer.valueOf(userRegisterTwoStepVo.getPhoneNoAuth()));
-        userInfoDo.setWeixinNoAuth(Integer.valueOf(userRegisterTwoStepVo.getWeixinNoAuth()));
-        userInfoDo.setCoreLabel(userRegisterTwoStepVo.getCoreLabel());
-        userInfoDo.setDomain(Integer.valueOf(userRegisterTwoStepVo.getDomain()));
+        userInfoDo.setUserId(Long.valueOf(userInfoVo.getUserId()));
+        userInfoDo.setUserRealName(userInfoVo.getUserRealName());
+        userInfoDo.setGender(Integer.valueOf(userInfoVo.getGender()));
+        userInfoDo.setProvince(Integer.valueOf(userInfoVo.getProvince()));
+        userInfoDo.setCity(Integer.valueOf(userInfoVo.getCity()));
+        userInfoDo.setEmail(userInfoVo.getEmail());
+        userInfoDo.setPhoneNo(userInfoVo.getPhoneNo());
+        userInfoDo.setWeixinNo(userInfoVo.getWeixinNo());
+        userInfoDo.setEmailAuth(Integer.valueOf(userInfoVo.getEmailAuth()));
+        userInfoDo.setPhoneNoAuth(Integer.valueOf(userInfoVo.getPhoneNoAuth()));
+        userInfoDo.setWeixinNoAuth(Integer.valueOf(userInfoVo.getWeixinNoAuth()));
+        userInfoDo.setCoreLabel(userInfoVo.getCoreLabel());
+        userInfoDo.setDomain(Integer.valueOf(userInfoVo.getDomain()));
+        userInfoDo.setRealnameStatus(NumberDict.ZERO);
         userInfoDo.setCreateAt(new Date());
-        userInfoDo.setCreateBy(CommonDict.SYSTEM);
+        userInfoDo.setCreateBy(userInfoVo.getUserId());
+        // 标签个数最大为6
+        String[] labels = userInfoVo.getCoreLabel().split(",");
+        if (labels.length > NumberDict.SIX) {
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000007);
+        }
         // 检查邮箱、电话、微信号是否存在
         UserInfoDo userInfoDo1 = new UserInfoDo();
         userInfoDo1.setEmail(userInfoDo.getEmail());
         List<UserInfoDo> userInfoDos1 = userInfoMapper.select(userInfoDo1);
-        if(!CollectionUtils.isEmpty(userInfoDos1)){
+        if (!CollectionUtils.isEmpty(userInfoDos1)) {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000004);
         }
         UserInfoDo userInfoDo2 = new UserInfoDo();
-        userInfoDo2.setEmail(userInfoDo.getPhoneNo());
+        userInfoDo2.setPhoneNo(userInfoDo.getPhoneNo());
         List<UserInfoDo> userInfoDos2 = userInfoMapper.select(userInfoDo2);
-        if(!CollectionUtils.isEmpty(userInfoDos2)){
+        if (!CollectionUtils.isEmpty(userInfoDos2)) {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000005);
         }
         UserInfoDo userInfoDo3 = new UserInfoDo();
-        userInfoDo3.setEmail(userInfoDo.getPhoneNo());
+        userInfoDo3.setWeixinNo(userInfoDo.getWeixinNo());
         List<UserInfoDo> userInfoDos3 = userInfoMapper.select(userInfoDo3);
-        if(!CollectionUtils.isEmpty(userInfoDos3)){
+        if (!CollectionUtils.isEmpty(userInfoDos3)) {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000006);
         }
         userInfoMapper.insert(userInfoDo);

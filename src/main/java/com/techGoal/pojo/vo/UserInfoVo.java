@@ -3,7 +3,9 @@ package com.techGoal.pojo.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 
 /**
  * description : 用户注册第二步
@@ -15,7 +17,7 @@ import javax.validation.constraints.NotBlank;
  * @date : 2019/5/19 22:15
  */
 @Data
-public class UserRegisterTwoStepVo {
+public class UserInfoVo {
 
     @NotBlank(message = "用户编号不能为空")
     @ApiModelProperty(value = "用户编号")
@@ -68,4 +70,25 @@ public class UserRegisterTwoStepVo {
     @NotBlank(message = "所属行业不能为空")
     @ApiModelProperty(value = "所属行业")
     private String domain;
+
+    @ApiModelProperty(value = "头像图片")
+    private String personImage;
+
+    @ApiModelProperty(value = "主页图片")
+    private String homeImage;
+
+    @ApiModelProperty(value = "认证状态  0-未认证 1-待审核 2-已认证 3-认证失败")
+    private String realnameStatus;
+
+    @ApiModelProperty(value = "创建人")
+    private String createBy;
+
+    @ApiModelProperty(value = "更新人")
+    private String updateBy;
+
+    @ApiModelProperty(value = "创建时间")
+    private Date createAt;
+
+    @ApiModelProperty(value = "更新时间")
+    private Date updateAt;
 }

@@ -15,4 +15,15 @@
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
   </resultMap>
+
+  <update id="exitCircle" parameterType="com.techGoal.pojo.dao.CircleUserDo">
+    <!-- CircleUserMapper.exitCircle -->
+    UPDATE
+    t_user_info
+    SET
+    enable = 0,
+    update_at = NOW(),
+    update_by = #{updateBy,jdbcType=VARCHAR}
+    WHERE user_id = #{userId,jdbcType=BIGINT} and circle_no = #{circleNo,jdbcType=BIGINT}
+  </update>
 </mapper>
