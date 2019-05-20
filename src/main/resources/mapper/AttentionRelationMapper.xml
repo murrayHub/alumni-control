@@ -14,4 +14,30 @@
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
   </resultMap>
+  <sql id="Base_Column_List">
+    id,user_id,target_object,relation_type,create_by,update_by,create_at,update_at
+  </sql>
+  <select id="selectRelation" resultMap="BaseResultMap" parameterType="com.techGoal.pojo.dao.AttentionRelationDo">
+    <!-- AttentionRelationMapper.selectRelation -->
+    select
+    <include refid="Base_Column_List" />
+    from t_attention_relation
+    where (user_id=#{userId,jdbcType=BIGINT} and target_object=#{targetObject,jdbcType=BIGINT})
+    or (user_id=#{targetObject,jdbcType=BIGINT} and target_object=#{userId,jdbcType=BIGINT})
+  </select>
+  
+  <update id="updateRelation" parameterType="com.techGoal.pojo.dao.AttentionRelationDo" >
+    <!-- AttentionRelationMapper.updateRelation -->
+    UPDATE
+    t_attention_relation
+    SET
+    relation_type = #{relationType,jdbcType=INTEGER},
+    update_by = #{userId,jdbcType=INTEGER},
+    update_at = NOW()
+    WHERE
+    (user_id=#{userId,jdbcType=BIGINT} and target_object=#{targetObject,jdbcType=BIGINT})
+    or
+    (user_id=#{targetObject,jdbcType=BIGINT} and target_object=#{userId,jdbcType=BIGINT})
+
+  </update>
 </mapper>

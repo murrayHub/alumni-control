@@ -62,6 +62,10 @@ public enum ErrorCodeEnum implements ErrorCode {
      * 您已成功加入该圈，请勿重复提交申请
      */
     ERROR_CODE_000011("000011", "您已成功加入该圈，请勿重复提交申请"),
+    /**
+     * 您已关注过该用户
+     */
+    ERROR_CODE_000012("000012", "您已关注过该用户"),
 
 
     ;
