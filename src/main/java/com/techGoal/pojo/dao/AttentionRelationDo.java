@@ -57,4 +57,10 @@ public class AttentionRelationDo {
     @Column(name = "update_at")
     private Date updateAt;
 
+    /**
+     * 用户姓名
+     */
+    @Transient
+    private String userRealname;
+
 }

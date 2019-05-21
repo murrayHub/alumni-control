@@ -40,4 +40,92 @@
     (user_id=#{targetObject,jdbcType=BIGINT} and target_object=#{userId,jdbcType=BIGINT})
 
   </update>
+
+  <update id="updateRelationDirect" parameterType="com.techGoal.pojo.dao.AttentionRelationDo" >
+    <!-- AttentionRelationMapper.updateRelationDirect -->
+    UPDATE
+    t_attention_relation
+    SET
+    relation_type = #{relationType,jdbcType=INTEGER},
+    update_by = #{userId,jdbcType=INTEGER},
+    update_at = NOW()
+    WHERE
+    user_id=#{userId,jdbcType=BIGINT} and target_object=#{targetObject,jdbcType=BIGINT}
+
+  </update>
+
+  <select id="getPayAttentionUsers" parameterType="com.techGoal.pojo.dao.AttentionRelationDo" resultType="com.techGoal.pojo.dao.UserInfoDo">
+    <!-- AttentionRelationMapper.getPayAttentionUsers -->
+    SELECT
+    user_id AS userId,
+    user_real_name AS userRealName,
+    person_image AS personImage,
+    realname_status AS realnameStatus,
+    core_label AS coreLabel
+    FROM
+    t_user_info
+    <where>
+      AND user_id IN (SELECT  target_object AS userId
+      FROM t_attention_relation
+      WHERE user_id=#{userId,jdbcType=BIGINT}
+      AND relation_type in (2,3)
+      UNION
+      SELECT user_id
+      FROM t_attention_relation
+      WHERE target_object=#{userId,jdbcType=BIGINT}
+      AND relation_type in (1,3)
+      ORDER BY userId)
+      <if test="userRealname != null and userRealname != ''">
+        AND user_real_name LIKE CONCAT(CONCAT('%',#{userRealName},'%'))
+      </if>
+    </where>
+
+  </select>
+
+  <select id="getBePayedAttentionUsers" parameterType="com.techGoal.pojo.dao.AttentionRelationDo" resultType="com.techGoal.pojo.dao.UserInfoDo">
+    <!-- AttentionRelationMapper.getBePayedAttentionUsers -->
+    SELECT
+    user_id AS userId,
+    user_real_name AS userRealName,
+    person_image AS personImage,
+    realname_status AS realnameStatus,
+    core_label AS coreLabel
+    FROM
+    t_user_info
+    <where>
+      AND user_id IN (SELECT  target_object AS userId
+      FROM t_attention_relation
+      WHERE user_id=#{userId,jdbcType=BIGINT}
+      AND relation_type in (1,3)
+      UNION
+      SELECT user_id
+      FROM t_attention_relation
+      WHERE target_object=#{userId,jdbcType=BIGINT}
+      AND relation_type in (2,3)
+      ORDER BY userId)
+      <if test="userRealname != null and userRealname != ''">
+        AND user_real_name LIKE CONCAT(CONCAT('%',#{userRealName},'%'))
+      </if>
+    </where>
+  </select>
+
+  <select id="getNoPayAttentionUsers" parameterType="com.techGoal.pojo.dao.AttentionRelationDo" resultType="com.techGoal.pojo.dao.UserInfoDo">
+    <!-- AttentionRelationMapper.getBePayedAttentionUsers -->
+    SELECT
+    user_id AS userId,
+    user_real_name AS userRealName,
+    person_image AS personImage,
+    realname_status AS realnameStatus,
+    core_label AS coreLabel
+    FROM
+    t_user_info
+    WHERE user_id NOT IN
+    (SELECT  target_object AS userId FROM t_attention_relation
+    WHERE user_id=#{userId,jdbcType=BIGINT} AND relation_type in (2,3)
+    UNION
+    SELECT user_id FROM t_attention_relation
+    WHERE target_object=#{userId,jdbcType=BIGINT} AND relation_type in (1,3))
+    AND user_id <![CDATA[<>]]>#{userId,jdbcType=BIGINT}
+  </select>
+
 </mapper>

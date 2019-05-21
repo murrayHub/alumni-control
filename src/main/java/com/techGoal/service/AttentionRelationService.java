@@ -1,6 +1,9 @@
 package com.techGoal.service;
 
 import com.techGoal.pojo.vo.AttentionRelationVo;
+import com.techGoal.pojo.vo.UserInfoVo;
+
+import java.util.List;
 
 /**
  * description : 关注和被关注者关系管理-服务层
@@ -23,4 +26,25 @@ public interface AttentionRelationService {
      * @param attentionRelationVo 请求参数
      */
     void cancelPayAttention(AttentionRelationVo attentionRelationVo);
+
+    /**
+     * 获取所有我关注的好友
+     * @param attentionRelationVo 请求参数
+     * @return 结果集
+     */
+    List<UserInfoVo> getPayAttentionUsers(AttentionRelationVo attentionRelationVo);
+
+    /**
+     * 获取所有关注我的好友
+     * @param attentionRelationVo 请求参数
+     * @return 结果集
+     */
+    List<UserInfoVo> getBePayedAttentionUsers(AttentionRelationVo attentionRelationVo);
+
+    /**
+     * 获取所有尚未关注的用户
+     * @param attentionRelationVo 请求参数
+     * @return 结果集
+     */
+    List<UserInfoVo> getNoPayAttentionUsers(AttentionRelationVo attentionRelationVo);
 }

@@ -66,6 +66,10 @@ public enum ErrorCodeEnum implements ErrorCode {
      * 您已关注过该用户
      */
     ERROR_CODE_000012("000012", "您已关注过该用户"),
+    /**
+     * 您尚未关注过该用户
+     */
+    ERROR_CODE_000013("000013", "您尚未关注过该用户"),
 
 
     ;

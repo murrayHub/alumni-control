@@ -32,6 +32,11 @@ public class AttentionRelationVo {
     @ApiModelProperty(value = "操作类型")
     private String operateType;
 
+    @NotBlank(message = "用户姓名不能为空")
+    @ApiModelProperty(value = "用户姓名")
+    private String userRealName;
+
+
     /**
      * 创建人
      */
