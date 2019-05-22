@@ -5,14 +5,17 @@ import lombok.Data;
 import java.util.Date;
 import javax.persistence.*;
 
+/**
+ * 评论表
+ */
+
 @Data
-@Table(name = "t_circle_comment")
-public class CircleCommentDo {
+@Table(name = "t_comment")
+public class CommentDo {
     /**
      * 主键
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
@@ -22,16 +25,16 @@ public class CircleCommentDo {
     private Long commentId;
 
     /**
-     * 动态编号
+     * 主题编号
      */
-    @Column(name = "moments_id")
-    private Long momentsId;
+    @Column(name = "topic_id")
+    private Long topicId;
 
     /**
      * 评论人
      */
-    @Column(name = "reviewer_id")
-    private Long reviewerId;
+    @Column(name = "from_uid")
+    private Long fromUid;
 
     /**
      * 内容
@@ -72,5 +75,29 @@ public class CircleCommentDo {
      */
     @Column(name = "update_at")
     private Date updateAt;
+
+    /**
+     * 主题类型 1-动态
+     */
+    @Column(name = "topic_type")
+    private Integer topicType;
+
+    /**
+     * 回复目标用户
+     */
+    @Column(name = "to_uid")
+    private Long toUid;
+
+    /**
+     * 评论人姓名
+     */
+    @Column(name = "from_uid_name")
+    private String fromUidName;
+
+    /**
+     * 回复目标用户姓名
+     */
+    @Column(name = "to_uid_name")
+    private String toUidName;
 
 }
