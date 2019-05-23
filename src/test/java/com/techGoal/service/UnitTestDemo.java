@@ -1,19 +1,15 @@
 package com.techGoal.service;
 
-import com.techGoal.dict.CommonDict;
-import com.techGoal.dict.NumberDict;
 import com.techGoal.frame.BaseTest;
 import com.techGoal.mapper.JobPositionMapper;
 import com.techGoal.mapper.UserPwdMapper;
-import com.techGoal.pojo.dao.JobPositionDo;
-import com.techGoal.pojo.dao.UserPwdDo;
+import com.techGoal.redis.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.testng.annotations.Test;
 
-import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 /**
  * description : 单元测试类
@@ -36,15 +32,22 @@ public class UnitTestDemo extends BaseTest {
     @Autowired
     private UserPwdMapper userPwdMapper;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     @Test
     public void test() {
-
-        UserPwdDo userPwdDo = new UserPwdDo();
-        userPwdDo.setUserId(123456L);
-        userPwdDo.setPwd("123");
-        userPwdDo.setPwdType(NumberDict.ONE);
-        userPwdDo.setCreateAt(new Date());
-        userPwdDo.setCreateBy(CommonDict.SYSTEM);
-        userPwdMapper.insert(userPwdDo);
+        Boolean bo1 = redisUtil.zAdd("user1", "user2", 0.1);
+        Boolean bo2 = redisUtil.zAdd("user1", "user3", 0.5);
+        redisUtil.zAdd("user1", "user4", 0.2);
+        redisUtil.zAdd("user1", "user5", 0.8);
+        // 返回元素在集合的排名,score由大到小,角标从0开始
+        Long sort2 = redisUtil.zReverseRank("user1", "user2");
+        Long sort5 = redisUtil.zReverseRank("user1", "user5");
+        log.info("sort={}", sort2);
+        log.info("sort={}", sort5);
+        // 获取集合元素, 从大到小排序
+        Set<String> set = redisUtil.zReverseRange("user1", 0, 3);
+        log.info("set={}", set);
     }
 }
