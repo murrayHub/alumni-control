@@ -824,6 +824,16 @@ public class RedisUtil {
 	}
 
 	/**
+	 * 获取集合所有元素
+	 *
+	 * @param key
+	 * @return
+	 */
+	public Set<String> sMembers(String key) {
+		return redisTemplate.opsForSet().members(key);
+	}
+
+	/**
 	 * 判断集合是否包含value
 	 *
 	 * @param key

@@ -70,6 +70,15 @@ public enum ErrorCodeEnum implements ErrorCode {
      * 您尚未关注过该用户
      */
     ERROR_CODE_000013("000013", "您尚未关注过该用户"),
+    /**
+     * 发布人不能为空
+     */
+    ERROR_CODE_000014("000014", "发布人不能为空"),
+    /**
+     * 发布动态不能为空
+     */
+    ERROR_CODE_000015("000015", "发布动态不能为空"),
+
 
 
     ;

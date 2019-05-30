@@ -2,10 +2,6 @@ package com.techGoal.pojo.dto;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 @Data
 public class SchoolProvinceDto {
 

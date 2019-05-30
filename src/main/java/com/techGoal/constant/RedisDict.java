@@ -20,6 +20,18 @@ public final class RedisDict {
      */
     public static final String TOKEN = KEY + "TOKEN:";
     /**
+     * 粉丝列表key
+     */
+    public static final String FOLLOWERS_KEY = "FOLLOWERS_KEY";
+    /**
+     * 偶像列表key
+     */
+    public static final String IDOLS_KEY = "IDOLS_KEY";
+    /**
+     * 圈内人员列表key
+     */
+    public static final String INSIDERS_KEY = "INSIDERS_KEY";
+    /**
      * 用户号
      */
     public static final String USER_INFO_KEY = KEY.concat("USER_ID_CREATE_KEY");
