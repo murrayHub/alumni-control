@@ -2,6 +2,8 @@ package com.techGoal.service;
 
 import com.techGoal.pojo.vo.MomentsVo;
 
+import java.util.List;
+
 /**
  * description : 朋友圈动态管理-服务层
  * <p>
@@ -23,5 +25,26 @@ public interface MomentsManageService {
      * @param momentsVo 动态内容
      */
     void createCircleMoments(MomentsVo momentsVo);
+
+    /**
+     * 获取发现-所有动态
+     * @param userId 用户编号
+     * @return 结果集
+     */
+    List<MomentsVo> getDiscoverMoments(Long userId);
+
+    /**
+     * 获取圈内-所有动态
+     * @param circleNo 圈子编号
+     * @return 结果集
+     */
+    List<MomentsVo> getCircleMoments(Long circleNo);
+
+    /**
+     * 获取个人-所有动态
+     * @param userId 用户编号
+     * @return 结果集
+     */
+    List<MomentsVo> getPersonalMoments(Long userId);
 
 }

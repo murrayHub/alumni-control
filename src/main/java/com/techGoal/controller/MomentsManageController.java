@@ -100,6 +100,9 @@ public class MomentsManageController {
     @ApiOperation(value = "个人朋友圈动态-查询")
     public AjaxResult getPersonalMoments(@RequestBody MomentsVo momentsVo){
         AjaxResult result = new AjaxResult();
+        // 动态内容获取
+        // 动态绑定的回复留言获取
+        // 动态绑定的点赞获取
         return result;
     }
     /**
@@ -109,9 +112,13 @@ public class MomentsManageController {
      */
     @WebEnhance(mode = WebResultModeEnum.AJAX)
     @PostMapping("/get-discover-moments")
-    @ApiOperation(value = "个人朋友圈动态-查询")
+    @ApiOperation(value = "发现-朋友圈动态-查询")
     public AjaxResult getDiscoverMoments(@RequestBody MomentsVo momentsVo){
         AjaxResult result = new AjaxResult();
+        // 动态内容获取
+
+        // 动态绑定的回复留言获取
+        // 动态绑定的点赞获取
         return result;
     }
 }

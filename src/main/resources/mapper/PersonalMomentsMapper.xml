@@ -18,4 +18,18 @@
     <result column="publisher_time" property="publisherTime" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
   </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, moments_id, title, content, images, status, comment_flag, location, publisher_id, update_by, publisher_time, update_at
+  </sql>
+
+  <select id="queryPersonalMoments" resultMap="BaseResultMap" parameterType="com.techGoal.pojo.dao.PersonalMomentsDo" >
+    <!-- PersonalMomentsMapper.queryPersonalMoments -->
+    select
+    <include refid="Base_Column_List" />
+    from t_personal_moments
+    where moments_id = #{momentsId}
+    and status = 1
+    order by create_time desc
+  </select>
 </mapper>

@@ -19,4 +19,19 @@
     <result column="publisher_time" property="publisherTime" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
   </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, moments_id, circle_no, title, content, images, status, comment_flag, location, publisher_id, update_by, publisher_time, update_at
+  </sql>
+
+  <select id="queryCircleMoments" resultMap="BaseResultMap" parameterType="com.techGoal.pojo.dao.CircleMomentsDo" >
+    <!-- CircleMomentsMapper.queryCircleMoments -->
+    select
+    <include refid="Base_Column_List" />
+    from t_circle_moments
+    where moments_id = #{momentsId}
+    and circle_no = #{circleNo}
+    and status = 1
+    order by create_time desc
+  </select>
 </mapper>

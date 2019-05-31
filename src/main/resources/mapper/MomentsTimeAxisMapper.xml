@@ -13,4 +13,17 @@
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, user_id, moments_id, circle_no, is_own, create_by, create_time
+  </sql>
+
+  <select id="queryDiscoverMoments" resultMap="BaseResultMap" parameterType="com.techGoal.pojo.dao.MomentsTimeAxisDo" >
+    <!-- MomentsTimeAxisMapper.queryDiscoverMoments -->
+    select
+    <include refid="Base_Column_List" />
+    from t_moments_time_axis
+    where user_id = #{userId}
+    order by create_time desc
+  </select>
 </mapper>
