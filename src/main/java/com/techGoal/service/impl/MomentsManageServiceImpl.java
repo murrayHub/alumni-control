@@ -3,13 +3,15 @@ package com.techGoal.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.techGoal.constant.RedisDict;
+import com.techGoal.convert.CommentConvert;
 import com.techGoal.convert.MomentsConvert;
+import com.techGoal.convert.PersonalMomentsConvert;
 import com.techGoal.dict.NumberDict;
-import com.techGoal.mapper.AttentionRelationMapper;
-import com.techGoal.mapper.CircleMomentsMapper;
-import com.techGoal.mapper.MomentsTimeAxisMapper;
-import com.techGoal.mapper.PersonalMomentsMapper;
+import com.techGoal.mapper.*;
 import com.techGoal.pojo.dao.*;
+import com.techGoal.pojo.dto.CommentDto;
+import com.techGoal.pojo.dto.PersonalMomentsDetailDto;
+import com.techGoal.pojo.dto.PersonalMomentsDto;
 import com.techGoal.pojo.vo.MomentsVo;
 import com.techGoal.pojo.vo.UserInfoVo;
 import com.techGoal.redis.OrderIdManager;
@@ -69,6 +71,17 @@ public class MomentsManageServiceImpl implements MomentsManageService {
      */
     @Autowired
     private AttentionRelationMapper attentionRelationMapper;
+    /**
+     * 朋友圈评论 Mapper
+     */
+    @Autowired
+    private CommentDoMapper commentDoMapper;
+
+    /**
+     * 朋友圈点赞 Mapper
+     */
+    @Autowired
+    private CirclePraiseMapper circlePraiseMapper;
 
     /**
      * 缓存类接口
@@ -204,8 +217,73 @@ public class MomentsManageServiceImpl implements MomentsManageService {
      * @return 结果集
      */
     @Override
-    public List<MomentsVo> getPersonalMoments(Long userId) {
-        return null;
+    public List<PersonalMomentsDto> getPersonalMoments(Long userId) {
+        List<PersonalMomentsDto> result = Lists.newArrayList();
+        MomentsTimeAxisDo momentsTimeAxisDo = new MomentsTimeAxisDo();
+        momentsTimeAxisDo.setUserId(userId);
+        List<MomentsTimeAxisDo> momentsTimeAxisDos = momentsTimeAxisMapper.queryPersonalMoments(momentsTimeAxisDo);
+        for(MomentsTimeAxisDo momentsTimeAxisDo1 : momentsTimeAxisDos){
+            PersonalMomentsDo personalMomentsDo = new PersonalMomentsDo();
+            personalMomentsDo.setMomentsId(momentsTimeAxisDo1.getMomentsId());
+            List<PersonalMomentsDo> personalMomentsDos = personalMomentsMapper.queryPersonalMoments(personalMomentsDo);
+            if(CollectionUtils.isEmpty(personalMomentsDos)){
+                return result;
+            }
+            for(PersonalMomentsDo personalMomentsDo1 : personalMomentsDos){
+                // 动态的回复留言统计获取
+                CommentDo commentDo = new CommentDo();
+                commentDo.setTopicId(personalMomentsDo1.getMomentsId());
+                commentDo.setTopicType(NumberDict.ONE);
+                List<CommentDo> commentDos = commentDoMapper.getAllComments(commentDo);
+                personalMomentsDo1.setCommentsCount(commentDos.size());
+                // 动态绑定的点赞统计获取
+                CirclePraiseDo circlePraiseDo = new CirclePraiseDo();
+                circlePraiseDo.setMomentsId(personalMomentsDo1.getMomentsId());
+                circlePraiseDo.setPraiseType(NumberDict.ONE);
+                List<CirclePraiseDo> circlePraiseDos = circlePraiseMapper.getAllPraises(circlePraiseDo);
+                personalMomentsDo1.setPraiseCount(circlePraiseDos.size());
+                PersonalMomentsDto personalMomentsDto = PersonalMomentsConvert.convertToDto(personalMomentsDo1);
+                result.add(personalMomentsDto);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 朋友圈动态-动态详情-查询
+     *
+     * @param momentsId 动态编号
+     * @return 结果集
+     */
+    @Override
+    public PersonalMomentsDetailDto getPersonalMomentDetail(Long momentsId) {
+        PersonalMomentsDetailDto personalMomentsDetailDto = new PersonalMomentsDetailDto();
+        PersonalMomentsDo personalMomentsDo = new PersonalMomentsDo();
+        personalMomentsDo.setMomentsId(momentsId);
+        List<PersonalMomentsDo> personalMomentsDos = personalMomentsMapper.queryPersonalMoments(personalMomentsDo);
+        if(CollectionUtils.isEmpty(personalMomentsDos)){
+            return personalMomentsDetailDto;
+        }
+        PersonalMomentsDo personalMomentsDo1 = personalMomentsDos.get(NumberDict.ZERO);
+        // 动态绑定的点赞统计获取
+        CirclePraiseDo circlePraiseDo = new CirclePraiseDo();
+        circlePraiseDo.setMomentsId(personalMomentsDo1.getMomentsId());
+        circlePraiseDo.setPraiseType(NumberDict.ONE);
+        List<CirclePraiseDo> circlePraiseDos = circlePraiseMapper.getAllPraises(circlePraiseDo);
+        personalMomentsDo1.setPraiseCount(circlePraiseDos.size());
+        personalMomentsDetailDto = PersonalMomentsConvert.convertToDetailDto(personalMomentsDo1);
+        // 动态的回复留言统计获取
+        CommentDo commentDo = new CommentDo();
+        commentDo.setTopicId(personalMomentsDo1.getMomentsId());
+        commentDo.setTopicType(NumberDict.ONE);
+        List<CommentDo> commentDos = commentDoMapper.getAllComments(commentDo);
+        List<CommentDto> commentDtos = Lists.newArrayList();
+        for(CommentDo commentDo1 : commentDos){
+            commentDtos.add(CommentConvert.convertToDto(commentDo1));
+        }
+
+        personalMomentsDetailDto.setCommentList(commentDtos);
+        return personalMomentsDetailDto;
     }
 
     /**

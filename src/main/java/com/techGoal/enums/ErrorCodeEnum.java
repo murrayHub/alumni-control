@@ -78,6 +78,10 @@ public enum ErrorCodeEnum implements ErrorCode {
      * 发布动态不能为空
      */
     ERROR_CODE_000015("000015", "发布动态不能为空"),
+    /**
+     * 动态编号为空
+     */
+    ERROR_CODE_000016("000016", "动态编号为空"),
 
 
 

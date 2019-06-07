@@ -17,4 +17,19 @@
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
   </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, praise_id, moments_id, user_id, praise_type, status, praise_time, create_by, update_by, create_at, update_at
+  </sql>
+
+  <select id="getAllPraises" resultMap="BaseResultMap" parameterType="com.techGoal.pojo.dao.CirclePraiseDo" >
+    <!-- CirclePraiseMapper.getAllPraises -->
+    select
+    <include refid="Base_Column_List" />
+    from t_circle_praise
+    where moments_id = #{momentsId}
+    and praise_type = #{praiseType}
+    and status = 1
+    order by create_at desc
+  </select>
 </mapper>

@@ -26,4 +26,16 @@
     where user_id = #{userId}
     order by create_time desc
   </select>
+
+  <select id="queryPersonalMoments" resultMap="BaseResultMap" parameterType="com.techGoal.pojo.dao.MomentsTimeAxisDo" >
+    <!-- MomentsTimeAxisMapper.queryPersonalMoments -->
+    select
+    <include refid="Base_Column_List" />
+    from t_moments_time_axis
+    where user_id = #{userId}
+    and is_own = 1
+    order by create_time desc
+  </select>
+
+
 </mapper>

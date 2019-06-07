@@ -85,4 +85,10 @@ public class MomentsVo {
      */
     @ApiModelProperty(value = "更新时间")
     private String updateAt;
+
+    /**
+     * 用户编号
+     */
+    @ApiModelProperty(value = "用户编号")
+    private String userId;
 }

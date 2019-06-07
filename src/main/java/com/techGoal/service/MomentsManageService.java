@@ -1,5 +1,7 @@
 package com.techGoal.service;
 
+import com.techGoal.pojo.dto.PersonalMomentsDetailDto;
+import com.techGoal.pojo.dto.PersonalMomentsDto;
 import com.techGoal.pojo.vo.MomentsVo;
 
 import java.util.List;
@@ -45,6 +47,13 @@ public interface MomentsManageService {
      * @param userId 用户编号
      * @return 结果集
      */
-    List<MomentsVo> getPersonalMoments(Long userId);
+    List<PersonalMomentsDto> getPersonalMoments(Long userId);
+
+    /**
+     * 朋友圈动态-动态详情-查询
+     * @param momentsId 动态编号
+     * @return 结果集
+     */
+    PersonalMomentsDetailDto getPersonalMomentDetail(Long momentsId);
 
 }

@@ -1,25 +1,25 @@
-package com.techGoal.pojo.dao;
+package com.techGoal.pojo.dto;
 
 import lombok.Data;
 
-import java.util.Date;
-import javax.persistence.*;
+import javax.persistence.Transient;
+import java.util.List;
 
+/**
+ * description : 个人动态
+ * <p>
+ * </p>
+ *
+ * @author : Murray
+ * @version : 1.0.0
+ * @date : 2019/6/7 15:06
+ */
 @Data
-@Table(name = "t_personal_moments")
-public class PersonalMomentsDo {
-    /**
-     * 主键
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class PersonalMomentsDetailDto {
     /**
      * 动态编号
      */
-    @Column(name = "moments_id")
-    private Long momentsId;
+    private String momentsId;
 
     /**
      * 标题
@@ -39,13 +39,12 @@ public class PersonalMomentsDo {
     /**
      * 状态：1-成功 2-草稿 3-失败 4-撤回
      */
-    private Integer status;
+    private String status;
 
     /**
      * 评论权限 1:允许评论,0:不允许评论
      */
-    @Column(name = "comment_flag")
-    private Integer commentFlag;
+    private String commentFlag;
 
     /**
      * 发布位置
@@ -55,35 +54,36 @@ public class PersonalMomentsDo {
     /**
      * 发布人
      */
-    @Column(name = "publisher_id")
-    private Long publisherId;
+    private String publisherId;
 
     /**
      * 更新人
      */
-    @Column(name = "update_by")
     private String updateBy;
 
     /**
      * 发布时间
      */
-    @Column(name = "publisher_time")
-    private Date publisherTime;
+    private String publisherTime;
 
     /**
      * 更新时间
      */
-    @Column(name = "update_at")
-    private Date updateAt;
+    private String updateAt;
     /**
      * 留言统计
      */
     @Transient
-    private Integer commentsCount;
+    private String commentsCount;
     /**
      * 点赞统计
      */
     @Transient
-    private Integer praiseCount;
+    private String praiseCount;
+
+    /**
+     * 留言列表
+     */
+    private List<CommentDto> commentList;
 
 }

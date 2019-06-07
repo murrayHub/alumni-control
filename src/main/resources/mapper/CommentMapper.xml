@@ -21,4 +21,21 @@
     <result column="from_uid_name" property="fromUidName" jdbcType="VARCHAR" />
     <result column="to_uid_name" property="toUidName" jdbcType="VARCHAR" />
   </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, comment_id, topic_id, from_uid, content, vaild_status, enabled, create_by, update_by, create_at, update_at, topic_type,
+    to_uid, from_uid_name, to_uid_name
+  </sql>
+
+  <select id="getAllComments" resultMap="BaseResultMap" parameterType="com.techGoal.pojo.dao.CommentDo" >
+    <!-- CommentDoMapper.getAllComments -->
+    select
+    <include refid="Base_Column_List" />
+    from t_comment
+    where topic_id = #{topicId}
+    and topic_type = #{topicType}
+    and vaild_status = 1
+    and enabled = 1
+    order by create_time desc
+  </select>
 </mapper>

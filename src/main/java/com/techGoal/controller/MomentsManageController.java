@@ -1,7 +1,10 @@
 package com.techGoal.controller;
 
+import com.google.common.collect.Lists;
 import com.techGoal.enums.ErrorCodeEnum;
 import com.techGoal.exception.BizServiceException;
+import com.techGoal.pojo.dto.PersonalMomentsDetailDto;
+import com.techGoal.pojo.dto.PersonalMomentsDto;
 import com.techGoal.pojo.vo.MomentsVo;
 import com.techGoal.service.MomentsManageService;
 import com.techGoal.utils.TechGoalObjects;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * description : 朋友圈动态管理-控制层
@@ -91,22 +96,28 @@ public class MomentsManageController {
     }
 
     /**
-     * 仅看自己-朋友圈动态-查询
+     * 仅看自己-朋友圈动态-查询(分页未做！)
      * @param momentsVo 动态内容
      * @return 结果
      */
     @WebEnhance(mode = WebResultModeEnum.AJAX)
     @PostMapping("/get-personal-moments")
     @ApiOperation(value = "个人朋友圈动态-查询")
-    public AjaxResult getPersonalMoments(@RequestBody MomentsVo momentsVo){
-        AjaxResult result = new AjaxResult();
+    public AjaxResult<List<PersonalMomentsDto>> getPersonalMoments(@RequestBody MomentsVo momentsVo){
+        log.info("个人朋友圈动态-查询,请求参数：{}", momentsVo);
+        AjaxResult<List<PersonalMomentsDto>> result = new AjaxResult();
+        List<PersonalMomentsDto> personalMomentsDtos = Lists.newArrayList();
         // 动态内容获取
-        // 动态绑定的回复留言获取
-        // 动态绑定的点赞获取
+        if (TechGoalObjects.isEmpty(momentsVo.getUserId())) {
+            log.error("个人朋友圈动态-查询,异常：{}", ErrorCodeEnum.ERROR_CODE_000008.getErrorDesc());
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000008);
+        }
+        personalMomentsDtos = momentsManageService.getPersonalMoments(Long.valueOf(momentsVo.getUserId()));
+        result.setResult(personalMomentsDtos);
         return result;
     }
     /**
-     * 发现-朋友圈动态-查询
+     * 发现-朋友圈动态-查询(分页未做！)
      * @param momentsVo 动态内容
      * @return 结果
      */
@@ -119,6 +130,31 @@ public class MomentsManageController {
 
         // 动态绑定的回复留言获取
         // 动态绑定的点赞获取
+        return result;
+    }
+
+    /**
+     * 仅看自己-朋友圈动态-动态详情-查询
+     * @param momentsVo 动态内容
+     * @return 结果
+     */
+    @WebEnhance(mode = WebResultModeEnum.AJAX)
+    @PostMapping("/get-personal-moments-detail")
+    @ApiOperation(value = "朋友圈动态-动态详情-查询")
+    public AjaxResult<PersonalMomentsDetailDto> getPersonalMomentsDetail(@RequestBody MomentsVo momentsVo){
+        log.info("朋友圈动态-动态详情-查询,请求参数：{}", momentsVo);
+        AjaxResult<PersonalMomentsDetailDto> result = new AjaxResult();
+        // 动态内容获取
+        if (TechGoalObjects.isEmpty(momentsVo.getUserId())) {
+            log.error("朋友圈动态-动态详情-查询,异常：{}", ErrorCodeEnum.ERROR_CODE_000008.getErrorDesc());
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000008);
+        }
+        if (TechGoalObjects.isEmpty(momentsVo.getMomentsId())) {
+            log.error("朋友圈动态-动态详情-查询,异常：{}", ErrorCodeEnum.ERROR_CODE_000016.getErrorDesc());
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000016);
+        }
+        PersonalMomentsDetailDto personalMomentsDetailDto = momentsManageService.getPersonalMomentDetail(Long.valueOf(momentsVo.getMomentsId()));
+        result.setResult(personalMomentsDetailDto);
         return result;
     }
 }
