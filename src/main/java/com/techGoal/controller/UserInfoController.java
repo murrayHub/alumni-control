@@ -42,6 +42,28 @@ public class UserInfoController {
     private UserInfoService userInfoService;
 
     /**
+     * 查询用户个人信息
+     *
+     * @param userInfoVo 用户个人信息
+     * @return 结果
+     */
+    @WebEnhance(mode = WebResultModeEnum.AJAX)
+    @PostMapping("/get-user-info")
+    @ApiOperation(value = "查询用户个人信息")
+    public AjaxResult<UserInfoVo> getUserInfo(@RequestBody UserInfoVo userInfoVo) {
+        AjaxResult<UserInfoVo> result = new AjaxResult();
+        log.info("查询用户个人信息,请求参数:{}", userInfoVo);
+        if(TechGoalObjects.isEmpty(userInfoVo.getUserId())){
+            log.error("查询用户个人信息,异常：{}", ErrorCodeEnum.ERROR_CODE_000008.getErrorDesc());
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000008);
+        }
+        UserInfoVo userInfoRespVo = userInfoService.queryUserInfo(userInfoVo);
+        result.setResult(userInfoRespVo);
+        log.info("查询用户个人信息,返回结果:{}", userInfoRespVo);
+        return result;
+    }
+
+    /**
      * 修改用户个人信息
      *
      * @param userInfoVo 用户个人信息

@@ -16,6 +16,12 @@ import java.util.List;
 public interface UserInfoService {
 
     /**
+     * 查询用户个人信息
+     * @param userInfoVo 用户个人信息
+     * @return 结果
+     */
+    UserInfoVo queryUserInfo(UserInfoVo userInfoVo);
+    /**
      * 修改用户个人信息
      * @param userInfoVo 用户个人信息
      */

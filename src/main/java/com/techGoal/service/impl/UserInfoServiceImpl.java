@@ -39,6 +39,20 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserInfoMapper userInfoMapper;
 
     /**
+     * 查询用户个人信息
+     * @param userInfoVo 用户个人信息
+     * @return 结果
+     */
+    @Override
+    public UserInfoVo queryUserInfo(UserInfoVo userInfoVo) {
+        UserInfoDo userInfoDo = new UserInfoDo();
+        userInfoDo.setUserId(Long.valueOf(userInfoVo.getUserId()));
+        UserInfoDo userInfoDo1 = userInfoMapper.selectOne(userInfoDo);
+        UserInfoVo userInfo = UserInfoConvert.UserInfoDoToVo(userInfoDo1);
+        return userInfo;
+    }
+
+    /**
      * 修改用户个人信息
      *
      * @param userInfoVo 用户个人信息
