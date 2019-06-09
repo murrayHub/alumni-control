@@ -4,14 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.techGoal.dict.NumberDict;
-import com.techGoal.mapper.JobIndustryMapper;
-import com.techGoal.mapper.JobPositionMapper;
-import com.techGoal.mapper.RegionMapper;
-import com.techGoal.mapper.SchoolMapper;
-import com.techGoal.pojo.dao.JobIndustryDo;
-import com.techGoal.pojo.dao.JobPositionDo;
-import com.techGoal.pojo.dao.RegionDo;
-import com.techGoal.pojo.dao.SchoolDo;
+import com.techGoal.mapper.*;
+import com.techGoal.pojo.dao.*;
 import com.techGoal.pojo.dto.SchoolProvinceDto;
 import com.techGoal.service.CacheService;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +54,11 @@ public class CacheServiceImpl implements CacheService {
     private static List<JobPositionDo> levelOnePositionList = Lists.newArrayList();
 
     /**
+     * 用户标签集合
+     */
+    private static List<UserLabelDo> userLabelList = Lists.newArrayList();
+
+    /**
      * 全国区域信息
      */
     @Autowired
@@ -69,6 +68,11 @@ public class CacheServiceImpl implements CacheService {
      */
     @Autowired
     private SchoolMapper schoolMapper;
+    /**
+     * 用户标签集合 Mapper
+     */
+    @Autowired
+    private UserLabelMapper userLabelMapper;
 
     /**
      * 行业信息
@@ -99,6 +103,9 @@ public class CacheServiceImpl implements CacheService {
         log.info("加载缓存-获取所有一级职位信息-开始");
         getLevelOnePosition();
         log.info("加载缓存-获取所有一级职位信息-结束");
+        log.info("加载缓存-获取所有用户标签集合-开始");
+        getUserLabels();
+        log.info("加载缓存-获取所有用户标签集合-结束");
     }
 
 
@@ -267,6 +274,21 @@ public class CacheServiceImpl implements CacheService {
         JobPositionDo jobPositionDo = new JobPositionDo();
         jobPositionDo.setParentNo(Integer.valueOf(pid));
         return jobPositionMapper.select(jobPositionDo);
+    }
+
+    /**
+     * 获取所有用户标签集合
+     *
+     * @return 结果集
+     */
+    @Override
+    public List<UserLabelDo> getUserLabels() {
+        if(userLabelList.size() == NumberDict.ZERO){
+            UserLabelDo userLabelDo = new UserLabelDo();
+            userLabelDo.setStatus(NumberDict.ONE);
+            userLabelList = userLabelMapper.select(userLabelDo);
+        }
+        return userLabelList;
     }
 
 }

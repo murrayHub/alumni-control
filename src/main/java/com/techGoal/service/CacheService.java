@@ -1,9 +1,6 @@
 package com.techGoal.service;
 
-import com.techGoal.pojo.dao.JobIndustryDo;
-import com.techGoal.pojo.dao.JobPositionDo;
-import com.techGoal.pojo.dao.RegionDo;
-import com.techGoal.pojo.dao.SchoolDo;
+import com.techGoal.pojo.dao.*;
 import com.techGoal.pojo.dto.SchoolProvinceDto;
 
 import java.util.List;
@@ -79,5 +76,11 @@ public interface CacheService {
      * @return 结果集
      */
     List<JobPositionDo> getLevelTwoPosition(String pid);
+
+    /**
+     * 获取所有用户标签集合
+     * @return 结果集
+     */
+    List<UserLabelDo> getUserLabels();
 
 }

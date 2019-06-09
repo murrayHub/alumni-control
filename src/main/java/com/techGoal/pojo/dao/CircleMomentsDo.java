@@ -82,4 +82,15 @@ public class CircleMomentsDo {
     @Column(name = "update_at")
     private Date updateAt;
 
+    /**
+     * 留言统计
+     */
+    @Transient
+    private Integer commentsCount;
+    /**
+     * 点赞统计
+     */
+    @Transient
+    private Integer praiseCount;
+
 }

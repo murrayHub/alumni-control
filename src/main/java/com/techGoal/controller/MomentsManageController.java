@@ -1,13 +1,15 @@
 package com.techGoal.controller;
 
-import com.google.common.collect.Lists;
 import com.techGoal.enums.ErrorCodeEnum;
 import com.techGoal.exception.BizServiceException;
-import com.techGoal.pojo.dto.PersonalMomentsDetailDto;
+import com.techGoal.pojo.dto.MomentsDetailDto;
 import com.techGoal.pojo.dto.PersonalMomentsDto;
+import com.techGoal.pojo.vo.CirclePraiseVo;
+import com.techGoal.pojo.vo.CommentVo;
 import com.techGoal.pojo.vo.MomentsVo;
 import com.techGoal.service.MomentsManageService;
 import com.techGoal.utils.TechGoalObjects;
+import com.techGoal.utils.validation.ParamValidate;
 import com.techGoal.utils.web.AjaxResult;
 import com.techGoal.utils.web.WebEnhance;
 import com.techGoal.utils.web.WebResultModeEnum;
@@ -45,13 +47,14 @@ public class MomentsManageController {
 
     /**
      * 个人-朋友圈动态-新增
+     *
      * @param momentsVo 动态内容
      * @return 结果
      */
     @WebEnhance(mode = WebResultModeEnum.AJAX)
     @PostMapping("/create-moments")
     @ApiOperation(value = "个人-朋友圈动态-新增")
-    public AjaxResult createMoments(@RequestBody MomentsVo momentsVo){
+    public AjaxResult createMoments(@RequestBody MomentsVo momentsVo) {
         log.info("个人朋友圈动态-新增,请求参数：{}", momentsVo);
         AjaxResult result = new AjaxResult();
         if (TechGoalObjects.isEmpty(momentsVo.getPublisherId())) {
@@ -69,13 +72,14 @@ public class MomentsManageController {
 
     /**
      * 圈子-朋友圈动态-新增
+     *
      * @param momentsVo 动态内容
      * @return 结果
      */
     @WebEnhance(mode = WebResultModeEnum.AJAX)
     @PostMapping("/create-circle-moments")
     @ApiOperation(value = "圈子-朋友圈动态-新增")
-    public AjaxResult createCircleMoments(@RequestBody MomentsVo momentsVo){
+    public AjaxResult createCircleMoments(@RequestBody MomentsVo momentsVo) {
         log.info("圈子-朋友圈动态-新增,请求参数：{}", momentsVo);
         AjaxResult result = new AjaxResult();
         if (TechGoalObjects.isEmpty(momentsVo.getPublisherId())) {
@@ -97,16 +101,17 @@ public class MomentsManageController {
 
     /**
      * 仅看自己-朋友圈动态-查询(分页未做！)
+     *
      * @param momentsVo 动态内容
      * @return 结果
      */
     @WebEnhance(mode = WebResultModeEnum.AJAX)
     @PostMapping("/get-personal-moments")
     @ApiOperation(value = "个人朋友圈动态-查询")
-    public AjaxResult<List<PersonalMomentsDto>> getPersonalMoments(@RequestBody MomentsVo momentsVo){
+    public AjaxResult<List<PersonalMomentsDto>> getPersonalMoments(@RequestBody MomentsVo momentsVo) {
         log.info("个人朋友圈动态-查询,请求参数：{}", momentsVo);
         AjaxResult<List<PersonalMomentsDto>> result = new AjaxResult();
-        List<PersonalMomentsDto> personalMomentsDtos = Lists.newArrayList();
+        List<PersonalMomentsDto> personalMomentsDtos;
         // 动态内容获取
         if (TechGoalObjects.isEmpty(momentsVo.getUserId())) {
             log.error("个人朋友圈动态-查询,异常：{}", ErrorCodeEnum.ERROR_CODE_000008.getErrorDesc());
@@ -116,34 +121,68 @@ public class MomentsManageController {
         result.setResult(personalMomentsDtos);
         return result;
     }
+
+    /**
+     * 仅看圈内-朋友圈动态-查询(分页未做！)
+     *
+     * @param momentsVo 动态内容
+     * @return 结果
+     */
+    @WebEnhance(mode = WebResultModeEnum.AJAX)
+    @PostMapping("/get-circle-moments")
+    @ApiOperation(value = "圈内-朋友圈动态-查询")
+    public AjaxResult<List<MomentsDetailDto>> getCircleMoments(@RequestBody MomentsVo momentsVo) {
+        log.info("圈内-朋友圈动态-查询,请求参数：{}", momentsVo);
+        AjaxResult<List<MomentsDetailDto>> result = new AjaxResult();
+        List<MomentsDetailDto> momentsDetailDtos;
+        // 动态内容获取
+        if (TechGoalObjects.isEmpty(momentsVo.getUserId())) {
+            log.error("圈内-朋友圈动态-查询,异常：{}", ErrorCodeEnum.ERROR_CODE_000008.getErrorDesc());
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000008);
+        }
+        if (TechGoalObjects.isEmpty(momentsVo.getCircleNo())) {
+            log.error("圈内-朋友圈动态-查询,异常：{}", ErrorCodeEnum.ERROR_CODE_000009.getErrorDesc());
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000009);
+        }
+        momentsDetailDtos = momentsManageService.getCircleMoments(Long.valueOf(momentsVo.getCircleNo()));
+        result.setResult(momentsDetailDtos);
+        return result;
+    }
+
     /**
      * 发现-朋友圈动态-查询(分页未做！)
+     *
      * @param momentsVo 动态内容
      * @return 结果
      */
     @WebEnhance(mode = WebResultModeEnum.AJAX)
     @PostMapping("/get-discover-moments")
     @ApiOperation(value = "发现-朋友圈动态-查询")
-    public AjaxResult getDiscoverMoments(@RequestBody MomentsVo momentsVo){
-        AjaxResult result = new AjaxResult();
+    public AjaxResult<List<MomentsDetailDto>> getDiscoverMoments(@RequestBody MomentsVo momentsVo) {
+        AjaxResult<List<MomentsDetailDto>> result = new AjaxResult();
+        if (TechGoalObjects.isEmpty(momentsVo.getUserId())) {
+            log.error("圈内-朋友圈动态-查询,异常：{}", ErrorCodeEnum.ERROR_CODE_000008.getErrorDesc());
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000008);
+        }
         // 动态内容获取
-
-        // 动态绑定的回复留言获取
-        // 动态绑定的点赞获取
+        List<MomentsDetailDto> list = momentsManageService.getDiscoverMoments(Long.valueOf(momentsVo.getUserId()));
+        result.setResult(list);
         return result;
     }
 
     /**
-     * 仅看自己-朋友圈动态-动态详情-查询
-     * @param momentsVo 动态内容
+     * 朋友圈动态-动态详情-查询（包括圈内动态和个人动态）
+     *
+     * @param momentsVo 请求参数
      * @return 结果
      */
     @WebEnhance(mode = WebResultModeEnum.AJAX)
-    @PostMapping("/get-personal-moments-detail")
+    @PostMapping("/get-moments-detail")
     @ApiOperation(value = "朋友圈动态-动态详情-查询")
-    public AjaxResult<PersonalMomentsDetailDto> getPersonalMomentsDetail(@RequestBody MomentsVo momentsVo){
+    public AjaxResult<MomentsDetailDto> getMomentsDetail(@RequestBody MomentsVo momentsVo) {
         log.info("朋友圈动态-动态详情-查询,请求参数：{}", momentsVo);
-        AjaxResult<PersonalMomentsDetailDto> result = new AjaxResult();
+        AjaxResult<MomentsDetailDto> result = new AjaxResult();
+        MomentsDetailDto momentsDetailDto;
         // 动态内容获取
         if (TechGoalObjects.isEmpty(momentsVo.getUserId())) {
             log.error("朋友圈动态-动态详情-查询,异常：{}", ErrorCodeEnum.ERROR_CODE_000008.getErrorDesc());
@@ -153,8 +192,49 @@ public class MomentsManageController {
             log.error("朋友圈动态-动态详情-查询,异常：{}", ErrorCodeEnum.ERROR_CODE_000016.getErrorDesc());
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000016);
         }
-        PersonalMomentsDetailDto personalMomentsDetailDto = momentsManageService.getPersonalMomentDetail(Long.valueOf(momentsVo.getMomentsId()));
-        result.setResult(personalMomentsDetailDto);
+        // 判断该条动态是否有circleNo，有则是圈子动态，否则是个人动态
+        if (TechGoalObjects.isEmpty(momentsVo.getCircleNo())) {
+            momentsDetailDto = momentsManageService.getPersonalMomentDetail(Long.valueOf(momentsVo.getMomentsId()));
+        } else {
+            momentsDetailDto = momentsManageService.getCircleMomentDetail(Long.valueOf(momentsVo.getMomentsId()), Long.valueOf(momentsVo.getCircleNo()));
+        }
+        result.setResult(momentsDetailDto);
+        return result;
+    }
+
+    /**
+     * 朋友圈动态-添加评论
+     *
+     * @param commentVo 请求参数
+     * @return 结果
+     */
+    @WebEnhance(mode = WebResultModeEnum.AJAX)
+    @PostMapping("/add-comments")
+    @ApiOperation(value = "朋友圈动态-添加评论")
+    public AjaxResult addComments(@RequestBody CommentVo commentVo) {
+        log.info("朋友圈动态-添加评论,请求参数：{}", commentVo);
+        AjaxResult result = new AjaxResult();
+        ParamValidate.validate(commentVo);
+        momentsManageService.addComments(commentVo);
+        log.info("朋友圈动态-添加评论, 成功");
+        return result;
+    }
+
+    /**
+     * 朋友圈动态-点赞
+     *
+     * @param circlePraiseVo 请求参数
+     * @return 结果
+     */
+    @WebEnhance(mode = WebResultModeEnum.AJAX)
+    @PostMapping("/add-thumb-up")
+    @ApiOperation(value = "朋友圈动态-点赞")
+    public AjaxResult addThumbUp(@RequestBody CirclePraiseVo circlePraiseVo) {
+        log.info("朋友圈动态-点赞,请求参数：{}", circlePraiseVo);
+        AjaxResult result = new AjaxResult();
+        ParamValidate.validate(circlePraiseVo);
+        momentsManageService.addThumbUp(circlePraiseVo);
+        log.info("朋友圈动态-点赞, 成功");
         return result;
     }
 }

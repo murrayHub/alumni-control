@@ -15,11 +15,20 @@ import java.util.List;
  * @date : 2019/6/7 15:06
  */
 @Data
-public class PersonalMomentsDetailDto {
+public class MomentsDetailDto {
     /**
      * 动态编号
      */
     private String momentsId;
+
+    /**
+     * 圈编号
+     */
+    private String circleNo;
+    /**
+     * 圈名称
+     */
+    private String circleName;
 
     /**
      * 标题

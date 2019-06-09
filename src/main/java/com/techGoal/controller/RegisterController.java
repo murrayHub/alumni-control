@@ -1,10 +1,15 @@
 package com.techGoal.controller;
 
+import com.google.common.collect.Lists;
+import com.techGoal.convert.UserLabelConvert;
 import com.techGoal.dict.NumberDict;
 import com.techGoal.enums.ErrorCodeEnum;
 import com.techGoal.exception.BizServiceException;
+import com.techGoal.pojo.dao.UserLabelDo;
+import com.techGoal.pojo.vo.UserLabelVo;
 import com.techGoal.pojo.vo.UserRegisterOneStepVo;
 import com.techGoal.pojo.vo.UserInfoVo;
+import com.techGoal.service.CacheService;
 import com.techGoal.service.UserLoginService;
 import com.techGoal.utils.validation.ParamValidate;
 import com.techGoal.utils.web.AjaxResult;
@@ -14,10 +19,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * description : 用户注册-控制层
@@ -39,6 +43,12 @@ public class RegisterController {
      */
     @Autowired
     private UserLoginService userLoginService;
+
+    /**
+     * 缓存类
+     */
+    @Autowired
+    private CacheService cacheService;
 
     /**
      * 用户注册第一步
@@ -79,6 +89,27 @@ public class RegisterController {
         ParamValidate.validate(userInfoVo);
         userLoginService.insertUserInfo(userInfoVo);
         log.info("用户注册第二步,完成");
+        return result;
+    }
+
+    /**
+     * 获取所有用户标签集合
+     * @return 结果集
+     */
+    @WebEnhance(mode = WebResultModeEnum.AJAX)
+    @GetMapping("/get-all-user-label")
+    @ApiOperation(value = "获取所有用户标签集合")
+    public AjaxResult<List<UserLabelVo>> getAllUserLabel(){
+        log.info("请求后台获取所有用户标签集合");
+        AjaxResult<List<UserLabelVo>> result = new AjaxResult<>();
+        List<UserLabelDo> userLabels = cacheService.getUserLabels();
+        List<UserLabelVo> userLabelVos = Lists.newArrayList();
+        for(UserLabelDo userLabelDo : userLabels){
+            UserLabelVo userLabelVo = UserLabelConvert.convertToVo(userLabelDo);
+            userLabelVos.add(userLabelVo);
+        }
+        result.setResult(userLabelVos);
+        log.info("获取所有用户标签集合,返回结果:{}", userLabelVos);
         return result;
     }
 }

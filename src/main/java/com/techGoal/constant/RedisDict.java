@@ -43,6 +43,14 @@ public final class RedisDict {
      * 朋友圈动态编号
      */
     public static final String MOMENTS_NO_KEY = KEY.concat("MOMENTS_NO_CREATE_KEY");
+    /**
+     * 朋友圈动态评论编号
+     */
+    public static final String MOMENTS_COMMENT_NO_KEY = KEY.concat("MOMENTS_COMMENT_NO_CREATE_KEY");
+    /**
+     * 朋友圈动态点赞编号
+     */
+    public static final String MOMENTS_PRAISE_NO_KEY = KEY.concat("MOMENTS_PRAISE_NO_CREATE_KEY");
 
     /**
      * 入圈申请编号

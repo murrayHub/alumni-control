@@ -1,7 +1,9 @@
 package com.techGoal.convert;
 
 import com.techGoal.pojo.dao.CircleMomentsDo;
+import com.techGoal.pojo.dao.CirclePraiseDo;
 import com.techGoal.pojo.dao.PersonalMomentsDo;
+import com.techGoal.pojo.vo.CirclePraiseVo;
 import com.techGoal.pojo.vo.MomentsVo;
 import com.techGoal.utils.TechGoalObjects;
 
@@ -112,5 +114,23 @@ public class MomentsConvert {
             circleMomentsDo.setUpdateAt(new Date(momentsVo.getUpdateAt()));
         }
         return circleMomentsDo;
+    }
+
+    public static CirclePraiseDo convertToPraiseDo(CirclePraiseVo circlePraiseVo) {
+        if (circlePraiseVo == null) {
+            return null;
+        }
+        CirclePraiseDo circlePraiseDo = new CirclePraiseDo();
+        circlePraiseDo.setPraiseId(Long.valueOf(circlePraiseVo.getPraiseId()));
+        circlePraiseDo.setMomentsId(Long.valueOf(circlePraiseVo.getMomentsId()));
+        circlePraiseDo.setUserId(Long.valueOf(circlePraiseVo.getUserId()));
+        circlePraiseDo.setPraiseType(Integer.valueOf(circlePraiseVo.getPraiseType()));
+        circlePraiseDo.setStatus(Integer.valueOf(circlePraiseVo.getStatus()));
+        circlePraiseDo.setPraiseTime(new Date());
+        circlePraiseDo.setCreateBy(circlePraiseVo.getCreateBy());
+        circlePraiseDo.setUpdateBy(circlePraiseVo.getUpdateBy());
+        circlePraiseDo.setCreateAt(new Date());
+        circlePraiseDo.setUpdateAt(new Date());
+        return circlePraiseDo;
     }
 }

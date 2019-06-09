@@ -28,8 +28,15 @@
     select
     <include refid="Base_Column_List" />
     from t_personal_moments
-    where moments_id = #{momentsId}
-    and status = 1
-    order by create_time desc
+    <where>
+      and status = 1
+      <if test="momentsId != null">
+        AND moments_id = #{momentsId}
+      </if>
+      <if test="publisherId != null">
+        AND publisher_id = #{publisherId}
+      </if>
+    </where>
+    order by publisher_time desc
   </select>
 </mapper>

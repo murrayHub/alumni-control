@@ -29,9 +29,15 @@
     select
     <include refid="Base_Column_List" />
     from t_circle_moments
-    where moments_id = #{momentsId}
-    and circle_no = #{circleNo}
-    and status = 1
+    <where>
+      and status = 1
+      <if test="momentsId != null">
+        AND moments_id = #{momentsId}
+      </if>
+      <if test="circleNo != null">
+        AND  circle_no = #{circleNo}
+      </if>
+    </where>
     order by create_time desc
   </select>
 </mapper>

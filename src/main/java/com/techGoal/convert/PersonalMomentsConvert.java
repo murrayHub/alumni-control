@@ -1,7 +1,7 @@
 package com.techGoal.convert;
 
 import com.techGoal.pojo.dao.PersonalMomentsDo;
-import com.techGoal.pojo.dto.PersonalMomentsDetailDto;
+import com.techGoal.pojo.dto.MomentsDetailDto;
 import com.techGoal.pojo.dto.PersonalMomentsDto;
 import com.techGoal.utils.DateUtil;
 
@@ -36,24 +36,24 @@ public class PersonalMomentsConvert {
         return personalMomentsDto;
     }
 
-    public static PersonalMomentsDetailDto convertToDetailDto(PersonalMomentsDo personalMomentsDo) {
+    public static MomentsDetailDto convertToDetailDto(PersonalMomentsDo personalMomentsDo) {
         if (personalMomentsDo == null) {
             return null;
         }
-        PersonalMomentsDetailDto personalMomentsDetailDto = new PersonalMomentsDetailDto();
-        personalMomentsDetailDto.setMomentsId(String.valueOf(personalMomentsDo.getMomentsId()));
-        personalMomentsDetailDto.setTitle(personalMomentsDo.getTitle());
-        personalMomentsDetailDto.setContent(personalMomentsDo.getContent());
-        personalMomentsDetailDto.setImages(personalMomentsDo.getImages());
-        personalMomentsDetailDto.setStatus(String.valueOf(personalMomentsDo.getStatus()));
-        personalMomentsDetailDto.setCommentFlag(String.valueOf(personalMomentsDo.getCommentFlag()));
-        personalMomentsDetailDto.setLocation(personalMomentsDo.getLocation());
-        personalMomentsDetailDto.setPublisherId(String.valueOf(personalMomentsDo.getPublisherId()));
-        personalMomentsDetailDto.setUpdateBy(personalMomentsDo.getUpdateBy());
-        personalMomentsDetailDto.setPublisherTime(DateUtil.formatFull(personalMomentsDo.getPublisherTime()));
-        personalMomentsDetailDto.setUpdateAt(DateUtil.formatFull(personalMomentsDo.getUpdateAt()));
-        personalMomentsDetailDto.setCommentsCount(String.valueOf(personalMomentsDo.getCommentsCount()));
-        personalMomentsDetailDto.setPraiseCount(String.valueOf(personalMomentsDo.getPraiseCount()));
-        return personalMomentsDetailDto;
+        MomentsDetailDto momentsDetailDto = new MomentsDetailDto();
+        momentsDetailDto.setMomentsId(String.valueOf(personalMomentsDo.getMomentsId()));
+        momentsDetailDto.setTitle(personalMomentsDo.getTitle());
+        momentsDetailDto.setContent(personalMomentsDo.getContent());
+        momentsDetailDto.setImages(personalMomentsDo.getImages());
+        momentsDetailDto.setStatus(String.valueOf(personalMomentsDo.getStatus()));
+        momentsDetailDto.setCommentFlag(String.valueOf(personalMomentsDo.getCommentFlag()));
+        momentsDetailDto.setLocation(personalMomentsDo.getLocation());
+        momentsDetailDto.setPublisherId(String.valueOf(personalMomentsDo.getPublisherId()));
+        momentsDetailDto.setUpdateBy(personalMomentsDo.getUpdateBy());
+        momentsDetailDto.setPublisherTime(DateUtil.formatFull(personalMomentsDo.getPublisherTime()));
+        momentsDetailDto.setUpdateAt(DateUtil.formatFull(personalMomentsDo.getUpdateAt()));
+        momentsDetailDto.setCommentsCount(String.valueOf(personalMomentsDo.getCommentsCount()));
+        momentsDetailDto.setPraiseCount(String.valueOf(personalMomentsDo.getPraiseCount()));
+        return momentsDetailDto;
     }
 }
