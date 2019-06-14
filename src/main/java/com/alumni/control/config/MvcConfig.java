@@ -1,7 +1,7 @@
 package com.alumni.control.config;
 
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.techGoal.interceptor.TokenInterceptor;
+import com.alumni.control.interceptor.TokenInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;

@@ -1,8 +1,8 @@
 package com.alumni.control.utils;
 
-import com.techGoal.enums.BFErrorCodeEnum;
-import com.techGoal.exception.BizServiceException;
-import com.techGoal.exception.CommonErrorCode;
+import com.alumni.control.enums.BFErrorCodeEnum;
+import com.alumni.control.exception.BizServiceException;
+import com.alumni.control.exception.CommonErrorCode;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;

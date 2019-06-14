@@ -1,7 +1,7 @@
 <configuration>
     <contextName>techGoal</contextName>
     <conversionRule conversionWord="tracelogid"
-                    converterClass="com.techGoal.utils.logbackUtil.TraceLogIdConvert"/>
+                    converterClass="com.alumni.control.utils.logbackUtil.TraceLogIdConvert"/>
 
     <property resource="config.properties"/>
 
@@ -55,7 +55,7 @@
     <!-- 外部jar包 日志级别设置 -->
 
     <!--打印sql日志，调试使用，name，更改为对应mapper包名-->
-    <logger level="${logger.sql.logLevel}" name="com.techGoal.mapper"/>
+    <logger level="${logger.sql.logLevel}" name="com.alumni.control.mapper"/>
 
     <logger level="${logger.alibaba.logLevel}" name="com.alibaba"/>
     <logger level="${logger.outside.logLevel}" name="java.sql"/>
@@ -72,7 +72,7 @@
     <logger level="${logger.outside.logLevel}" name="org.springframework"/>
     <logger level="${logger.outside.logLevel}" name="io.lettuce.core"/>
     <logger level="${logger.outside.logLevel}" name="reactor"/>
-    <logger level="${logger.logLevel}" name="com.techGoal"/>
+    <logger level="${logger.logLevel}" name="com.alumni.control"/>
 
 
 

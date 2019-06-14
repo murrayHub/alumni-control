@@ -13,14 +13,14 @@ import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "com.alumni.control")
-@MapperScan(value = "tk.mybatis.mapper.annotation", basePackages = "com.techGoal.mapper")
+@MapperScan(value = "tk.mybatis.mapper.annotation", basePackages = "com.alumni.control.mapper")
 //exclude表示自动配置时不包括Multipart配置
 @EnableAutoConfiguration(exclude = {MultipartAutoConfiguration.class})
-public class TechGoalApplication {
+public class AlumniControlApplication {
 
     public static void main(String[] args) {
         ConfigUtil.initProperties();
-        SpringApplication.run(TechGoalApplication.class, args);
+        SpringApplication.run(AlumniControlApplication.class, args);
     }
 
     /**

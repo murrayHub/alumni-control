@@ -52,7 +52,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("techGoal-Restful接口文档")
+                .title("AlumniControl-Restful接口文档")
                 .version("1.0")
                 .build();
     }

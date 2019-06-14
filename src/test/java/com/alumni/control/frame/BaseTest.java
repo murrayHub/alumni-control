@@ -1,7 +1,7 @@
-package com.techGoal.frame;
+package com.alumni.control.frame;
 
-import com.techGoal.TechGoalApplication;
-import com.techGoal.utils.ConfigUtil;
+import com.alumni.control.AlumniControlApplication;
+import com.alumni.control.utils.ConfigUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +13,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 
 @Slf4j
-@SpringBootTest(classes = TechGoalApplication.class)
+@SpringBootTest(classes = AlumniControlApplication.class)
 public class BaseTest extends AbstractTransactionalTestNGSpringContextTests {
 
     protected MockMvc mvc;

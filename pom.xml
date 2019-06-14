@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.techGoal</groupId>
-	<artifactId>techGoal</artifactId>
+	<groupId>com.alumni.control</groupId>
+	<artifactId>AlumniControl</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>techGoal</name>
+	<name>AlumniControl</name>
 	<packaging>jar</packaging>
 
 	<parent>
@@ -23,8 +23,8 @@
 		<!--  MyBatis Generator  -->
 		<!--  Java接口和实体类  -->
 		<targetJavaProject>${basedir}/src/main/java</targetJavaProject>
-		<targetMapperPackage>com.techGoal.mapper</targetMapperPackage>
-		<targetModelPackage>com.techGoal.pojo.dao</targetModelPackage>
+		<targetMapperPackage>com.alumni.control.mapper</targetMapperPackage>
+		<targetModelPackage>com.alumni.control.pojo.dao</targetModelPackage>
 		<!--  XML生成路径  -->
 		<targetResourcesProject>${basedir}/src/main/resources</targetResourcesProject>
 		<targetXMLPackage>mapper</targetXMLPackage>
