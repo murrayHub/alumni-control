@@ -1,0 +1,104 @@
+
+@import "./pages-less/login.less";
+
+
+// 全局样式
+[v-cloak] {
+   display: none;
+}
+// 超出省略号，先设置宽度限定
+.omission {
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap; 
+}
+.breakword {
+    word-wrap: break-word;
+    word-break: normal;
+}
+.flex {
+    display: flex;
+}
+.footerWrap {
+    width: 100%;
+    height: 325px;
+    background: url('../images/bottomBg.png') no-repeat center rgb(35,35,35);
+}
+.el-select .el-input .el-select__caret {
+    color: #1b1c1d;
+    font-weight: 900;
+}    
+.el-button--primary {
+    color: #FFF;
+    background:rgba(120,46,9,1);
+    border-color: rgba(120,46,9,1);
+    border-radius: 0;
+    width: 500px;
+    height: 60px;
+}
+.el-input--suffix .el-input__inner {
+    border-radius: 0;
+    height: 50px;
+    font-weight: 900;
+    color: black;
+}
+.el-select .el-input.is-focus .el-input__inner {
+    border-color: #782e09;
+    font-weight: 900;
+}
+.el-select .el-input__inner:focus {
+    border-color: #782e09;
+}
+.el-select-dropdown__item.selected {
+    color: black;
+    font-weight: 900;
+}
+.el-input-number .el-input__inner:focus {
+    border-color: #782e09;
+}
+button.el-button.el-button--primary:hover {
+    background: #782e09;
+    border-color: #782e09;
+}
+button.el-button.el-button--primary:focus {
+    background: #782e09;
+    border-color: #782e09;
+}
+i{ 
+  font-style:normal;
+}
+.el-rate__icon {
+    color: #782E09 !important;
+}
+.el-rate__text {
+    color: #000 !important;
+}
+.el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover {
+    color: #FFF;
+    background-color: #cacdd1;
+    border-color: #cacdd1;
+}
+.el-button--primary.is-disabled:hover {
+    color: #FFF;
+    background-color: #cacdd1 !important;
+    border-color: #cacdd1 !important;
+}
+.el-input-number {
+    width: 150px;
+    line-height: 48px;
+}
+.el-input-number__decrease,.el-input-number__increase {
+    background: #FFF;
+    .el-icon-plus {
+        color: #000;
+        font-weight: bold;
+    }
+    .el-icon-minus {
+        color: #000;
+        font-weight: bold;
+    }
+}
+.el-input__inner {
+    border-radius: 0;
+    height: 50px;
+}

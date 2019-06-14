@@ -3,8 +3,20 @@ server:
 
 
 spring:
-  thymeleaf:
-      prefix: classpath:/templates/
+  servlet:
+      multipart:
+        maxFileSize: 60MB
+        maxRequestSize: 100MB
+  freemarker:
+    cache: false
+    template-loader-path: classpath:/templates
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html
+    expose-request-attributes: false
+    expose-session-attributes: false
+    request-context-attribute: request
+    suffix: .ftl
 
   #配置数据源
   datasource:
