@@ -1,12 +1,17 @@
 package com.alumni.control.controller;
 
+import com.alumni.control.pojo.vo.formLabelAlign;
 import com.alumni.control.redis.RedisManager;
+import com.alumni.control.utils.web.AjaxResult;
+import com.alumni.control.utils.web.WebEnhance;
+import com.alumni.control.utils.web.WebResultModeEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * description : 测试专用
@@ -17,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @version : 1.0.0
  * @date : 2019/3/20 10:21
  */
-@Api(description = "test-测试Controller")
+@Api(description = "Test-Controller")
 @Slf4j
 @Controller
 @RequestMapping("root")
@@ -31,6 +36,26 @@ public class TestController {
     @RequestMapping("uploadPic")
     public String uploadPic() {
         return "index";
+    }
+
+    @ApiOperation("图片上传")
+    @RequestMapping("navigateHome")
+    public String NavigateHome() {
+        return "/home";
+    }
+
+    @ApiOperation(value = "获取页面数据")
+    @WebEnhance(mode = WebResultModeEnum.AJAX)
+    @ResponseBody
+    @RequestMapping(value = "get-data")
+    public AjaxResult<formLabelAlign> getData(){
+        AjaxResult<formLabelAlign> result = new AjaxResult<>();
+        formLabelAlign formLabelAlign = new formLabelAlign();
+        formLabelAlign.setName("张三");
+        formLabelAlign.setRegion("Beijing");
+        formLabelAlign.setType("NB");
+        result.setResult(formLabelAlign);
+        return result;
     }
 
 

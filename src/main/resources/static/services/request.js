@@ -11,7 +11,7 @@ function requestGet(url) {
 function requestPost(url, data) {
     return axios.post(
         url,
-        data,
+        data
     )
         .then(function (response) {
             return response;
@@ -20,7 +20,7 @@ function requestPost(url, data) {
             console.log(error);
         });
 }
-
+// 带token令牌请求
 function requestHeaderPost(url, data) {
     return axios({
         method: 'post',
@@ -34,7 +34,7 @@ function requestHeaderPost(url, data) {
             console.log(error);
         });
 }
-
+// 带token令牌请求
 function requestHeaderGet(url) {
     return axios({
         method: 'get',

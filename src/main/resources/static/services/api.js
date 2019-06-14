@@ -1,7 +1,7 @@
 
 // 国家列表
-function countriesMap() {
-    let url = '/cache/countriesMap'
+function navigateHome() {
+    let url = '/root/get-data'
     return requestHeaderGet(url)
 }
 
