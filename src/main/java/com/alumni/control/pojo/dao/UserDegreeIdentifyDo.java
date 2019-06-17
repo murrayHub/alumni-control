@@ -12,7 +12,6 @@ public class UserDegreeIdentifyDo {
      * 主键
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
@@ -34,10 +33,10 @@ public class UserDegreeIdentifyDo {
     private String collegeNo;
 
     /**
-     * 学院名称
+     * 学院编号
      */
-    @Column(name = "institute_name")
-    private String instituteName;
+    @Column(name = "institute_no")
+    private Long instituteNo;
 
     /**
      * 入学时间
@@ -92,4 +91,62 @@ public class UserDegreeIdentifyDo {
     @Column(name = "update_at")
     private Date updateAt;
 
+    /**
+     * 认证状态： 0-未认证 1-二级认证待审核 2-二级认证初审通过 3-二级认证初审失败 4-二级认证复审通过 5-二级认证复审失败 6-一级认证待审核 7-一级认证初审通过 8-一级认证初审失败 9-一级认证复审通过 10-一级认证复审失败
+     */
+    @Column(name = "identify_status")
+    private Integer identifyStatus;
+
+    /**
+     * 学号
+     */
+    @Column(name = "student_no")
+    private String studentNo;
+
+    /**
+     * 身份证号
+     */
+    @Column(name = "id_card_no")
+    private String idCardNo;
+
+    /**
+     * 认证方式  1-身份证号 2-学号
+     */
+    @Column(name = "identify_type")
+    private Integer identifyType;
+
+    /**
+     * 年级
+     */
+    private String grade;
+
+    /**
+     * 学生姓名
+     */
+    @Transient
+    private String studentName;
+    /**
+     * 性别
+     */
+    @Transient
+    private Integer gender;
+    /**
+     * 省
+     */
+    @Transient
+    private Integer province;
+    /**
+     * 市
+     */
+    @Transient
+    private Integer city;
+
+    /**
+     * 当前页
+     */
+    private Integer currentPage;
+    /**
+     * 每页记录数
+     */
+    private Integer pageSize;
 }

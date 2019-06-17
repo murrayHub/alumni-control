@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alumni.control.mapper.LevelOneIdentifyDoMapper" >
+  <resultMap id="BaseResultMap" type="com.alumni.control.pojo.dao.LevelOneIdentifyDo" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="identify_college_id" property="identifyCollegeId" jdbcType="BIGINT" />
+    <result column="user_real_name" property="userRealName" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="TINYINT" />
+    <result column="nation" property="nation" jdbcType="VARCHAR" />
+    <result column="birth_date" property="birthDate" jdbcType="TIMESTAMP" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="original_id_card" property="originalIdCard" jdbcType="VARCHAR" />
+    <result column="training_level" property="trainingLevel" jdbcType="TINYINT" />
+    <result column="admission_unit" property="admissionUnit" jdbcType="VARCHAR" />
+    <result column="manage_unit" property="manageUnit" jdbcType="VARCHAR" />
+    <result column="training_unit" property="trainingUnit" jdbcType="VARCHAR" />
+    <result column="student_no" property="studentNo" jdbcType="VARCHAR" />
+    <result column="new_student_no" property="newStudentNo" jdbcType="VARCHAR" />
+    <result column="entrance_time" property="entranceTime" jdbcType="TIMESTAMP" />
+    <result column="graduation_time" property="graduationTime" jdbcType="TIMESTAMP" />
+    <result column="tutor_name" property="tutorName" jdbcType="VARCHAR" />
+    <result column="major_name" property="majorName" jdbcType="VARCHAR" />
+    <result column="student_status" property="studentStatus" jdbcType="VARCHAR" />
+    <result column="job_status" property="jobStatus" jdbcType="VARCHAR" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="employer" property="employer" jdbcType="VARCHAR" />
+    <result column="unit_nature" property="unitNature" jdbcType="VARCHAR" />
+    <result column="expert_category" property="expertCategory" jdbcType="VARCHAR" />
+    <result column="specialized_technical_job" property="specializedTechnicalJob" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="mailing_address" property="mailingAddress" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="phone_no" property="phoneNo" jdbcType="VARCHAR" />
+    <result column="qq" property="qq" jdbcType="VARCHAR" />
+    <result column="weixin_no" property="weixinNo" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <select id="getLevelOneIdentifyInfo" resultType="com.alumni.control.pojo.dao.LevelOneIdentifyDo"
+          parameterType="com.alumni.control.pojo.dao.LevelOneIdentifyDo">
+    SELECT
+    tloi.identify_college_id AS identifyCollegeId,
+    tloi.user_real_name AS userRealName,
+    tloi.gender AS gender,
+    tloi.nation AS nation,
+    tloi.birth_date AS birthDate,
+    tloi.id_card AS idCard,
+    tloi.original_id_card AS originalIdCard,
+    tloi.training_level AS trainingLevel,
+    tloi.admission_unit AS admissionUnit,
+    tloi.training_unit AS trainingUnit,
+    tloi.student_no AS studentNo,
+    tloi.new_student_no AS newStudentNo,
+    tloi.entrance_time AS entranceTime,
+    tloi.graduation_time AS graduationTime,
+    tloi.tutor_name AS tutorName,
+    tloi.major_name AS majorName,
+    tloi.student_status AS studentStatus,
+    tloi.job_status AS jobStatus,
+    tloi.country AS country,
+    tloi.city AS city,
+    tloi.area AS area,
+    tloi.employer AS employer,
+    tloi.unit_nature AS unitNature,
+    tloi.expert_category AS expertCategory,
+    tloi.specialized_technical_job AS specializedTechnicalJob,
+    tloi.position AS position,
+    tloi.mailing_address AS mailingAddress,
+    tloi.email AS email,
+    tloi.phone_no AS phoneNo,
+    tloi.qq AS qq,
+    tloi.weixin_no AS weixinNo,
+    tloi.create_by AS createBy,
+    tloi.update_by AS updateBy,
+    tloi.create_at AS createAt,
+    tloi.update_at AS updateAt,
+    tudi.identify_status AS identifyStatus
+    FROM
+    t_level_one_identify AS tloi
+    LEFT JOIN
+    t_user_degree_identify AS tudi
+    ON tloi.identify_college_id=tudi.identify_college_id
+    WHERE
+    tudi.college_no = #{collegeNo,jdbcType=VARCHAR}
+    AND tudi.enabled = 1
+    AND tudi.identify_status > 5
+  </select>
+
+
+  <update id="updLevelOneIdentifyInfo" parameterType="com.alumni.control.pojo.dao.LevelOneIdentifyDo">
+    UPDATE
+    t_level_one_identify
+    <set>
+      <if test="userRealName != null and userRealName != ''">
+        user_real_name = #{userRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null and gender != ''">
+        gender = #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="nation != null and nation != ''">
+        nation = #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="birthDate != null and birthDate != ''">
+        birth_date = #{birthDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="idCard != null and idCard != ''">
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="originalIdCard != null and originalIdCard != ''">
+        original_id_card = #{originalIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="trainingLevel != null and trainingLevel != ''">
+        training_level = #{trainingLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="admissionUnit != null and admissionUnit != ''">
+        admission_unit = #{admissionUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="manageUnit != null and manageUnit != ''">
+        manage_unit = #{manageUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="trainingUnit != null and trainingUnit != ''">
+        training_unit = #{trainingUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="studentNo != null and idCard != ''">
+        student_no = #{studentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="newStudentNo != null and newStudentNo != ''">
+        new_student_no = #{newStudentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="entranceTime != null and entranceTime != ''">
+        entrance_time = #{entranceTime,jdbcType=VARCHAR},
+      </if>
+      <if test="graduationTime != null and graduationTime != ''">
+        graduation_time = #{graduationTime,jdbcType=VARCHAR},
+      </if>
+      <if test="tutorName != null and tutorName != ''">
+        tutor_name = #{tutorName,jdbcType=VARCHAR},
+      </if>
+      <if test="majorName != null and majorName != ''">
+        major_name = #{majorName,jdbcType=VARCHAR},
+      </if>
+      <if test="studentStatus != null and studentStatus != ''">
+        student_status = #{studentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="jobStatus != null and jobStatus != ''">
+        job_status = #{jobStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null and country != ''">
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null and city != ''">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null and area != ''">
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="employer != null and employer != ''">
+        employer = #{employer,jdbcType=VARCHAR},
+      </if>
+      <if test="unitNature != null and unitNature != ''">
+        unit_nature = #{unitNature,jdbcType=VARCHAR},
+      </if>
+      <if test="expertCategory != null and expertCategory != ''">
+        expert_category = #{expertCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="specializedTechnicalJob != null and specializedTechnicalJob != ''">
+        specialized_technical_job = #{specializedTechnicalJob,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null and position != ''">
+        position = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="mailingAddress != null and mailingAddress != ''">
+        mailing_address = #{mailingAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null and email != ''">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNo != null and phoneNo != ''">
+        phone_no = #{phoneNo,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null and qq != ''">
+        qq = #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="weixinNo != null and weixinNo != ''">
+        weixin_no = #{weixinNo,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null and updateBy != ''">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      update_at = NOW()
+    </set>
+    WHERE identify_college_id = #{identifyCollegeId,jdbcType=BIGINT}
+  </update>
+
+</mapper>

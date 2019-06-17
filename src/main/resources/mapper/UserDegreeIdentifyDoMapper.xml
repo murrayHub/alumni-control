@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alumni.control.mapper.UserDegreeIdentifyDoMapper" >
+  <resultMap id="BaseResultMap" type="com.alumni.control.pojo.dao.UserDegreeIdentifyDo" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="identify_college_id" property="identifyCollegeId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="college_no" property="collegeNo" jdbcType="VARCHAR" />
+    <result column="institute_no" property="instituteNo" jdbcType="BIGINT" />
+    <result column="entrance_time" property="entranceTime" jdbcType="TIMESTAMP" />
+    <result column="graduation_time" property="graduationTime" jdbcType="TIMESTAMP" />
+    <result column="degree_no" property="degreeNo" jdbcType="TINYINT" />
+    <result column="profession_name" property="professionName" jdbcType="VARCHAR" />
+    <result column="enabled" property="enabled" jdbcType="TINYINT" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="identify_status" property="identifyStatus" jdbcType="TINYINT" />
+    <result column="student_no" property="studentNo" jdbcType="VARCHAR" />
+    <result column="id_card_no" property="idCardNo" jdbcType="VARCHAR" />
+    <result column="identify_type" property="identifyType" jdbcType="TINYINT" />
+    <result column="grade" property="grade" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, identify_college_id, user_id, college_no, institute_no, entrance_time, graduation_time, degree_no, profession_name, enabled
+    , create_by, update_by, create_at, update_at, identify_status, student_no, id_card_no, identify_type, grade
+  </sql>
+
+  <select id="getLevelTwoIdentifyInfo" resultType="com.alumni.control.pojo.dao.UserDegreeIdentifyDo" parameterType="com.alumni.control.pojo.dao.UserDegreeIdentifyDo">
+    SELECT
+    tudi.identify_college_id AS identifyCollegeId,
+    tudi.user_id AS userId,
+    tudi.college_no AS collegeNo,
+    tudi.institute_no AS instituteNo,
+    tudi.entrance_time AS entranceTime,
+    tudi.graduation_time AS graduationTime,
+    tudi.degree_no AS degreeNo,
+    tudi.profession_name AS professionName,
+    tudi.identify_status AS identifyStatus,
+    tudi.student_no AS studentNo,
+    tudi.id_card_no AS idCardNo,
+    tudi.identify_type AS identifyType,
+    tudi.grade AS grade,
+    tui.user_real_name AS studentName,
+    tui.gender AS gender,
+    tui.province AS province,
+    tui.city AS city
+    FROM
+    t_user_degree_identify AS tudi
+    LEFT JOIN
+    t_user_info AS tui
+    ON tudi.user_id=tui.user_id
+    <where>
+      AND tudi.college_no = #{collegeNo,jdbcType=VARCHAR}
+      AND tudi.institute_no = #{institute_no,jdbcType=BIGINT}
+      AND tudi.enabled = 1
+      <if test="degreeNo != null and degreeNo != ''">
+        AND tudi.degree_no = #{degreeNo,jdbcType=TINYINT}
+      </if>
+      <if test="studentName != null and studentName != ''">
+        AND tui.user_real_name = #{studentName,jdbcType=VARCHAR}
+      </if>
+      <if test="grade != null and grade != ''">
+        AND tudi.grade = #{grade,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+
+  <select id="getLevelTwoIdentifiedInfo" resultType="com.alumni.control.pojo.dao.UserDegreeIdentifyDo" parameterType="com.alumni.control.pojo.dao.UserDegreeIdentifyDo">
+    SELECT
+    tudi.identify_college_id AS identifyCollegeId,
+    tudi.user_id AS userId,
+    tudi.college_no AS collegeNo,
+    tudi.institute_no AS instituteNo,
+    tudi.entrance_time AS entranceTime,
+    tudi.graduation_time AS graduationTime,
+    tudi.degree_no AS degreeNo,
+    tudi.profession_name AS professionName,
+    tudi.identify_status AS identifyStatus,
+    tudi.student_no AS studentNo,
+    tudi.id_card_no AS idCardNo,
+    tudi.identify_type AS identifyType,
+    tudi.grade AS grade,
+    tui.user_real_name AS studentName,
+    tui.gender AS gender,
+    tui.province AS province,
+    tui.city AS city
+    FROM
+    t_user_degree_identify AS tudi
+    LEFT JOIN
+    t_user_info AS tui
+    ON tudi.user_id=tui.user_id
+    <where>
+      AND tudi.college_no = #{collegeNo,jdbcType=VARCHAR}
+      AND tudi.institute_no = #{institute_no,jdbcType=BIGINT}
+      AND tudi.enabled = 1
+      AND tudi.identify_status >3 AND tudi.identify_status <![CDATA[!= ]]> 5
+      <if test="degreeNo != null and degreeNo != ''">
+        AND tudi.degree_no = #{degreeNo,jdbcType=TINYINT}
+      </if>
+      <if test="studentName != null and studentName != ''">
+        AND tui.user_real_name = #{studentName,jdbcType=VARCHAR}
+      </if>
+      <if test="grade != null and grade != ''">
+        AND tudi.grade = #{grade,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  
+  <update id="updateAlumniInfo" parameterType="com.alumni.control.pojo.dao.UserDegreeIdentifyDo">
+    UPDATE
+    t_user_degree_identify
+    <set>
+      <if test="instituteNo != null and instituteNo != ''">
+        institute_no = #{instituteNo,jdbcType=BIGINT},
+      </if>
+      <if test="entranceTime != null and entranceTime != ''">
+        entrance_time = #{entranceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="graduationTime != null and graduationTime != ''">
+        graduation_time = #{graduationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="degreeNo != null and degreeNo != ''">
+        degree_no = #{degreeNo,jdbcType=TINYINT},
+      </if>
+      <if test="professionName != null and professionName != ''">
+        profession_name = #{professionName,jdbcType=VARCHAR},
+      </if>
+      <if test="identifyStatus != null and identifyStatus != ''">
+        identify_status = #{identifyStatus,jdbcType=TINYINT},
+      </if>
+      <if test="studentNo != null and studentNo != ''">
+        student_no = #{studentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null and grade != ''">
+        grade = #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null and updateBy != ''">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+        update_at = NOW()
+    </set>
+    WHERE identify_college_id = #{identifyCollegeId,jdbcType=BIGINT}
+  </update>
+</mapper>

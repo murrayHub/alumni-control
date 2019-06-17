@@ -39,7 +39,7 @@
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>-->
         <!-- 生成单表 -->
-        <table tableName="t_comment" domainObjectName="CommentDo"
+        <table tableName="t_user_degree_identify" domainObjectName="UserDegreeIdentifyDo"
                enableInsert="true"
                enableSelectByPrimaryKey="true"
                enableUpdateByPrimaryKey="true"

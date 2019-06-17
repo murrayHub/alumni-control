@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alumni.control.mapper.RegionMapper" >
+  <resultMap id="BaseResultMap" type="com.alumni.control.pojo.dao.RegionDo" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="sname" property="sname" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="citycode" property="citycode" jdbcType="VARCHAR" />
+    <result column="yzcode" property="yzcode" jdbcType="VARCHAR" />
+    <result column="mername" property="mername" jdbcType="VARCHAR" />
+    <result column="Lng" property="lng" jdbcType="REAL" />
+    <result column="Lat" property="lat" jdbcType="REAL" />
+    <result column="pinyin" property="pinyin" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, pid, sname, level, citycode, yzcode, mername, Lng, Lat, pinyin
+  </sql>
+  <select id="selectProvinceByLevel" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <!-- RegionMapper.selectProvinceByLevel -->
+    select
+    <include refid="Base_Column_List" />
+    from t_region
+    where level = #{level,jdbcType=INTEGER}
+  </select>
+  <select id="selectCityByProId" resultMap="BaseResultMap">
+    <!-- RegionMapper.selectCityByProId -->
+    select
+    <include refid="Base_Column_List" />
+    from t_region
+    where pid = #{proId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAreaById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <!-- RegionMapper.selectAreaById -->
+    select
+    <include refid="Base_Column_List" />
+    from t_region
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+</mapper>
