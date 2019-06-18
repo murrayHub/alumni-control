@@ -1,18 +1,39 @@
 package com.alumni.control.pojo.vo;
 
+import com.alumni.control.utils.page.BasePage;
 import lombok.Data;
 
 @Data
-public class AlumniManagerInfoVo {
+public class AlumniManagerInfoVo extends BasePage {
     /**
      * 主键
      */
     private String id;
 
     /**
+     * 认证编号
+     */
+    private String identifyCollegeId;
+
+    /**
+     * 认证方式
+     */
+    private String identifyType;
+
+    /**
+     * 认证状态： 0-未认证 1-二级认证待审核 2-二级认证初审通过 3-二级认证初审失败 4-二级认证复审通过 5-二级认证复审失败 6-一级认证待审核 7-一级认证初审通过 8-一级认证初审失败 9-一级认证复审通过 10-一级认证复审失败
+     */
+    private String identifyStatus;
+
+    /**
      * 用户编号
      */
     private String userId;
+
+    /**
+     * 性别
+     */
+    private String genderType;
 
     /**
      * 用户姓名
@@ -78,13 +99,4 @@ public class AlumniManagerInfoVo {
      * 学位类别
      */
     private String degreeType;
-    /**
-     * 当前页
-     */
-    private Integer currentPage;
-    /**
-     * 每页记录数
-     */
-    private Integer pageSize;
-
 }

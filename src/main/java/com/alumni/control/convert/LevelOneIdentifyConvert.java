@@ -25,7 +25,7 @@ public class LevelOneIdentifyConvert {
         levelOneIdentifyVo.setUserRealName(levelOneIdentifyDo.getUserRealName());
         levelOneIdentifyVo.setGender(String.valueOf(levelOneIdentifyDo.getGender()));
         levelOneIdentifyVo.setNation(levelOneIdentifyDo.getNation());
-        levelOneIdentifyVo.setBirthDate(DateUtil.formatFull(levelOneIdentifyDo.getBirthDate()));
+        levelOneIdentifyVo.setBirthDate(DateUtil.formatSmall(levelOneIdentifyDo.getBirthDate()));
         levelOneIdentifyVo.setIdCard(levelOneIdentifyDo.getIdCard());
         levelOneIdentifyVo.setOriginalIdCard(levelOneIdentifyDo.getOriginalIdCard());
         levelOneIdentifyVo.setTrainingLevel(DegreeLevelEnum.getDescByCode(levelOneIdentifyDo.getTrainingLevel()));
@@ -34,8 +34,8 @@ public class LevelOneIdentifyConvert {
         levelOneIdentifyVo.setTrainingUnit(levelOneIdentifyDo.getTrainingUnit());
         levelOneIdentifyVo.setStudentNo(levelOneIdentifyDo.getStudentNo());
         levelOneIdentifyVo.setNewStudentNo(levelOneIdentifyDo.getNewStudentNo());
-        levelOneIdentifyVo.setEntranceTime(DateUtil.formatFull(levelOneIdentifyDo.getEntranceTime()));
-        levelOneIdentifyVo.setGraduationTime(DateUtil.formatFull(levelOneIdentifyDo.getGraduationTime()));
+        levelOneIdentifyVo.setEntranceTime(DateUtil.formatSmall(levelOneIdentifyDo.getEntranceTime()));
+        levelOneIdentifyVo.setGraduationTime(DateUtil.formatSmall(levelOneIdentifyDo.getGraduationTime()));
         levelOneIdentifyVo.setTutorName(levelOneIdentifyDo.getTutorName());
         levelOneIdentifyVo.setMajorName(levelOneIdentifyDo.getMajorName());
         levelOneIdentifyVo.setStudentStatus(levelOneIdentifyDo.getStudentStatus());

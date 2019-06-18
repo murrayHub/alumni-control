@@ -31,7 +31,7 @@
     , create_by, update_by, create_at, update_at, identify_status, student_no, id_card_no, identify_type, grade
   </sql>
 
-  <select id="getLevelTwoIdentifyInfo" resultType="com.alumni.control.pojo.dao.UserDegreeIdentifyDo" parameterType="com.alumni.control.pojo.dao.UserDegreeIdentifyDo">
+  <select id="getAlumniInfos" resultType="com.alumni.control.pojo.dao.UserDegreeIdentifyDo" parameterType="com.alumni.control.pojo.dao.UserDegreeIdentifyDo">
     SELECT
     tudi.identify_college_id AS identifyCollegeId,
     tudi.user_id AS userId,
@@ -57,61 +57,34 @@
     ON tudi.user_id=tui.user_id
     <where>
       AND tudi.college_no = #{collegeNo,jdbcType=VARCHAR}
-      AND tudi.institute_no = #{institute_no,jdbcType=BIGINT}
       AND tudi.enabled = 1
+      <if test="instituteNo != null and instituteNo != ''">
+        AND tudi.institute_no = #{instituteNo,jdbcType=BIGINT}
+      </if>
+      <if test="gender != null and gender != ''">
+        AND tui.gender = #{gender,jdbcType=TINYINT}
+      </if>
       <if test="degreeNo != null and degreeNo != ''">
         AND tudi.degree_no = #{degreeNo,jdbcType=TINYINT}
+      </if>
+      <if test="identifyType != null and identifyType != ''">
+        AND tudi.identify_type = #{identifyType,jdbcType=TINYINT}
+      </if>
+      <if test="identifyStatus != null and identifyStatus != ''">
+        AND tudi.identify_status = #{identifyStatus,jdbcType=TINYINT}
       </if>
       <if test="studentName != null and studentName != ''">
         AND tui.user_real_name = #{studentName,jdbcType=VARCHAR}
       </if>
       <if test="grade != null and grade != ''">
         AND tudi.grade = #{grade,jdbcType=VARCHAR}
+      </if>
+      <if test="identifyCollegeId != null and identifyCollegeId != ''">
+        AND tudi.identify_college_id = #{identifyCollegeId,jdbcType=BIGINT}
       </if>
     </where>
   </select>
 
-  <select id="getLevelTwoIdentifiedInfo" resultType="com.alumni.control.pojo.dao.UserDegreeIdentifyDo" parameterType="com.alumni.control.pojo.dao.UserDegreeIdentifyDo">
-    SELECT
-    tudi.identify_college_id AS identifyCollegeId,
-    tudi.user_id AS userId,
-    tudi.college_no AS collegeNo,
-    tudi.institute_no AS instituteNo,
-    tudi.entrance_time AS entranceTime,
-    tudi.graduation_time AS graduationTime,
-    tudi.degree_no AS degreeNo,
-    tudi.profession_name AS professionName,
-    tudi.identify_status AS identifyStatus,
-    tudi.student_no AS studentNo,
-    tudi.id_card_no AS idCardNo,
-    tudi.identify_type AS identifyType,
-    tudi.grade AS grade,
-    tui.user_real_name AS studentName,
-    tui.gender AS gender,
-    tui.province AS province,
-    tui.city AS city
-    FROM
-    t_user_degree_identify AS tudi
-    LEFT JOIN
-    t_user_info AS tui
-    ON tudi.user_id=tui.user_id
-    <where>
-      AND tudi.college_no = #{collegeNo,jdbcType=VARCHAR}
-      AND tudi.institute_no = #{institute_no,jdbcType=BIGINT}
-      AND tudi.enabled = 1
-      AND tudi.identify_status >3 AND tudi.identify_status <![CDATA[!= ]]> 5
-      <if test="degreeNo != null and degreeNo != ''">
-        AND tudi.degree_no = #{degreeNo,jdbcType=TINYINT}
-      </if>
-      <if test="studentName != null and studentName != ''">
-        AND tui.user_real_name = #{studentName,jdbcType=VARCHAR}
-      </if>
-      <if test="grade != null and grade != ''">
-        AND tudi.grade = #{grade,jdbcType=VARCHAR}
-      </if>
-    </where>
-  </select>
-  
   <update id="updateAlumniInfo" parameterType="com.alumni.control.pojo.dao.UserDegreeIdentifyDo">
     UPDATE
     t_user_degree_identify

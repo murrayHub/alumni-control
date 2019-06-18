@@ -1,10 +1,10 @@
 package com.alumni.control.controller;
 
 import com.alumni.control.convert.LevelOneIdentifyConvert;
-import com.alumni.control.convert.UserDegreeIdentifyConvert;
 import com.alumni.control.dict.NumberDict;
 import com.alumni.control.enums.ErrorCodeEnum;
 import com.alumni.control.exception.BizServiceException;
+import com.alumni.control.mapper.UserDegreeIdentifyDoMapper;
 import com.alumni.control.pojo.dao.AlumniManagerInfoDo;
 import com.alumni.control.pojo.dao.LevelOneIdentifyDo;
 import com.alumni.control.pojo.dao.UserDegreeIdentifyDo;
@@ -26,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,69 +54,98 @@ public class AlumniAuditController {
     @Autowired
     private AlumniManageService alumniManageService;
 
-    @ApiOperation(value = "获取二级认证申请信息")
-    @WebEnhance(mode = WebResultModeEnum.PAGE_QUERY)
+    @Autowired
+    private UserDegreeIdentifyDoMapper userDegreeIdentifyDoMapper;
+
+    @ApiOperation(value = "校友管理页面")
+    @GetMapping("/alumni-manage")
+    public String alumniManage() {
+        return "/alumniInfoList";
+    }
+
+    @ApiOperation(value = "获取校友详情信息")
+    @WebEnhance(mode = WebResultModeEnum.AJAX)
     @ResponseBody
-    @RequestMapping(value = "get-level-two-identify-info")
-    public AjaxResult<PageRespDTO<UserDegreeIdentifyVo>> getLevelTwoIdentifyInfo(@RequestBody AlumniManagerInfoVo alumniManagerInfoVo) {
-        AjaxResult<PageRespDTO<UserDegreeIdentifyVo>> result = new AjaxResult<>();
-        log.info("获取二级认证申请信息,请求参数:{}", alumniManagerInfoVo);
+    @RequestMapping(value = "get-alumni-info")
+    public AjaxResult<UserDegreeIdentifyVo> getAlumniInfo(@RequestBody AlumniManagerInfoVo alumniManagerInfoVo) {
+        AjaxResult<UserDegreeIdentifyVo> result = new AjaxResult<>();
+        log.info("获取校友详情信息,请求参数:{}", alumniManagerInfoVo);
         if (TechGoalObjects.isEmpty(alumniManagerInfoVo.getCollegeNo())) {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000024);
         }
-        if (TechGoalObjects.isEmpty(alumniManagerInfoVo.getInstituteNo())) {
-            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000027);
-        }
         if (TechGoalObjects.isEmpty(alumniManagerInfoVo.getManagerId())) {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000028);
+        }
+        if (TechGoalObjects.isEmpty(alumniManagerInfoVo.getIdentifyCollegeId())) {
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000035);
         }
         // 鉴定操作员身份权限
         AlumniManagerInfoDo alumniManagerInfoDo = alumniManageService.getManagerInfo(Long.valueOf(alumniManagerInfoVo.getManagerId()));
         if (TechGoalObjects.isEmpty(alumniManagerInfoDo)) {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000029);
         }
-        Page<UserDegreeIdentifyDo> pageData = (Page<UserDegreeIdentifyDo>) alumniManageService.getLevelTwoIdentifyInfo(alumniManagerInfoVo);
-        PageRespDTO pageResult = PageParamConvert.getPageRespDto(pageData);
-        if (!CollectionUtils.isEmpty(pageData.getResult())) {
-            List<UserDegreeIdentifyVo> userDegreeIdentifyVos = Lists.newArrayList();
-            for (UserDegreeIdentifyDo userDegreeIdentifyDo : pageData.getResult()) {
-                UserDegreeIdentifyVo userDegreeIdentifyVo = UserDegreeIdentifyConvert.toConvertVo(userDegreeIdentifyDo);
-                userDegreeIdentifyVos.add(userDegreeIdentifyVo);
-            }
-            pageResult.setList(userDegreeIdentifyVos);
+        List<UserDegreeIdentifyDo> resultList = alumniManageService.getAlumniInfo(alumniManagerInfoVo);
+        if (!CollectionUtils.isEmpty(resultList)) {
+            result.setResult(alumniManageService.dealWithViewResults(resultList).get(NumberDict.ZERO));
         }
-        log.info("获取二级认证申请信息,返回结果:{}", pageResult);
-        result.setResult(pageResult);
+        log.info("获取校友详情信息,返回结果:{}", result);
         return result;
     }
 
-    @ApiOperation(value = "获取二级认证通过的校友信息-不支持修改")
+    @ApiOperation(value = "获取校友信息-分页展示")
     @WebEnhance(mode = WebResultModeEnum.PAGE_QUERY)
     @ResponseBody
-    @RequestMapping(value = "get-level-two-identified-info")
-    public AjaxResult<PageRespDTO<UserDegreeIdentifyVo>> getLevelTwoIdentifiedInfo(@RequestBody AlumniManagerInfoVo alumniManagerInfoVo) {
+    @RequestMapping(value = "get-alumni-infos")
+    public AjaxResult<PageRespDTO<UserDegreeIdentifyVo>> getAlumniInfos(@RequestBody AlumniManagerInfoVo alumniManagerInfoVo) {
         AjaxResult<PageRespDTO<UserDegreeIdentifyVo>> result = new AjaxResult<>();
         log.info("获取二级认证通过的校友信息,请求参数:{}", alumniManagerInfoVo);
         if (TechGoalObjects.isEmpty(alumniManagerInfoVo.getCollegeNo())) {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000024);
         }
-        if (TechGoalObjects.isEmpty(alumniManagerInfoVo.getInstituteNo())) {
-            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000027);
-        }
         if (TechGoalObjects.isEmpty(alumniManagerInfoVo.getManagerId())) {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000028);
+        }
+        UserDegreeIdentifyDo userDegreeIdentifyDo = new UserDegreeIdentifyDo();
+        userDegreeIdentifyDo.setCollegeNo(alumniManagerInfoVo.getCollegeNo());
+        if (TechGoalObjects.isNotEmpty(alumniManagerInfoVo.getGenderType())) {
+            if (NumberDict.MINUS_ONE != (Integer.valueOf(alumniManagerInfoVo.getGenderType()))) {
+                userDegreeIdentifyDo.setGender(Integer.valueOf(alumniManagerInfoVo.getGenderType()));
+            }
+        }
+        if (TechGoalObjects.isNotEmpty(alumniManagerInfoVo.getInstituteNo())) {
+            userDegreeIdentifyDo.setInstituteNo(Long.valueOf(alumniManagerInfoVo.getInstituteNo()));
+        }
+        if (TechGoalObjects.isNotEmpty(alumniManagerInfoVo.getDegreeType())) {
+            if (NumberDict.MINUS_ONE != (Integer.valueOf(alumniManagerInfoVo.getDegreeType()))) {
+                userDegreeIdentifyDo.setDegreeNo(Integer.valueOf(alumniManagerInfoVo.getDegreeType()));
+            }
+        }
+        if (TechGoalObjects.isNotEmpty(alumniManagerInfoVo.getIdentifyType())) {
+            if (NumberDict.MINUS_ONE != (Integer.valueOf(alumniManagerInfoVo.getIdentifyType()))) {
+                userDegreeIdentifyDo.setIdentifyType(Integer.valueOf(alumniManagerInfoVo.getIdentifyType()));
+            }
+        }
+        if (TechGoalObjects.isNotEmpty(alumniManagerInfoVo.getIdentifyStatus())) {
+            if (NumberDict.MINUS_ONE != (Integer.valueOf(alumniManagerInfoVo.getIdentifyStatus()))) {
+                userDegreeIdentifyDo.setIdentifyStatus(Integer.valueOf(alumniManagerInfoVo.getIdentifyStatus()));
+            }
+        }
+        if (TechGoalObjects.isNotEmpty(alumniManagerInfoVo.getIdentifyCollegeId())) {
+            userDegreeIdentifyDo.setIdentifyCollegeId(Long.valueOf(alumniManagerInfoVo.getIdentifyCollegeId()));
+        }
+        userDegreeIdentifyDo.setStudentName(alumniManagerInfoVo.getStudentName());
+        userDegreeIdentifyDo.setGrade(alumniManagerInfoVo.getGrade());
+        Page<UserDegreeIdentifyDo> pageData = (Page<UserDegreeIdentifyDo>) userDegreeIdentifyDoMapper.getAlumniInfos(userDegreeIdentifyDo);
+        PageRespDTO pageResult = PageParamConvert.getPageRespDto(pageData);
+        if (!CollectionUtils.isEmpty(pageData.getResult())) {
+            pageResult.setList(alumniManageService.dealWithViewResults(pageData.getResult()));
         }
         // 鉴定操作员身份权限
         AlumniManagerInfoDo alumniManagerInfoDo = alumniManageService.getManagerInfo(Long.valueOf(alumniManagerInfoVo.getManagerId()));
         if (TechGoalObjects.isEmpty(alumniManagerInfoDo)) {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000029);
         }
-        Page<UserDegreeIdentifyDo> pageData = (Page<UserDegreeIdentifyDo>) alumniManageService.getLevelTwoIdentifiedInfo(alumniManagerInfoVo);
-        PageRespDTO pageResult = PageParamConvert.getPageRespDto(pageData);
-        if (!CollectionUtils.isEmpty(pageData.getResult())) {
-            pageResult.setList(alumniManageService.dealWithViewResults(pageData.getResult()));
-        }
-        log.info("获取二级认证通过的校友信息,返回结果:{}", pageResult);
+        log.info("获取校友信息,返回结果:{}", pageResult);
         result.setResult(pageResult);
         return result;
     }
@@ -141,6 +171,7 @@ public class AlumniAuditController {
         }
         try {
             alumniManageService.updateAlumniInfo(alumniInfoUpdVo);
+            log.info("二级认证初审处理,成功");
         } catch (Exception e) {
             throw new BizServiceException(WebExceptionUtils.getWebErrorCode(e));
         }
@@ -167,6 +198,7 @@ public class AlumniAuditController {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000033);
         }
         alumniManageService.levelTwoUpdateAudit(alumniInfoUpdVo);
+        log.info("二级认证复审处理,成功");
         return result;
     }
 
@@ -183,6 +215,7 @@ public class AlumniAuditController {
         if (TechGoalObjects.isEmpty(alumniManagerInfoVo.getManagerId())) {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000028);
         }
+        Page<LevelOneIdentifyDo> pageData = (Page<LevelOneIdentifyDo>) alumniManageService.getLevelOneIdentifyInfo(alumniManagerInfoVo);
         // 鉴定操作员身份权限
         AlumniManagerInfoDo alumniManagerInfoDo = alumniManageService.getManagerInfo(Long.valueOf(alumniManagerInfoVo.getManagerId()));
         if (TechGoalObjects.isEmpty(alumniManagerInfoDo)) {
@@ -191,8 +224,8 @@ public class AlumniAuditController {
         if (alumniManagerInfoDo.getManagerLevel() != NumberDict.ONE) {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000034);
         }
-        Page<LevelOneIdentifyDo> pageData = (Page<LevelOneIdentifyDo>) alumniManageService.getLevelOneIdentifyInfo(alumniManagerInfoVo);
         PageRespDTO pageResult = PageParamConvert.getPageRespDto(pageData);
+        // DO -> VO
         if (!CollectionUtils.isEmpty(pageData.getResult())) {
             List<LevelOneIdentifyVo> levelOneIdentifyVos = Lists.newArrayList();
             for (LevelOneIdentifyDo levelOneIdentifyDo : pageData.getResult()) {
@@ -235,6 +268,7 @@ public class AlumniAuditController {
         }
         try {
             alumniManageService.updateLevelOneAlumniInfo(levelOneAlumniUpdInfoVo);
+            log.info("一级认证初审处理,成功");
         } catch (Exception e) {
             throw new BizServiceException(WebExceptionUtils.getWebErrorCode(e));
         }
@@ -269,6 +303,7 @@ public class AlumniAuditController {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000033);
         }
         alumniManageService.levelOneUpdateAudit(levelOneAlumniUpdInfoVo);
+        log.info("一级认证复审处理,成功");
         return result;
     }
 }

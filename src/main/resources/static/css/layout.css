@@ -1,0 +1,275 @@
+.layout_container {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-flow: nowrap row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/*----------------
+    layout_nav
+-----------------*/
+.layout_nav {
+    width: 260px;
+    height: 100vh;
+    background: -webkit-linear-gradient(#4E56F9 , #3D91E7); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#4E56F9 , #3D91E7); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#4E56F9 , #3D91E7); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#4E56F9 , #3D91E7); /* 标准的语法（必须放在最后） */
+    display: flex;
+    flex-flow: nowrap column;
+    justify-content: flex-start;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.logo {
+    padding: 0 40px;
+    margin: 20px 0 30px 0;
+}
+
+.logo a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: nowrap row;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+.logo a i {
+    font-size:14px;
+    font-family:Helvetica-BoldOblique;
+    font-weight:normal;
+    color:rgba(255,255,255,1);
+    line-height:17px;
+}
+.logo a img {
+    display: block;
+    width: 46px;
+    max-height: 100px;
+    margin-right: 10px;
+    height: auto;
+}
+.logo a span {
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 600;
+    color: rgba(0,0,0,0.75);
+}
+/*-----------------
+    navigation
+------------------*/
+.navigation {  margin-bottom: 80px; }
+.navigation ul {
+    list-style: none;
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+}
+.navigation ul li { width: 100%;     margin-left: 30px;}
+
+.parent-node {
+    width: 236px;
+    text-align: center;
+    display: flex;
+    flex-flow: nowrap row;
+    justify-content: flex-start;
+    align-items: center;
+    /* transition: all 300ms; */
+    padding: 14px 0 18px 0;
+    font-size:14px;
+    font-family:SFProText-Regular;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    position: relative;
+    border-radius: 25px;
+}
+.parent-node:hover {
+    background: #fff;
+    color: #476FF2;
+    /* border-radius: 25px 0 0 25px; */
+    margin-left: 30px;
+    position: relative;
+    left: -30px;
+    border-radius: 25px 0 0 25px;
+    margin-left: 30px;
+
+}
+.navigation ul li a.active {
+    color: #476FF2;
+    position: relative;
+    font-weight: bold;
+}
+.active {
+    color: #476FF2;
+    position: relative;
+    font-weight: bold;
+}
+/* .navigation ul li a.active:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 1;
+    width: 3px;
+    height: 50%;
+    background: #01265F;
+} */
+.navigation ul li a span {
+    display: block;
+    width: 26px;
+    height: 26px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin: 0 24px 0 20px;
+
+}
+
+/*--------------------------------------
+    navigation-button-image-style ↓
+---------------------------------------*/
+.nav_1 span { background-image: url('../images/home.png'); }
+.active.nav_1 span,
+.nav_1:hover span { background-image: url('../images/home_hover.png'); }
+
+.nav_2 span { background-image: url('../images/register.png'); }
+.active.nav_2 span,
+.nav_2:hover span { background-image: url('../images/register_hover.png'); }
+
+.nav_3 span { background-image: url('../images/hand_truck.png'); }
+.active.nav_3 span,
+.nav_3:hover span { background-image: url('../images/hand_truck_hover.png'); }
+
+.nav_4 span { background-image: url('../images/customer.png'); }
+.active.nav_4 span,
+.nav_4:hover span { background-image: url('../images/customer_hover.png'); }
+
+.nav_5 span { background-image: url('../images/statistic.png'); }
+.active.nav_5 span,
+.nav_5:hover span { background-image: url('../images/statistic_hover.png'); }
+
+.nav_6 span { background-image: url('../images/marketing.png'); }
+.active.nav_6 span,
+.nav_6:hover span { background-image: url('../images/marketing_hover.png'); }
+
+.nav_7 span { background-image: url('../images/discount.png'); }
+.active.nav_7 span,
+.nav_7:hover span { background-image: url('../images/discount_hover.png'); }
+
+.nav_8 span { background-image: url('../images/shop.png'); }
+.active.nav_8 span,
+.nav_8:hover span { background-image: url('../images/shop_hover.png'); }
+.link-box {
+   background: #fff;
+   border-radius: 25px 0 0 25px;
+   margin-left: 30px;
+}
+.link-box-padding {
+    position: relative;
+    left: -30px;
+    margin-left: 30px;
+}
+.child-link--content {
+  padding-left: 70px;
+  padding-bottom: 20px;
+  line-height: 25px;
+}
+.child-link--content:after {
+    content: '';
+    height: 47px;
+    width: 1.5px;
+    background: #476ff294;
+    position: absolute;
+    top: 58px;
+    left: 31px;
+}
+.child-link--content2 {
+  padding-left: 70px;
+  padding-bottom: 20px;
+  line-height: 25px;
+}
+.child-link--content2:after {
+    content: '';
+    height: 47px;
+    width: 1.5px;
+    background: #476ff294;
+    position: absolute;
+    top: 58px;
+    left: 31px;
+}
+.child-link--content2 a {
+    color: #c0c4cc;
+    padding: 5px 0 !important;
+    font-size: 12px;
+    font-family:SFProText-Regular;
+    font-weight:400;
+  }
+.child-link--content a {
+  color: #c0c4cc;
+  padding: 5px 0 !important;
+  font-size: 12px;
+  font-family:SFProText-Regular;
+  font-weight:400;
+}
+
+.child-link--content-none {
+  display: none;
+}
+.child-link {
+    font-size:12px !important;
+    font-family:SFProText-Medium;
+    font-weight:500 !important;
+    color:rgba(51,51,51,1) !important;
+    background: #fff;
+    padding-left: 106px !important;
+}
+.child-link-active {
+    font-size:12px;
+    font-family:SFProText-Medium;
+    font-weight:500;
+    color:rgba(51,51,51,1) !important;
+}           
+/*-------------------------------------
+    navigation-button-image-style ↑
+--------------------------------------*/
+.navigation ul li a i {
+    font-style: normal;
+    display: block;
+}
+/*-----------------------
+    layout_content
+------------------------*/
+.layout_content {
+    height: 100vh;
+    background: rgba(245,249,252,1);
+    padding: 45px 80px;
+    flex: 1;
+    /* overflow-x: hidden;
+    overflow-y: auto; */
+}
+.header {
+    display: flex;
+    flex-flow: nowrap row;
+    justify-content: flex-end;
+    align-items: center;
+    height: 80px;
+}
+.header > div { margin-left: 20px; }
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 48px;
+    overflow: hidden;
+    margin-right: 15px;
+}
+.avatar img { display: block; width: 100%; height: 100%;}
+.adorn {
+   position: absolute;
+   bottom: 0; 
+}
+

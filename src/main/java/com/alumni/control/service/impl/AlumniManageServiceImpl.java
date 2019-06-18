@@ -52,6 +52,13 @@ public class AlumniManageServiceImpl implements AlumniManageService {
     @Autowired
     private LevelOneIdentifyDoMapper levelOneIdentifyDoMapper;
 
+    @Autowired
+    private SchoolMapper schoolMapper;
+    @Autowired
+    private RegionMapper regionMapper;
+    @Autowired
+    private UcasInstituteDoMapper ucasInstituteDoMapper;
+
     /**
      * 获取一级认证申请信息(两级审核的认证编号必须一致)
      *
@@ -66,43 +73,44 @@ public class AlumniManageServiceImpl implements AlumniManageService {
     }
 
     /**
-     * 获取二级认证申请信息(两级审核的认证编号必须一致)
+     * 获取校友信息
      *
      * @param alumniManagerInfoVo 请求参数
-     * @return 结果集
+     * @return 结果
      */
     @Override
-    public List<UserDegreeIdentifyDo> getLevelTwoIdentifyInfo(AlumniManagerInfoVo alumniManagerInfoVo) {
+    public List<UserDegreeIdentifyDo> getAlumniInfo(AlumniManagerInfoVo alumniManagerInfoVo) {
         UserDegreeIdentifyDo userDegreeIdentifyDo = new UserDegreeIdentifyDo();
+        userDegreeIdentifyDo.setIdentifyCollegeId(Long.valueOf(alumniManagerInfoVo.getIdentifyCollegeId()));
         userDegreeIdentifyDo.setCollegeNo(alumniManagerInfoVo.getCollegeNo());
-        userDegreeIdentifyDo.setInstituteNo(Long.valueOf(alumniManagerInfoVo.getInstituteNo()));
-        if (TechGoalObjects.isNotEmpty(alumniManagerInfoVo.getDegreeType())) {
-            userDegreeIdentifyDo.setDegreeNo(Integer.valueOf(alumniManagerInfoVo.getDegreeType()));
-        }
-        userDegreeIdentifyDo.setStudentName(alumniManagerInfoVo.getStudentName());
-        userDegreeIdentifyDo.setGrade(alumniManagerInfoVo.getGrade());
-        List<UserDegreeIdentifyDo> userDegreeIdentifyVos = userDegreeIdentifyDoMapper.getLevelTwoIdentifyInfo(userDegreeIdentifyDo);
-        return userDegreeIdentifyVos;
+        return userDegreeIdentifyDoMapper.getAlumniInfos(userDegreeIdentifyDo);
     }
 
     /**
-     * 获取二级认证通过的校友信息
+     * 获取校友信息(两级审核的认证编号必须一致)
      *
      * @param alumniManagerInfoVo 请求参数
      * @return 结果集
      */
     @Override
-    public List<UserDegreeIdentifyDo> getLevelTwoIdentifiedInfo(AlumniManagerInfoVo alumniManagerInfoVo) {
+    public List<UserDegreeIdentifyDo> getAlumniInfos(AlumniManagerInfoVo alumniManagerInfoVo) {
         UserDegreeIdentifyDo userDegreeIdentifyDo = new UserDegreeIdentifyDo();
         userDegreeIdentifyDo.setCollegeNo(alumniManagerInfoVo.getCollegeNo());
-        userDegreeIdentifyDo.setInstituteNo(Long.valueOf(alumniManagerInfoVo.getInstituteNo()));
+        if (TechGoalObjects.isNotEmpty(alumniManagerInfoVo.getInstituteNo())) {
+            userDegreeIdentifyDo.setInstituteNo(Long.valueOf(alumniManagerInfoVo.getInstituteNo()));
+        }
         if (TechGoalObjects.isNotEmpty(alumniManagerInfoVo.getDegreeType())) {
             userDegreeIdentifyDo.setDegreeNo(Integer.valueOf(alumniManagerInfoVo.getDegreeType()));
         }
+        if (TechGoalObjects.isNotEmpty(alumniManagerInfoVo.getIdentifyCollegeId())) {
+            userDegreeIdentifyDo.setIdentifyCollegeId(Long.valueOf(alumniManagerInfoVo.getIdentifyCollegeId()));
+        }
         userDegreeIdentifyDo.setStudentName(alumniManagerInfoVo.getStudentName());
         userDegreeIdentifyDo.setGrade(alumniManagerInfoVo.getGrade());
-        return userDegreeIdentifyDoMapper.getLevelTwoIdentifiedInfo(userDegreeIdentifyDo);
+        List<UserDegreeIdentifyDo> userDegreeIdentifyVos = userDegreeIdentifyDoMapper.getAlumniInfos(userDegreeIdentifyDo);
+        return userDegreeIdentifyVos;
     }
+
 
     /**
      * 处理学生信息展示结果
@@ -114,7 +122,21 @@ public class AlumniManageServiceImpl implements AlumniManageService {
     public List<UserDegreeIdentifyVo> dealWithViewResults(List<UserDegreeIdentifyDo> list) {
         List<UserDegreeIdentifyVo> userDegreeIdentifyVos = Lists.newArrayList();
         for (UserDegreeIdentifyDo userDegreeIdentifyDo : list) {
+
             UserDegreeIdentifyVo userDegreeIdentifyVo = UserDegreeIdentifyConvert.toConvertVo(userDegreeIdentifyDo);
+            if(TechGoalObjects.isNotEmpty(userDegreeIdentifyDo.getCollegeNo())){
+                SchoolDo schoolDo = schoolMapper.getSchoolInfoById(userDegreeIdentifyDo.getCollegeNo());
+                userDegreeIdentifyVo.setCollegeName(schoolDo.getSchoolName());
+            }
+            if(TechGoalObjects.isNotEmpty(userDegreeIdentifyDo.getInstituteNo())){
+                userDegreeIdentifyVo.setInstituteName(ucasInstituteDoMapper.getInstituteInfoById(userDegreeIdentifyDo.getInstituteNo()).getInstituteName());
+            }
+            if(TechGoalObjects.isNotEmpty(userDegreeIdentifyDo.getProvince())){
+                userDegreeIdentifyVo.setProvince(regionMapper.selectAreaById(userDegreeIdentifyDo.getProvince()).getSname());
+            }
+            if(TechGoalObjects.isNotEmpty(userDegreeIdentifyDo.getCity())){
+                userDegreeIdentifyVo.setCity(regionMapper.selectAreaById(userDegreeIdentifyDo.getCity()).getSname());
+            }
             UserJobIdentifyDo userJobIdentifyDo = new UserJobIdentifyDo();
             userJobIdentifyDo.setUserId(Long.valueOf(userDegreeIdentifyVo.getUserId()));
             userJobIdentifyDo.setEnabled(NumberDict.ONE);
@@ -125,8 +147,8 @@ public class AlumniManageServiceImpl implements AlumniManageService {
                     JobsInfoDto jobsInfoDto = new JobsInfoDto();
                     jobsInfoDto.setCompanyName(userJobIdentifyDo1.getCompanyName());
                     jobsInfoDto.setPositionName(userJobIdentifyDo1.getPositionName());
-                    jobsInfoDto.setWorkStartTime(DateUtil.formatFull(userJobIdentifyDo1.getWorkStartTime()));
-                    jobsInfoDto.setWorkEndTime(DateUtil.formatFull(userJobIdentifyDo1.getWorkEndTime()));
+                    jobsInfoDto.setWorkStartTime(DateUtil.formatSmall(userJobIdentifyDo1.getWorkStartTime()));
+                    jobsInfoDto.setWorkEndTime(DateUtil.formatSmall(userJobIdentifyDo1.getWorkEndTime()));
                     jobsInfoDtos.add(jobsInfoDto);
                 }
                 userDegreeIdentifyVo.setJobsInfoDto(jobsInfoDtos);
@@ -141,8 +163,8 @@ public class AlumniManageServiceImpl implements AlumniManageService {
                     PartTimeJobsDto partTimeJobsDto = new PartTimeJobsDto();
                     partTimeJobsDto.setCompanyName(userParttimeJobIdentifyDo1.getCompanyName());
                     partTimeJobsDto.setPositionName(userParttimeJobIdentifyDo1.getPositionName());
-                    partTimeJobsDto.setWorkStartTime(DateUtil.formatFull(userParttimeJobIdentifyDo1.getWorkStartTime()));
-                    partTimeJobsDto.setWorkEndTime(DateUtil.formatFull(userParttimeJobIdentifyDo1.getWorkEndTime()));
+                    partTimeJobsDto.setWorkStartTime(DateUtil.formatSmall(userParttimeJobIdentifyDo1.getWorkStartTime()));
+                    partTimeJobsDto.setWorkEndTime(DateUtil.formatSmall(userParttimeJobIdentifyDo1.getWorkEndTime()));
                     partTimeJobsDtos.add(partTimeJobsDto);
                 }
                 userDegreeIdentifyVo.setPartTimeJobsDto(partTimeJobsDtos);

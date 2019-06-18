@@ -28,18 +28,18 @@ public interface AlumniManageService {
     List<LevelOneIdentifyDo> getLevelOneIdentifyInfo(AlumniManagerInfoVo alumniManagerInfoVo);
 
     /**
-     * 获取二级认证申请信息
+     * 获取校友信息
      * @param alumniManagerInfoVo 请求参数
-     * @return 结果集
+     * @return 结果
      */
-    List<UserDegreeIdentifyDo> getLevelTwoIdentifyInfo(AlumniManagerInfoVo alumniManagerInfoVo);
+    List<UserDegreeIdentifyDo> getAlumniInfo(AlumniManagerInfoVo alumniManagerInfoVo);
 
     /**
-     * 获取二级认证通过的校友信息
+     * 获取校友信息
      * @param alumniManagerInfoVo 请求参数
      * @return 结果集
      */
-    List<UserDegreeIdentifyDo> getLevelTwoIdentifiedInfo(AlumniManagerInfoVo alumniManagerInfoVo);
+    List<UserDegreeIdentifyDo> getAlumniInfos(AlumniManagerInfoVo alumniManagerInfoVo);
 
     /**
      * 处理学生信息展示结果
