@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <#include 'head.ftl' >
 <head>
     <meta charset="UTF-8">
@@ -98,8 +98,7 @@
                 </el-table-column>
                 <el-table-column
                         align="center"
-                        width="100"
-                        prop="degreeNo">
+                        width="100">
                     <template slot="header" slot-scope="scope">
                         <el-dropdown trigger="click" @command="handleDegree">
                         <span class="el-dropdown-link">
@@ -114,13 +113,43 @@
                             </el-dropdown-menu>
                         </el-dropdown>
                     </template>
+                    <template slot-scope="scope">
+                            <div slot="reference" class="name-wrapper">
+                                <el-tag v-if="scope.row.degreeNo == '硕士'" type="success" size="medium">{{ scope.row.degreeNo }}</el-tag>
+                                <el-tag v-if="scope.row.degreeNo == '学士'" type="info" size="medium">{{ scope.row.degreeNo }}</el-tag>
+                                <el-tag v-if="scope.row.degreeNo == '博士'" type="danger" size="medium">{{ scope.row.degreeNo }}</el-tag>
+                            </div>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         align="center"
-                        width="150"
+                        width="200"
                         label="专业"
                         prop="professionName">
                 </el-table-column>
+
+                <el-table-column
+                        align="center"
+                        width="500"
+                        label="工作经历">
+                    <template slot-scope="scope">
+                        <div slot="reference" class="name-wrapper">
+                            <el-tag style="margin-bottom: 7px;" v-for="(item,index) in scope.row.jobsInfoDto"  type="success" size="medium">{{ item.companyName }}&nbsp;&nbsp;&nbsp;{{ item.workStartTime }}&nbsp;&nbsp;&nbsp;{{ item.workEndTime }}&nbsp;&nbsp;&nbsp;{{ item.positionName }}</el-tag>
+                        </div>
+                    </template>
+                </el-table-column>
+
+                <el-table-column
+                        align="center"
+                        width="500"
+                        label="社会兼职">
+                    <template slot-scope="scope">
+                        <div slot="reference" class="name-wrapper">
+                            <el-tag style="margin-bottom: 7px;" v-for="(item,index) in scope.row.partTimeJobsDto"  type="warning" size="medium">{{ item.companyName }}&nbsp;&nbsp;&nbsp;{{ item.workStartTime }}&nbsp;&nbsp;&nbsp;{{ item.workEndTime }}&nbsp;&nbsp;&nbsp;{{ item.positionName }}</el-tag>
+                        </div>
+                    </template>
+                </el-table-column>
+
                 <el-table-column
                         align="center"
                         width="150"
@@ -175,8 +204,8 @@
                             </el-dropdown-menu>
                         </el-dropdown>
                     </template>
-                    <template slot-scope="scope">
-                        <div class="order-status-val">
+                    <template slot-scope="scope" align="center">
+                        <div class="order-status-val" >
                             <div class="color-point0" v-if="scope.row.identifyStatus==0"></div>
                             <div class="color-point1" v-if="scope.row.identifyStatus==1"></div>
                             <div class="color-point2" v-if="scope.row.identifyStatus==2"></div>
@@ -190,6 +219,17 @@
                             <div class="color-point10" v-if="scope.row.identifyStatus==10"></div>
                             <div>{{scope.row.identifyStatusStr}}</div>
                         </div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        fixed="right"
+                        align="center"
+                        label="操作"
+                        width="150">
+                    <template slot-scope="scope">
+                        <el-button v-if="scope.row.identifyStatus == 1" @click="handleFirstReview(scope.row)" type="text" size="mini">初审</el-button>
+                        <el-button v-if="scope.row.identifyStatus == 6" @click="handleSecondReview(scope.row)" type="text" size="mini">复审</el-button>
+                        <el-button type="text" size="small">编辑</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -237,6 +277,133 @@
             // 菜单选择
         },
         methods: {
+            handleFirstReview(val) {
+                console.log('val',val);
+                this.$msgbox({
+                    title: '初审操作提示',
+                    showClose: true,
+                    message: '信息全部属实，确认认证通过?',
+                    showCancelButton: true,
+                    confirmButtonText: '通过',
+                    cancelButtonText: '不通过',
+                    beforeClose: (action, instance, done) => {
+                    if (action === 'confirm') {
+                    instance.confirmButtonLoading = true;
+                    instance.confirmButtonText = '执行中...';
+
+                    let json = levelTwoIdentifyUpdate({
+                        collegeNo: "4111014430",
+                        instituteNo: "1005",
+                        managerId: "4000004",
+                        identifyStatus: 2,
+                        identifyCollegeId: "1000001"
+                    });
+                    json.then((respData) => {
+                        if(respData.data.code == 0){
+                        instance.confirmButtonLoading = false;
+                        console.log(respData);
+                        done();
+                        this.$message({
+                            type: 'success',
+                            message: '成功'
+                        });
+                        window.setInterval(function() {
+                            location.reload();
+                        },1000);
+
+                    } else{
+                        done();
+                        instance.confirmButtonLoading = false;
+                        this.$message({
+                            message: respData.data.message,
+                            type: 'error'
+                        });
+                    }
+                });
+                } else if (action === 'cancel') {
+                    instance.confirmButtonLoading = true;
+                    instance.confirmButtonText = '执行中...';
+                    let json = levelTwoIdentifyUpdate({
+                        collegeNo: "4111014430",
+                        instituteNo: "1005",
+                        managerId: "4000004",
+                        identifyStatus: 3,
+                        identifyCollegeId: "1000001"
+                    });
+                    json.then((respData) => {
+                        if(respData.data.code == 0){
+                        instance.confirmButtonLoading = false;
+                        console.log(respData);
+                        done();
+                        this.$message({
+                            type: 'success',
+                            message: '成功'
+                        });
+                        window.setInterval(function() {
+                            location.reload();
+                        },1000);
+                    } else{
+                        done();
+                        instance.confirmButtonLoading = false;
+                        this.$message({
+                            message: respData.data.message,
+                            type: 'error'
+                        });
+                    }
+                });
+                }else {
+                    done();
+                }
+            }
+            })
+            },
+            handleSecondReview() {
+                this.$msgbox({
+                    title: '复审操作提示',
+                    message: '信息全部属实，确认认证通过?',
+                    showCancelButton: true,
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    beforeClose: (action, instance, done) => {
+                    if (action === 'confirm') {
+                    instance.confirmButtonLoading = true;
+                    instance.confirmButtonText = '执行中...';
+
+                    let json = levelTwoUpdateAudit({
+                        collegeNo: "4111014430",
+                        instituteNo: "1005",
+                        managerId: "4000003",
+                        identifyStatus: 9,
+                        identifyCollegeId: "1000001"
+                    });
+                    json.then((respData) => {
+                        if(respData.data.code == 0){
+                        instance.confirmButtonLoading = false;
+                        console.log(respData);
+                        done();
+                        this.$message({
+                            type: 'success',
+                            message: '成功'
+                        });
+                        window.setInterval(function() {
+                            location.reload();
+                        },1000);
+
+                    } else{
+                        done();
+                        instance.confirmButtonLoading = false;
+                        this.$message({
+                            message: respData.data.message,
+                            type: 'error'
+                        });
+                    }
+                });
+                } else {
+                    done();
+                }
+            }
+            })
+            },
             handleCurrentChange(val) {
                 this.pageHandler(val);
             },
@@ -375,7 +542,7 @@
             searchOrder(searchVal) {
                 // 需要加入正则校验
                 this.studentName = searchVal;
-                let json = getRefundOrders({
+                let json = getAlumniInfos({
                     collegeNo: "4111014430",
                     managerId: "4000001",
                     identifyStatus:this.identifyStatus,
