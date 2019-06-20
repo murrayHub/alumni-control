@@ -11,6 +11,7 @@ import com.alumni.control.pojo.vo.AlumniManagerInfoVo;
 import com.alumni.control.pojo.vo.LevelOneAlumniUpdInfoVo;
 import com.alumni.control.pojo.vo.UserDegreeIdentifyVo;
 import com.alumni.control.service.AlumniManageService;
+import com.alumni.control.service.CacheService;
 import com.alumni.control.utils.DateUtil;
 import com.alumni.control.utils.TechGoalObjects;
 import com.google.common.collect.Lists;

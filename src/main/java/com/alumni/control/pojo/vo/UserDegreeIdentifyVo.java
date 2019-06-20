@@ -1,5 +1,6 @@
 package com.alumni.control.pojo.vo;
 
+import com.alumni.control.pojo.dao.UcasInstituteDo;
 import com.alumni.control.pojo.dto.JobsInfoDto;
 import com.alumni.control.pojo.dto.PartTimeJobsDto;
 import lombok.Data;
@@ -168,5 +169,10 @@ public class UserDegreeIdentifyVo {
      * 每页记录数
      */
     private Integer pageSize;
+
+    /**
+     * 二级学院列表
+     */
+    private List<UcasInstituteDo> ucasInstituteDoList;
 
 }

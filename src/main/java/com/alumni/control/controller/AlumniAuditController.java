@@ -7,9 +7,11 @@ import com.alumni.control.exception.BizServiceException;
 import com.alumni.control.mapper.UserDegreeIdentifyDoMapper;
 import com.alumni.control.pojo.dao.AlumniManagerInfoDo;
 import com.alumni.control.pojo.dao.LevelOneIdentifyDo;
+import com.alumni.control.pojo.dao.UcasInstituteDo;
 import com.alumni.control.pojo.dao.UserDegreeIdentifyDo;
 import com.alumni.control.pojo.vo.*;
 import com.alumni.control.service.AlumniManageService;
+import com.alumni.control.service.CacheService;
 import com.alumni.control.utils.TechGoalObjects;
 import com.alumni.control.utils.page.PageParamConvert;
 import com.alumni.control.utils.page.PageRespDTO;
@@ -56,11 +58,19 @@ public class AlumniAuditController {
 
     @Autowired
     private UserDegreeIdentifyDoMapper userDegreeIdentifyDoMapper;
+    @Autowired
+    private CacheService cacheService;
 
     @ApiOperation(value = "校友管理页面")
     @GetMapping("/alumni-manage")
     public String alumniManage() {
         return "/alumniInfoList";
+    }
+
+    @ApiOperation(value = "校友详情页面")
+    @GetMapping("/alumni-manage-detail")
+    public String alumniManageDetail() {
+        return "/alumniInfoDetail";
     }
 
     @ApiOperation(value = "获取校友详情信息")
@@ -88,6 +98,7 @@ public class AlumniAuditController {
         if (!CollectionUtils.isEmpty(resultList)) {
             result.setResult(alumniManageService.dealWithViewResults(resultList).get(NumberDict.ZERO));
         }
+        result.getResult().setUcasInstituteDoList(cacheService.getInstitutes());
         log.info("获取校友详情信息,返回结果:{}", result);
         return result;
     }

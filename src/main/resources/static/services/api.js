@@ -8,6 +8,10 @@ function getAlumniInfos(data) {
     var url = '/audit/get-alumni-infos';
     return requestHeaderPost(url, data)
 }
+function getAlumniInfo(data) {
+    var url = '/audit/get-alumni-info';
+    return requestHeaderPost(url, data)
+}
 function levelTwoIdentifyUpdate(data) {
     var url = '/audit/level-two-identify-update';
     return requestHeaderPost(url, data)

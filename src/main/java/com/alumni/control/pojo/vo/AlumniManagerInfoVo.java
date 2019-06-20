@@ -1,7 +1,10 @@
 package com.alumni.control.pojo.vo;
 
+import com.alumni.control.pojo.dao.UcasInstituteDo;
 import com.alumni.control.utils.page.BasePage;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class AlumniManagerInfoVo extends BasePage {
