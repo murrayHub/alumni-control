@@ -25,6 +25,10 @@ public class LevelOneIdentifyVo {
      * 性别：1-男 2-女
      */
     private String gender;
+    /**
+     * 性别：1-男 2-女
+     */
+    private String genderValue;
 
     /**
      * 民族
@@ -198,5 +202,9 @@ public class LevelOneIdentifyVo {
      * 认证状态： 0-未认证 1-二级认证待审核 2-二级认证初审通过 3-二级认证初审失败 4-二级认证复审通过 5-二级认证复审失败 6-一级认证待审核 7-一级认证初审通过 8-一级认证初审失败 9-一级认证复审通过 10-一级认证复审失败
      */
     private String identifyStatus;
+    /**
+     * 认证状态： 0-未认证 1-二级认证待审核 2-二级认证初审通过 3-二级认证初审失败 4-二级认证复审通过 5-二级认证复审失败 6-一级认证待审核 7-一级认证初审通过 8-一级认证初审失败 9-一级认证复审通过 10-一级认证复审失败
+     */
+    private String identifyStatusStr;
 
 }

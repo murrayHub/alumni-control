@@ -23,7 +23,7 @@ spring:
     druid:
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      url: jdbc:log4jdbc:mysql://localhost:3306/alumni?serverTimezone=UTC&characterEncoding=utf8&useSSL=false
+      url: jdbc:log4jdbc:mysql://localhost:3306/alumni?serverTimezone=GMT%2b8&characterEncoding=utf8&useSSL=false
       username: root
       password: root
 

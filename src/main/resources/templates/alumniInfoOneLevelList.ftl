@@ -6,12 +6,12 @@
     <title>alumni-control</title>
 </head>
 <body>
-<div id="alumniInfoList" class="layout_container">
+<div id="alumniInfoOneLevelList" class="layout_container">
     <div class="baofu-shop-nav--control">
     <right-header></right-header>
         <div class="layout_content">
         <title-page title="Refund order"></title-page>
-        <div class="refund-order-list--control">
+        <div class="one-level-list-control">
             <div>
                 <el-input placeholder="Search order" v-model="searchText" prefix-icon="el-icon-search"
                           @change="searchOrder($event)"></el-input>
@@ -26,7 +26,7 @@
                         fixed
                         label="姓名">
                     <template slot-scope="scope">
-                        <div>{{scope.row.studentName}}</div>
+                        <div>{{scope.row.userRealName}}</div>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -49,9 +49,17 @@
                 <el-table-column
                         align="center"
                         width="100"
+                        label="国家">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.country}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="100"
                         label="省">
                   <template slot-scope="scope">
-                       <div>{{scope.row.province}}</div>
+                       <div>{{scope.row.city}}</div>
                   </template>
                 </el-table-column>
                 <el-table-column
@@ -59,42 +67,38 @@
                         width="100"
                         label="市">
                     <template slot-scope="scope">
-                        <div>{{scope.row.city}}</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                        align="center"
-                        width="150"
-                        label="学校">
-                    <template slot-scope="scope">
-                        <div>{{scope.row.collegeName}}</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                        align="center"
-                        width="150"
-                        label="培养单位">
-                    <template slot-scope="scope">
-                        <div>{{scope.row.instituteName}}</div>
+                        <div>{{scope.row.area}}</div>
                     </template>
                 </el-table-column>
                 <el-table-column
                         align="center"
                         width="100"
-                        label="年级"
-                        prop="grade">
+                        label="民族">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.nation}}</div>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         align="center"
                         width="200"
-                        label="入学时间"
-                        prop="entranceTime">
+                        label="出生日期"
+                        prop="birthDate">
                 </el-table-column>
                 <el-table-column
                         align="center"
-                        width="200"
-                        label="毕业时间"
-                        prop="graduationTime">
+                        width="250"
+                        label="证件号码（身份证或护照）">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.idCard}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="原证件号码">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.originalIdCard}}</div>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         align="center"
@@ -114,69 +118,51 @@
                         </el-dropdown>
                     </template>
                     <template slot-scope="scope">
-                            <div slot="reference" class="name-wrapper">
-                                <el-tag v-if="scope.row.degreeName == '硕士'" type="success" size="medium">{{ scope.row.degreeName }}</el-tag>
-                                <el-tag v-if="scope.row.degreeName == '学士'" type="info" size="medium">{{ scope.row.degreeName }}</el-tag>
-                                <el-tag v-if="scope.row.degreeName == '博士'" type="danger" size="medium">{{ scope.row.degreeName }}</el-tag>
-                            </div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                        align="center"
-                        width="200"
-                        label="专业"
-                        prop="professionName">
-                </el-table-column>
-
-                <el-table-column
-                        align="center"
-                        width="500"
-                        label="工作经历">
-                    <template slot-scope="scope">
                         <div slot="reference" class="name-wrapper">
-                            <el-tag style="margin-bottom: 7px;" v-for="(item,index) in scope.row.jobsInfoDto"  type="success" size="medium">{{ item.companyName }}&nbsp;&nbsp;&nbsp;{{ item.workStartTime }}&nbsp;&nbsp;&nbsp;{{ item.workEndTime }}&nbsp;&nbsp;&nbsp;{{ item.positionName }}</el-tag>
+                            <el-tag v-if="scope.row.trainingLevel == '硕士'" type="success" size="medium">{{ scope.row.trainingLevel }}</el-tag>
+                            <el-tag v-if="scope.row.trainingLevel == '学士'" type="info" size="medium">{{ scope.row.trainingLevel }}</el-tag>
+                            <el-tag v-if="scope.row.trainingLevel == '博士'" type="danger" size="medium">{{ scope.row.trainingLevel }}</el-tag>
                         </div>
                     </template>
                 </el-table-column>
-
-                <el-table-column
-                        align="center"
-                        width="500"
-                        label="社会兼职">
-                    <template slot-scope="scope">
-                        <div slot="reference" class="name-wrapper">
-                            <el-tag style="margin-bottom: 7px;" v-for="(item,index) in scope.row.partTimeJobsDto"  type="warning" size="medium">{{ item.companyName }}&nbsp;&nbsp;&nbsp;{{ item.workStartTime }}&nbsp;&nbsp;&nbsp;{{ item.workEndTime }}&nbsp;&nbsp;&nbsp;{{ item.positionName }}</el-tag>
-                        </div>
-                    </template>
-                </el-table-column>
-
                 <el-table-column
                         align="center"
                         width="150"
-                        label="学号"
-                        prop="studentNo">
+                        label="录取单位">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.admissionUnit}}</div>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         align="center"
-                        width="200"
-                        label="身份证号"
-                        prop="idCardNo">
+                        width="150"
+                        label="管理单位">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.manageUnit}}</div>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         align="center"
-                        width="200"
-                        prop="identifyTypeValue">
-                    <template slot="header" slot-scope="scope">
-                        <el-dropdown trigger="click" @command="handleIdentifyType">
-                        <span class="el-dropdown-link">
-                            认证方式<i class="el-icon-caret-bottom el-icon--right"></i>
-                        </span>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item :command="-1">全部</el-dropdown-item>
-                                <el-dropdown-item :command="1">身份证号</el-dropdown-item>
-                                <el-dropdown-item :command="2">学号</el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
+                        width="150"
+                        label="培养单位">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.trainingUnit}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="学号">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.studentNo}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="新学号">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.newStudentNo}}</div>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -222,6 +208,130 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                        align="center"
+                        width="200"
+                        label="入学时间"
+                        prop="entranceTime">
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="200"
+                        label="毕业时间"
+                        prop="graduationTime">
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="导师">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.tutorName}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="专业">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.majorName}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="学生状态">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.studentStatus}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="工作状态">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.jobStatus}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="工作单位">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.employer}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="单位性质">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.unitNature}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="专家类别">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.expertCategory}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="专业技术职务">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.specializedTechnicalJob}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="职务">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.position}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="通讯地址">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.mailingAddress}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="电子邮件">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.email}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="联系电话">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.phoneNo}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="qq">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.qq}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="center"
+                        width="150"
+                        label="微信号">
+                    <template slot-scope="scope">
+                        <div>{{scope.row.weixinNo}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column
                         fixed="right"
                         align="center"
                         label="操作"
@@ -253,7 +363,7 @@
 <script>
     var orderType = 0;
     const vm = new Vue({
-        el: '#alumniInfoList',
+        el: '#alumniInfoOneLevelList',
         data: {
             tableDataResp:[],
             currentPage: 1,
@@ -444,7 +554,7 @@
             },
             editEvent(val){
                 var identifyId = val.identifyCollegeId;
-                location.href = ctx+ "/audit/alumni-manage-detail?identifyCollegeId=" + identifyId;
+                location.href = ctx+ "/audit/alumni-manage-one-level-detail?identifyCollegeId=" + identifyId;
             },
             handleCurrentChange(val) {
                 this.pageHandler(val);
@@ -455,7 +565,7 @@
                 this.pageHandler(curPg);
             },
             pageHandler(pageNo){
-                let json = getAlumniInfos({
+                let json = getLevelOneIdentifyInfo({
                     collegeNo: "4111014430",
                     managerId: "4000001",
                     currentPage:pageNo,
@@ -483,7 +593,7 @@
             },
             handleIdentifyStatus(command){
                 this.identifyStatus = command;
-                let json = getAlumniInfos({
+                let json = getLevelOneIdentifyInfo({
                     collegeNo: "4111014430",
                     managerId: "4000001",
                     currentPage:this.currentPage,
@@ -508,7 +618,7 @@
             },
             handleDegree(command){
                 this.degreeType = command;
-                let json = getAlumniInfos({
+                let json = getLevelOneIdentifyInfo({
                     collegeNo: "4111014430",
                     managerId: "4000001",
                     currentPage:this.currentPage,
@@ -533,7 +643,7 @@
             },
             handleIdentifyType(command){
                 this.identifyType = command;
-                let json = getAlumniInfos({
+                let json = getLevelOneIdentifyInfo({
                     collegeNo: "4111014430",
                     managerId: "4000001",
                     currentPage:this.currentPage,
@@ -557,8 +667,7 @@
             });
             },
             handleGender(command){
-                this.genderType = command;
-                let json = getAlumniInfos({
+                let json = getLevelOneIdentifyInfo({
                     collegeNo: "4111014430",
                     managerId: "4000001",
                     currentPage:this.currentPage,
@@ -584,7 +693,7 @@
             searchOrder(searchVal) {
                 // 需要加入正则校验
                 this.studentName = searchVal;
-                let json = getAlumniInfos({
+                let json = getLevelOneIdentifyInfo({
                     collegeNo: "4111014430",
                     managerId: "4000001",
                     identifyStatus:this.identifyStatus,
@@ -611,11 +720,8 @@
                 }
             });
             },
-            goToInfoDetail(val) {
-                location.href = ctx+ "/orderReturn/refundOrderDetail?returnId=" + val;
-            },
             initMethod(){
-                let json = getAlumniInfos({
+                let json = getLevelOneIdentifyInfo({
                     collegeNo: "4111014430",
                     managerId: "4000001",
                     currentPage:this.currentPage,

@@ -7,7 +7,6 @@ import com.alumni.control.exception.BizServiceException;
 import com.alumni.control.mapper.UserDegreeIdentifyDoMapper;
 import com.alumni.control.pojo.dao.AlumniManagerInfoDo;
 import com.alumni.control.pojo.dao.LevelOneIdentifyDo;
-import com.alumni.control.pojo.dao.UcasInstituteDo;
 import com.alumni.control.pojo.dao.UserDegreeIdentifyDo;
 import com.alumni.control.pojo.vo.*;
 import com.alumni.control.service.AlumniManageService;
@@ -67,10 +66,22 @@ public class AlumniAuditController {
         return "/alumniInfoList";
     }
 
-    @ApiOperation(value = "校友详情页面")
+    @ApiOperation(value = "校友管理页面-详情页面")
     @GetMapping("/alumni-manage-detail")
     public String alumniManageDetail() {
         return "/alumniInfoDetail";
+    }
+
+    @ApiOperation(value = "校友一级管理页面")
+    @GetMapping("/alumni-manage-one-level")
+    public String alumniManageOneLevel() {
+        return "/alumniInfoOneLevelList";
+    }
+
+    @ApiOperation(value = "校友一级管理页面-详情页面")
+    @GetMapping("/alumni-manage-one-level-detail")
+    public String alumniManageOneLevelDetail() {
+        return "/alumniInfoOneLevelDetail";
     }
 
     @ApiOperation(value = "获取校友详情信息")
@@ -80,9 +91,6 @@ public class AlumniAuditController {
     public AjaxResult<UserDegreeIdentifyVo> getAlumniInfo(@RequestBody AlumniManagerInfoVo alumniManagerInfoVo) {
         AjaxResult<UserDegreeIdentifyVo> result = new AjaxResult<>();
         log.info("获取校友详情信息,请求参数:{}", alumniManagerInfoVo);
-        if (TechGoalObjects.isEmpty(alumniManagerInfoVo.getCollegeNo())) {
-            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000024);
-        }
         if (TechGoalObjects.isEmpty(alumniManagerInfoVo.getManagerId())) {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000028);
         }
@@ -94,6 +102,7 @@ public class AlumniAuditController {
         if (TechGoalObjects.isEmpty(alumniManagerInfoDo)) {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000029);
         }
+        alumniManagerInfoVo.setCollegeNo(alumniManagerInfoDo.getCollegeNo());
         List<UserDegreeIdentifyDo> resultList = alumniManageService.getAlumniInfo(alumniManagerInfoVo);
         if (!CollectionUtils.isEmpty(resultList)) {
             result.setResult(alumniManageService.dealWithViewResults(resultList).get(NumberDict.ZERO));
@@ -213,12 +222,12 @@ public class AlumniAuditController {
         return result;
     }
 
-    @ApiOperation(value = "获取一级认证申请信息")
+    @ApiOperation(value = "获取一级认证申请信息-分页")
     @WebEnhance(mode = WebResultModeEnum.PAGE_QUERY)
     @ResponseBody
     @RequestMapping(value = "get-level-one-identify-info")
-    public AjaxResult<PageRespDTO<UserDegreeIdentifyVo>> getLevelOneIdentifyInfo(@RequestBody AlumniManagerInfoVo alumniManagerInfoVo) {
-        AjaxResult<PageRespDTO<UserDegreeIdentifyVo>> result = new AjaxResult<>();
+    public AjaxResult<PageRespDTO<LevelOneIdentifyVo>> getLevelOneIdentifyInfo(@RequestBody AlumniManagerInfoVo alumniManagerInfoVo) {
+        AjaxResult<PageRespDTO<LevelOneIdentifyVo>> result = new AjaxResult<>();
         log.info("获取一级认证申请信息,请求参数:{}", alumniManagerInfoVo);
         if (TechGoalObjects.isEmpty(alumniManagerInfoVo.getCollegeNo())) {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000024);
@@ -250,13 +259,51 @@ public class AlumniAuditController {
         return result;
     }
 
-    @ApiOperation(value = "一级认证初审处理")
+    @ApiOperation(value = "获取一级认证申请信息")
+    @WebEnhance(mode = WebResultModeEnum.AJAX)
+    @ResponseBody
+    @RequestMapping(value = "get-level-one-identify-info-detail")
+    public AjaxResult<LevelOneIdentifyVo> getLevelOneIdentifyInfoDetail(@RequestBody AlumniManagerInfoVo alumniManagerInfoVo) {
+        AjaxResult<LevelOneIdentifyVo> result = new AjaxResult<>();
+        log.info("获取一级认证申请信息,请求参数:{}", alumniManagerInfoVo);
+        if (TechGoalObjects.isEmpty(alumniManagerInfoVo.getCollegeNo())) {
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000024);
+        }
+        if (TechGoalObjects.isEmpty(alumniManagerInfoVo.getManagerId())) {
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000028);
+        }
+        if (TechGoalObjects.isEmpty(alumniManagerInfoVo.getIdentifyCollegeId())) {
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000035);
+        }
+        List<LevelOneIdentifyDo> levelOneIdentifyDos = alumniManageService.getLevelOneIdentifyInfoDetail(alumniManagerInfoVo);
+        // 鉴定操作员身份权限
+        AlumniManagerInfoDo alumniManagerInfoDo = alumniManageService.getManagerInfo(Long.valueOf(alumniManagerInfoVo.getManagerId()));
+        if (TechGoalObjects.isEmpty(alumniManagerInfoDo)) {
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000029);
+        }
+        if (alumniManagerInfoDo.getManagerLevel() != NumberDict.ONE) {
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000034);
+        }
+        // DO -> VO
+        List<LevelOneIdentifyVo> levelOneIdentifyVos = Lists.newArrayList();
+        if (!CollectionUtils.isEmpty(levelOneIdentifyDos)) {
+            for (LevelOneIdentifyDo levelOneIdentifyDo : levelOneIdentifyDos) {
+                LevelOneIdentifyVo levelOneIdentifyVo = LevelOneIdentifyConvert.toConvertVo(levelOneIdentifyDo);
+                levelOneIdentifyVos.add(levelOneIdentifyVo);
+            }
+        }
+        result.setResult(levelOneIdentifyVos.get(NumberDict.ZERO));
+        log.info("获取一级认证申请信息,返回结果:{}", result);
+        return result;
+    }
+
+    @ApiOperation(value = "一级认证校友信息修改")
     @WebEnhance(mode = WebResultModeEnum.AJAX)
     @ResponseBody
     @RequestMapping(value = "level-one-identify-update")
     public AjaxResult levelOneIdentifyUpdate(@RequestBody LevelOneAlumniUpdInfoVo levelOneAlumniUpdInfoVo) {
         AjaxResult result = new AjaxResult();
-        log.info("一级认证初审处理,请求参数:{}", levelOneAlumniUpdInfoVo);
+        log.info("一级认证校友信息修改,请求参数:{}", levelOneAlumniUpdInfoVo);
         if (TechGoalObjects.isEmpty(levelOneAlumniUpdInfoVo.getManagerId())) {
             throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000028);
         }
@@ -279,10 +326,43 @@ public class AlumniAuditController {
         }
         try {
             alumniManageService.updateLevelOneAlumniInfo(levelOneAlumniUpdInfoVo);
-            log.info("一级认证初审处理,成功");
+            log.info("一级认证校友信息修改,成功");
         } catch (Exception e) {
             throw new BizServiceException(WebExceptionUtils.getWebErrorCode(e));
         }
+        return result;
+    }
+
+
+    @ApiOperation(value = "一级认证初审处理")
+    @WebEnhance(mode = WebResultModeEnum.AJAX)
+    @ResponseBody
+    @RequestMapping(value = "level-one-update-first-audit")
+    public AjaxResult levelOneUpdateFirstAudit(@RequestBody LevelOneAlumniUpdInfoVo levelOneAlumniUpdInfoVo) {
+        AjaxResult result = new AjaxResult();
+        log.info("一级认证初审处理,请求参数:{}", levelOneAlumniUpdInfoVo);
+        if (TechGoalObjects.isEmpty(levelOneAlumniUpdInfoVo.getManagerId())) {
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000028);
+        }
+        if (TechGoalObjects.isEmpty(levelOneAlumniUpdInfoVo.getIdentifyCollegeId())) {
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000035);
+        }
+        if (TechGoalObjects.isEmpty(levelOneAlumniUpdInfoVo.getIdentifyStatus())) {
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000036);
+        }
+        // 鉴定操作员身份权限
+        AlumniManagerInfoDo alumniManagerInfoDo = alumniManageService.getManagerInfo(Long.valueOf(levelOneAlumniUpdInfoVo.getManagerId()));
+        if (TechGoalObjects.isEmpty(alumniManagerInfoDo)) {
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000029);
+        }
+        if (alumniManagerInfoDo.getManagerLevel() != NumberDict.ONE) {
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000032);
+        }
+        if (alumniManagerInfoDo.getManagerType() != NumberDict.TWO) {
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000033);
+        }
+        alumniManageService.levelOneUpdateAudit(levelOneAlumniUpdInfoVo);
+        log.info("一级认证复审处理,成功");
         return result;
     }
 

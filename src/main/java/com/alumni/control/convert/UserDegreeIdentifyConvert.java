@@ -28,7 +28,8 @@ public class UserDegreeIdentifyConvert {
         userDegreeIdentifyVo.setInstituteNo(String.valueOf(userDegreeIdentifyDo.getInstituteNo()));
         userDegreeIdentifyVo.setEntranceTime(DateUtil.formatSmall(userDegreeIdentifyDo.getEntranceTime()));
         userDegreeIdentifyVo.setGraduationTime(DateUtil.formatSmall(userDegreeIdentifyDo.getGraduationTime()));
-        userDegreeIdentifyVo.setDegreeNo(DegreeLevelEnum.getDescByCode(userDegreeIdentifyDo.getDegreeNo()));
+        userDegreeIdentifyVo.setDegreeName(DegreeLevelEnum.getDescByCode(userDegreeIdentifyDo.getDegreeNo()));
+        userDegreeIdentifyVo.setDegreeNo(String.valueOf(userDegreeIdentifyDo.getDegreeNo()));
         userDegreeIdentifyVo.setProfessionName(userDegreeIdentifyDo.getProfessionName());
         userDegreeIdentifyVo.setEnabled(String.valueOf(userDegreeIdentifyDo.getEnabled()));
         userDegreeIdentifyVo.setCreateBy(userDegreeIdentifyDo.getCreateBy());

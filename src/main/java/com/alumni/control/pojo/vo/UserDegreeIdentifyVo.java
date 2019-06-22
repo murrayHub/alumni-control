@@ -66,6 +66,11 @@ public class UserDegreeIdentifyVo {
     private String degreeNo;
 
     /**
+     * 学位类别编号 1-学士 2-硕士 3-博士 4-其他
+     */
+    private String degreeName;
+
+    /**
      * 专业名称
      */
     private String professionName;

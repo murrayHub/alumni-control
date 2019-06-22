@@ -26,6 +26,12 @@ public interface AlumniManageService {
      * @return 结果集
      */
     List<LevelOneIdentifyDo> getLevelOneIdentifyInfo(AlumniManagerInfoVo alumniManagerInfoVo);
+    /**
+     * 获取一级认证申请信息
+     * @param alumniManagerInfoVo 请求参数
+     * @return 结果集
+     */
+    List<LevelOneIdentifyDo> getLevelOneIdentifyInfoDetail(AlumniManagerInfoVo alumniManagerInfoVo);
 
     /**
      * 获取校友信息

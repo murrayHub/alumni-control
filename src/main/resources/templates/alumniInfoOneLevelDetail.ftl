@@ -6,36 +6,63 @@
     <title>alumni-control</title>
 </head>
 <body>
-<div id="alumniInfoDetail" class="layout_container">
+<div id="alumniInfoOneLevelDetail" class="layout_container">
     <div class="baofu-shop-nav--control">
     <right-header></right-header>
         <div class="layout_content">
         <title-page title="Refund order"></title-page>
-        <div class="refund-order-list--control">
+        <div class="one-level-list-control">
             <div style="margin: 20px;"></div>
-            <el-form :label-position="right" label-width="80px" :model="tableRowData">
+            <el-form label-width="230px" :label-position="right" label-width="80px" :model="tableRowData">
                 <el-form-item label="姓名">
-                    <el-input disabled style="width: 300px;" v-model="tableRowData.studentName"></el-input>
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.userRealName"></el-input>
                 </el-form-item>
                 <el-form-item label="性别">
                     <el-input disabled style="width: 300px;" v-model="tableRowData.genderValue"></el-input>
                 </el-form-item>
-                <el-form-item label="省">
-                    <el-input disabled style="width: 300px;" v-model="tableRowData.province"></el-input>
+                <el-form-item label="国家">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.country"></el-input>
                 </el-form-item>
-                <el-form-item label="市">
+                <el-form-item label="省">
                     <el-input disabled style="width: 300px;" v-model="tableRowData.city"></el-input>
                 </el-form-item>
-                <el-form-item label="学校">
-                    <el-input disabled style="width: 300px;" v-model="tableRowData.collegeName"></el-input>
+                <el-form-item label="市">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.area"></el-input>
                 </el-form-item>
-                <el-form-item label="培养单位">
-                    <el-select size="large" style="width: 300px;" v-model="tableRowData.instituteName" @change="selectInstitute($event)">
-                        <el-option :label="item.instituteName" v-for="(item,index) in tableRowData.ucasInstituteDoList" :value="item.instituteNo"></el-option>
+                <el-form-item label="民族">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.nation"></el-input>
+                </el-form-item>
+                <el-form-item label="出生日期">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.birthDate"></el-input>
+                </el-form-item>
+                <el-form-item label="证件号码（身份证或护照）">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.idCard"></el-input>
+                </el-form-item>
+                <el-form-item label="原证件号码">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.originalIdCard"></el-input>
+                </el-form-item>
+                <el-form-item label="学位">
+                    <el-select size="large" style="width: 300px;" v-model="tableRowData.trainingLevel" @change="selectDegree($event)">
+                        <el-option :label="item.value" v-for="(item,index) in degreeList" :value="item.key"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="年级">
-                    <el-input id="detail_grade" style="width: 300px;" v-model="tableRowData.grade"></el-input>
+                <el-form-item label="录取单位">
+                    <el-input style="width: 300px;" v-model="admissionUnit"></el-input>
+                </el-form-item>
+                <el-form-item label="管理单位">
+                    <el-input style="width: 300px;" v-model="manageUnit"></el-input>
+                </el-form-item>
+                <el-form-item label="培养单位">
+                    <el-input style="width: 300px;" v-model="trainingUnit"></el-input>
+                </el-form-item>
+                <el-form-item label="学号">
+                    <el-input style="width: 300px;" v-model="studentNo"></el-input>
+                </el-form-item>
+                <el-form-item label="新学号">
+                    <el-input style="width: 300px;" v-model="newStudentNo"></el-input>
+                </el-form-item>
+                <el-form-item label="认证状态">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.identifyStatusStr"></el-input>
                 </el-form-item>
                 <el-form-item label="入学时间">
                     <div class="block">
@@ -59,31 +86,47 @@
                         </el-date-picker>
                     </div>
                 </el-form-item>
-                <el-form-item label="学位">
-                    <el-select size="large" style="width: 300px;" v-model="tableRowData.degreeName" @change="selectDegree($event)">
-                        <el-option :label="item.value" v-for="(item,index) in degreeList" :value="item.key"></el-option>
-                    </el-select>
+                <el-form-item label="导师">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.tutorName"></el-input>
                 </el-form-item>
                 <el-form-item label="专业">
-                    <el-input style="width: 300px;" v-model="professionName"></el-input>
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.majorName"></el-input>
                 </el-form-item>
-                <el-form-item label="工作经历">
-                    <el-input disabled style="width: 500px;" autosize type="textarea" v-model="jobsList"></el-input>
+                <el-form-item label="学生状态">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.studentStatus"></el-input>
                 </el-form-item>
-                <el-form-item label="社会兼职">
-                    <el-input disabled style="width: 500px;" autosize type="textarea" v-model="partTimejobList"></el-input>
+                <el-form-item label="工作状态">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.jobStatus"></el-input>
                 </el-form-item>
-                <el-form-item label="学号">
-                    <el-input style="width: 300px;" v-model="studentNo"></el-input>
+                <el-form-item label="工作单位">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.employer"></el-input>
                 </el-form-item>
-                <el-form-item label="身份证号">
-                    <el-input disabled style="width: 300px;" v-model="tableRowData.idCardNo"></el-input>
+                <el-form-item label="单位性质">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.unitNature"></el-input>
                 </el-form-item>
-                <el-form-item label="认证方式">
-                    <el-input disabled style="width: 300px;" v-model="tableRowData.identifyTypeValue"></el-input>
+                <el-form-item label="专家类别">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.expertCategory"></el-input>
                 </el-form-item>
-                <el-form-item label="认证状态">
-                    <el-input disabled style="width: 300px;" v-model="tableRowData.identifyStatusStr"></el-input>
+                <el-form-item label="专业技术职务">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.specializedTechnicalJob"></el-input>
+                </el-form-item>
+                <el-form-item label="职务">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.position"></el-input>
+                </el-form-item>
+                <el-form-item label="通讯地址">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.mailingAddress"></el-input>
+                </el-form-item>
+                <el-form-item label="电子邮件">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.email"></el-input>
+                </el-form-item>
+                <el-form-item label="联系电话">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.phoneNo"></el-input>
+                </el-form-item>
+                <el-form-item label="qq">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.qq"></el-input>
+                </el-form-item>
+                <el-form-item label="微信号">
+                    <el-input disabled style="width: 300px;" v-model="tableRowData.weixinNo"></el-input>
                 </el-form-item>
                 <div style="margin-left: 200px">
                     <el-button type="primary" @click="save" plain>保存</el-button>
@@ -102,7 +145,7 @@
 <script>
     var orderType = 0;
     const vm = new Vue({
-        el: '#alumniInfoDetail',
+        el: '#alumniInfoOneLevelDetail',
         data: {
             tableRowData:'',
             jobsList:'',
@@ -120,57 +163,7 @@
                 {
                     key:3,
                     value:'博士'
-                },
-                {
-                    key:4,
-                    value:'其他'
-                },
-            ],
-            identifyTypeList: [
-                {
-                    key:0,
-                    value:'未认证'
-                },
-                {
-                    key:1,
-                    value:'二级认证待审核'
-                },
-                {
-                    key:2,
-                    value:'二级认证初审通过'
-                },
-                {
-                    key:3,
-                    value:'二级认证初审失败'
-                },
-                {
-                    key:4,
-                    value:'二级认证复审通过'
-                },
-                {
-                    key:5,
-                    value:'二级认证复审失败'
-                },
-                {
-                    key:6,
-                    value:'一级认证待审核'
-                },
-                {
-                    key:7,
-                    value:'一级认证初审通过'
-                },
-                {
-                    key:8,
-                    value:'一级认证初审失败'
-                },
-                {
-                    key:9,
-                    value:'一级认证复审通过'
-                },
-                {
-                    key:10,
-                    value:'一级认证复审失败'
-                },
+                }
             ],
             searchText: '',
             refundType:'',
@@ -188,8 +181,12 @@
             entranceTime:'',
             graduationTime:'',
             degreeNo:'',
-            professionName:'',
+            majorName:'',
             studentNo:'',
+            newStudentNo:'',
+            trainingUnit:'',
+            manageUnit:'',
+            admissionUnit:'',
         },
         mounted: function () {
             this.initParam();
@@ -224,19 +221,22 @@
             // 修改
             save() {
                 let reqData = {};
-                reqData.managerId = '4000004';
+                reqData.managerId = '4000002';
                 reqData.identifyCollegeId = this.identifyCollegeId;
+                reqData.collegeNo = "4111014430",
                 reqData.identifyStatus = this.identifyStatus;
                 reqData.instituteNo = this.instituteNo;
-                reqData.degreeType = this.degreeNo;
+                reqData.admissionUnit = this.admissionUnit;
+                reqData.manageUnit = this.manageUnit;
+                reqData.trainingUnit = this.trainingUnit;
+                reqData.trainingLevel = this.degreeNo;
                 reqData.entranceTime = this.format(this.entranceTime,"yyyy-MM-dd");
                 reqData.graduationTime = this.format(this.graduationTime,"yyyy-MM-dd");
-                reqData.grade = $('#detail_grade').val();
-                reqData.studentNo = $('#studentNo').val();
-                reqData.professionName = this.professionName;
+                reqData.majorName = this.majorName;
                 reqData.studentNo = this.studentNo;
+                reqData.newStudentNo = this.newStudentNo;
                 console.log('reqData',reqData);
-                let json = levelTwoIdentifyUpdate(reqData);
+                let json = levelOneIdentifyUpdate(reqData);
                 json.then((respData) => {
                     if(respData.data.code == 0){
                     this.$message({
@@ -271,9 +271,9 @@
                 return fmt;
             },
             initMethod(){
-                let json = getAlumniInfo({
+                let json = getLevelOneIdentifyInfoDetail({
                     collegeNo: "4111014430",
-                    managerId: "4000004",
+                    managerId: "4000002",
                     identifyCollegeId: this.identifyCollegeId,
                 });
                 json.then((respData) => {
@@ -287,8 +287,12 @@
                     this.entranceTime = this.tableRowData.entranceTime;
                     this.graduationTime = this.tableRowData.graduationTime;
                     this.degreeNo = this.tableRowData.degreeNo;
-                    this.professionName = this.tableRowData.professionName;
+                    this.admissionUnit = this.tableRowData.admissionUnit;
+                    this.manageUnit = this.tableRowData.manageUnit;
+                    this.trainingUnit = this.tableRowData.trainingUnit;
+                    this.majorName = this.tableRowData.majorName;
                     this.studentNo = this.tableRowData.studentNo;
+                    this.newStudentNo = this.tableRowData.newStudentNo;
                     this.identifyStatus = this.tableRowData.identifyStatus;
                     if(jobs != null){
                         that.jobsList = that.foreachJob(jobs);

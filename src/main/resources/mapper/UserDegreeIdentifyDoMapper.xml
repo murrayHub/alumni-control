@@ -10,8 +10,8 @@
     <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="college_no" property="collegeNo" jdbcType="VARCHAR" />
     <result column="institute_no" property="instituteNo" jdbcType="BIGINT" />
-    <result column="entrance_time" property="entranceTime" jdbcType="TIMESTAMP" />
-    <result column="graduation_time" property="graduationTime" jdbcType="TIMESTAMP" />
+    <result column="entrance_time" property="entranceTime" jdbcType="DATE" />
+    <result column="graduation_time" property="graduationTime" jdbcType="DATE" />
     <result column="degree_no" property="degreeNo" jdbcType="TINYINT" />
     <result column="profession_name" property="professionName" jdbcType="VARCHAR" />
     <result column="enabled" property="enabled" jdbcType="TINYINT" />
@@ -70,7 +70,7 @@
       <if test="identifyType != null and identifyType != ''">
         AND tudi.identify_type = #{identifyType,jdbcType=TINYINT}
       </if>
-      <if test="identifyStatus != null and identifyStatus != ''">
+      <if test="identifyStatus != null">
         AND tudi.identify_status = #{identifyStatus,jdbcType=TINYINT}
       </if>
       <if test="studentName != null and studentName != ''">
@@ -92,11 +92,11 @@
       <if test="instituteNo != null and instituteNo != ''">
         institute_no = #{instituteNo,jdbcType=BIGINT},
       </if>
-      <if test="entranceTime != null and entranceTime != ''">
-        entrance_time = #{entranceTime,jdbcType=TIMESTAMP},
+      <if test="entranceTime != null">
+        entrance_time = #{entranceTime,jdbcType=DATE},
       </if>
-      <if test="graduationTime != null and graduationTime != ''">
-        graduation_time = #{graduationTime,jdbcType=TIMESTAMP},
+      <if test="graduationTime != null">
+        graduation_time = #{graduationTime,jdbcType=DATE},
       </if>
       <if test="degreeNo != null and degreeNo != ''">
         degree_no = #{degreeNo,jdbcType=TINYINT},

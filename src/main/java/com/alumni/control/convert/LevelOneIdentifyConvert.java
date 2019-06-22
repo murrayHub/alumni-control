@@ -24,6 +24,7 @@ public class LevelOneIdentifyConvert {
         levelOneIdentifyVo.setIdentifyCollegeId(String.valueOf(levelOneIdentifyDo.getIdentifyCollegeId()));
         levelOneIdentifyVo.setUserRealName(levelOneIdentifyDo.getUserRealName());
         levelOneIdentifyVo.setGender(String.valueOf(levelOneIdentifyDo.getGender()));
+        levelOneIdentifyVo.setGenderValue(levelOneIdentifyDo.getGender()==1?"男":"女");
         levelOneIdentifyVo.setNation(levelOneIdentifyDo.getNation());
         levelOneIdentifyVo.setBirthDate(DateUtil.formatSmall(levelOneIdentifyDo.getBirthDate()));
         levelOneIdentifyVo.setIdCard(levelOneIdentifyDo.getIdCard());
@@ -58,7 +59,8 @@ public class LevelOneIdentifyConvert {
         levelOneIdentifyVo.setCreateAt(DateUtil.formatFull(levelOneIdentifyDo.getCreateAt()));
         levelOneIdentifyVo.setUpdateAt(DateUtil.formatFull(levelOneIdentifyDo.getUpdateAt()));
         levelOneIdentifyVo.setCollegeNo(levelOneIdentifyDo.getCollegeNo());
-        levelOneIdentifyVo.setIdentifyStatus(IdentifyStatusEnum.getDescByCode(levelOneIdentifyDo.getIdentifyStatus()));
+        levelOneIdentifyVo.setIdentifyStatus(String.valueOf(levelOneIdentifyDo.getIdentifyStatus()));
+        levelOneIdentifyVo.setIdentifyStatusStr(IdentifyStatusEnum.getDescByCode(levelOneIdentifyDo.getIdentifyStatus()));
         return levelOneIdentifyVo;
     }
 }

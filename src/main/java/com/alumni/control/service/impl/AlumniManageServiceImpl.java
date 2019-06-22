@@ -11,7 +11,6 @@ import com.alumni.control.pojo.vo.AlumniManagerInfoVo;
 import com.alumni.control.pojo.vo.LevelOneAlumniUpdInfoVo;
 import com.alumni.control.pojo.vo.UserDegreeIdentifyVo;
 import com.alumni.control.service.AlumniManageService;
-import com.alumni.control.service.CacheService;
 import com.alumni.control.utils.DateUtil;
 import com.alumni.control.utils.TechGoalObjects;
 import com.google.common.collect.Lists;
@@ -70,6 +69,38 @@ public class AlumniManageServiceImpl implements AlumniManageService {
     public List<LevelOneIdentifyDo> getLevelOneIdentifyInfo(AlumniManagerInfoVo alumniManagerInfoVo) {
         LevelOneIdentifyDo levelOneIdentifyDo = new LevelOneIdentifyDo();
         levelOneIdentifyDo.setCollegeNo(alumniManagerInfoVo.getCollegeNo());
+        if (TechGoalObjects.isNotEmpty(alumniManagerInfoVo.getGenderType())) {
+            if (NumberDict.MINUS_ONE != (Integer.valueOf(alumniManagerInfoVo.getGenderType()))) {
+                levelOneIdentifyDo.setGender(Integer.valueOf(alumniManagerInfoVo.getGenderType()));
+            }
+        }
+        if (TechGoalObjects.isNotEmpty(alumniManagerInfoVo.getDegreeType())) {
+            if (NumberDict.MINUS_ONE != (Integer.valueOf(alumniManagerInfoVo.getDegreeType()))) {
+                levelOneIdentifyDo.setTrainingLevel(Integer.valueOf(alumniManagerInfoVo.getDegreeType()));
+            }
+        }
+        if (TechGoalObjects.isNotEmpty(alumniManagerInfoVo.getIdentifyStatus())) {
+            if (NumberDict.MINUS_ONE != (Integer.valueOf(alumniManagerInfoVo.getIdentifyStatus()))) {
+                levelOneIdentifyDo.setIdentifyStatus(Integer.valueOf(alumniManagerInfoVo.getIdentifyStatus()));
+            }
+        }
+        if (TechGoalObjects.isNotEmpty(alumniManagerInfoVo.getIdentifyCollegeId())) {
+            levelOneIdentifyDo.setIdentifyCollegeId(Long.valueOf(alumniManagerInfoVo.getIdentifyCollegeId()));
+        }
+        return levelOneIdentifyDoMapper.getLevelOneIdentifyInfo(levelOneIdentifyDo);
+    }
+
+    /**
+     * 获取一级认证申请信息(两级审核的认证编号必须一致)
+     *
+     * @param alumniManagerInfoVo 请求参数
+     * @return 结果集
+     */
+    @Override
+    public List<LevelOneIdentifyDo> getLevelOneIdentifyInfoDetail(AlumniManagerInfoVo alumniManagerInfoVo) {
+        LevelOneIdentifyDo levelOneIdentifyDo = new LevelOneIdentifyDo();
+        levelOneIdentifyDo.setCollegeNo(alumniManagerInfoVo.getCollegeNo());
+        levelOneIdentifyDo.setIdentifyCollegeId(Long.valueOf(alumniManagerInfoVo.getIdentifyCollegeId()));
         return levelOneIdentifyDoMapper.getLevelOneIdentifyInfo(levelOneIdentifyDo);
     }
 
@@ -125,17 +156,17 @@ public class AlumniManageServiceImpl implements AlumniManageService {
         for (UserDegreeIdentifyDo userDegreeIdentifyDo : list) {
 
             UserDegreeIdentifyVo userDegreeIdentifyVo = UserDegreeIdentifyConvert.toConvertVo(userDegreeIdentifyDo);
-            if(TechGoalObjects.isNotEmpty(userDegreeIdentifyDo.getCollegeNo())){
+            if (TechGoalObjects.isNotEmpty(userDegreeIdentifyDo.getCollegeNo())) {
                 SchoolDo schoolDo = schoolMapper.getSchoolInfoById(userDegreeIdentifyDo.getCollegeNo());
                 userDegreeIdentifyVo.setCollegeName(schoolDo.getSchoolName());
             }
-            if(TechGoalObjects.isNotEmpty(userDegreeIdentifyDo.getInstituteNo())){
+            if (TechGoalObjects.isNotEmpty(userDegreeIdentifyDo.getInstituteNo())) {
                 userDegreeIdentifyVo.setInstituteName(ucasInstituteDoMapper.getInstituteInfoById(userDegreeIdentifyDo.getInstituteNo()).getInstituteName());
             }
-            if(TechGoalObjects.isNotEmpty(userDegreeIdentifyDo.getProvince())){
+            if (TechGoalObjects.isNotEmpty(userDegreeIdentifyDo.getProvince())) {
                 userDegreeIdentifyVo.setProvince(regionMapper.selectAreaById(userDegreeIdentifyDo.getProvince()).getSname());
             }
-            if(TechGoalObjects.isNotEmpty(userDegreeIdentifyDo.getCity())){
+            if (TechGoalObjects.isNotEmpty(userDegreeIdentifyDo.getCity())) {
                 userDegreeIdentifyVo.setCity(regionMapper.selectAreaById(userDegreeIdentifyDo.getCity()).getSname());
             }
             UserJobIdentifyDo userJobIdentifyDo = new UserJobIdentifyDo();
@@ -199,8 +230,8 @@ public class AlumniManageServiceImpl implements AlumniManageService {
         UserDegreeIdentifyDo userDegreeIdentifyDo = new UserDegreeIdentifyDo();
         userDegreeIdentifyDo.setIdentifyCollegeId(Long.valueOf(alumniInfoUpdVo.getIdentifyCollegeId()));
         userDegreeIdentifyDo.setInstituteNo(Long.valueOf(alumniInfoUpdVo.getInstituteNo()));
-        userDegreeIdentifyDo.setEntranceTime(DateUtil.parseString2Date(alumniInfoUpdVo.getEntranceTime()));
-        userDegreeIdentifyDo.setGraduationTime(DateUtil.parseString2Date(alumniInfoUpdVo.getGraduationTime()));
+        userDegreeIdentifyDo.setEntranceTime(DateUtil.parse(alumniInfoUpdVo.getEntranceTime(), "yyyy-mm-dd"));
+        userDegreeIdentifyDo.setGraduationTime(DateUtil.parse(alumniInfoUpdVo.getGraduationTime(), "yyyy-mm-dd"));
         if (TechGoalObjects.isNotEmpty(alumniInfoUpdVo.getDegreeType())) {
             userDegreeIdentifyDo.setDegreeNo(Integer.valueOf(alumniInfoUpdVo.getDegreeType()));
         }
@@ -239,19 +270,20 @@ public class AlumniManageServiceImpl implements AlumniManageService {
         LevelOneIdentifyDo levelOneIdentifyDo = new LevelOneIdentifyDo();
         levelOneIdentifyDo.setIdentifyCollegeId(Long.valueOf(levelOneAlumniUpdInfoVo.getIdentifyCollegeId()));
         levelOneIdentifyDo.setUserRealName(levelOneAlumniUpdInfoVo.getUserRealName());
-        levelOneIdentifyDo.setGender(Integer.valueOf(levelOneAlumniUpdInfoVo.getGender()));
         levelOneIdentifyDo.setNation(levelOneAlumniUpdInfoVo.getNation());
-        levelOneIdentifyDo.setBirthDate(DateUtil.parseString2Date(levelOneAlumniUpdInfoVo.getBirthDate()));
+        levelOneIdentifyDo.setBirthDate(DateUtil.parse(levelOneAlumniUpdInfoVo.getBirthDate(), "yyyy-mm-dd"));
         levelOneIdentifyDo.setIdCard(levelOneAlumniUpdInfoVo.getIdCard());
         levelOneIdentifyDo.setOriginalIdCard(levelOneAlumniUpdInfoVo.getOriginalIdCard());
-        levelOneIdentifyDo.setTrainingLevel(Integer.valueOf(levelOneAlumniUpdInfoVo.getTrainingLevel()));
+        if (TechGoalObjects.isNotEmpty(levelOneAlumniUpdInfoVo.getTrainingLevel())) {
+            levelOneIdentifyDo.setTrainingLevel(Integer.valueOf(levelOneAlumniUpdInfoVo.getTrainingLevel()));
+        }
         levelOneIdentifyDo.setAdmissionUnit(levelOneAlumniUpdInfoVo.getAdmissionUnit());
         levelOneIdentifyDo.setManageUnit(levelOneAlumniUpdInfoVo.getManageUnit());
         levelOneIdentifyDo.setTrainingUnit(levelOneAlumniUpdInfoVo.getTrainingUnit());
         levelOneIdentifyDo.setStudentNo(levelOneAlumniUpdInfoVo.getStudentNo());
         levelOneIdentifyDo.setNewStudentNo(levelOneAlumniUpdInfoVo.getNewStudentNo());
-        levelOneIdentifyDo.setEntranceTime(DateUtil.parseString2Date(levelOneAlumniUpdInfoVo.getEntranceTime()));
-        levelOneIdentifyDo.setGraduationTime(DateUtil.parseString2Date(levelOneAlumniUpdInfoVo.getGraduationTime()));
+        levelOneIdentifyDo.setEntranceTime(DateUtil.parse(levelOneAlumniUpdInfoVo.getEntranceTime(), "yyyy-mm-dd"));
+        levelOneIdentifyDo.setGraduationTime(DateUtil.parse(levelOneAlumniUpdInfoVo.getGraduationTime(), "yyyy-mm-dd"));
         levelOneIdentifyDo.setTutorName(levelOneAlumniUpdInfoVo.getTutorName());
         levelOneIdentifyDo.setMajorName(levelOneAlumniUpdInfoVo.getMajorName());
         levelOneIdentifyDo.setStudentStatus(levelOneAlumniUpdInfoVo.getStudentStatus());
@@ -272,12 +304,6 @@ public class AlumniManageServiceImpl implements AlumniManageService {
         levelOneIdentifyDo.setUpdateBy(levelOneAlumniUpdInfoVo.getManagerId());
         levelOneIdentifyDo.setCollegeNo(levelOneAlumniUpdInfoVo.getCollegeNo());
         levelOneIdentifyDoMapper.updLevelOneIdentifyInfo(levelOneIdentifyDo);
-
-        UserDegreeIdentifyDo userDegreeIdentifyDo = new UserDegreeIdentifyDo();
-        userDegreeIdentifyDo.setIdentifyCollegeId(Long.valueOf(levelOneAlumniUpdInfoVo.getIdentifyCollegeId()));
-        userDegreeIdentifyDo.setIdentifyStatus(Integer.valueOf(levelOneAlumniUpdInfoVo.getIdentifyStatus()));
-        userDegreeIdentifyDo.setUpdateBy(levelOneAlumniUpdInfoVo.getManagerId());
-        userDegreeIdentifyDoMapper.updateAlumniInfo(userDegreeIdentifyDo);
     }
 
     /**

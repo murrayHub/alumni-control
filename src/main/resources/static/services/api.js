@@ -24,8 +24,20 @@ function levelOneIdentifyUpdate(data) {
     var url = '/audit/level-one-identify-update';
     return requestHeaderPost(url, data)
 }
+function levelOneUpdateFirstAudit(data) {
+    var url = '/audit/level-one-update-first-audit';
+    return requestHeaderPost(url, data)
+}
 function levelOneUpdateAudit(data) {
     var url = '/audit/level-one-update-audit';
+    return requestHeaderPost(url, data)
+}
+function getLevelOneIdentifyInfoDetail(data) {
+    var url = '/audit/get-level-one-identify-info-detail';
+    return requestHeaderPost(url, data)
+}
+function getLevelOneIdentifyInfo(data) {
+    var url = '/audit/get-level-one-identify-info';
     return requestHeaderPost(url, data)
 }
 

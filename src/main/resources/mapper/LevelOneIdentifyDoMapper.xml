@@ -56,6 +56,7 @@
     tloi.original_id_card AS originalIdCard,
     tloi.training_level AS trainingLevel,
     tloi.admission_unit AS admissionUnit,
+    tloi.manage_unit AS manageUnit,
     tloi.training_unit AS trainingUnit,
     tloi.student_no AS studentNo,
     tloi.new_student_no AS newStudentNo,
@@ -88,10 +89,23 @@
     LEFT JOIN
     t_user_degree_identify AS tudi
     ON tloi.identify_college_id=tudi.identify_college_id
-    WHERE
-    tudi.college_no = #{collegeNo,jdbcType=VARCHAR}
-    AND tudi.enabled = 1
-    AND tudi.identify_status > 5
+    <where>
+      <if test="gender != null and gender != ''">
+        AND tloi.gender = #{gender,jdbcType=TINYINT}
+      </if>
+      <if test="trainingLevel != null and trainingLevel != ''">
+        AND tloi.training_level = #{trainingLevel,jdbcType=TINYINT}
+      </if>
+      <if test="identifyCollegeId != null and identifyCollegeId != ''">
+        AND tloi.identify_college_id = #{identifyCollegeId,jdbcType=BIGINT}
+      </if>
+      <if test="identifyStatus != null">
+        AND tudi.identify_status = #{identifyStatus,jdbcType=TINYINT}
+      </if>
+      AND tudi.college_no = #{collegeNo,jdbcType=VARCHAR}
+      AND tudi.enabled = 1
+      AND tudi.identify_status > 5
+    </where>
   </select>
 
 
@@ -109,7 +123,7 @@
         nation = #{nation,jdbcType=VARCHAR},
       </if>
       <if test="birthDate != null and birthDate != ''">
-        birth_date = #{birthDate,jdbcType=TIMESTAMP},
+        birth_date = #{birthDate,jdbcType=DATE},
       </if>
       <if test="idCard != null and idCard != ''">
         id_card = #{idCard,jdbcType=VARCHAR},
@@ -129,17 +143,17 @@
       <if test="trainingUnit != null and trainingUnit != ''">
         training_unit = #{trainingUnit,jdbcType=VARCHAR},
       </if>
-      <if test="studentNo != null and idCard != ''">
+      <if test="studentNo != null and studentNo != ''">
         student_no = #{studentNo,jdbcType=VARCHAR},
       </if>
       <if test="newStudentNo != null and newStudentNo != ''">
         new_student_no = #{newStudentNo,jdbcType=VARCHAR},
       </if>
-      <if test="entranceTime != null and entranceTime != ''">
-        entrance_time = #{entranceTime,jdbcType=VARCHAR},
+      <if test="entranceTime != null">
+        entrance_time = #{entranceTime,jdbcType=DATE},
       </if>
-      <if test="graduationTime != null and graduationTime != ''">
-        graduation_time = #{graduationTime,jdbcType=VARCHAR},
+      <if test="graduationTime != null">
+        graduation_time = #{graduationTime,jdbcType=DATE},
       </if>
       <if test="tutorName != null and tutorName != ''">
         tutor_name = #{tutorName,jdbcType=VARCHAR},
