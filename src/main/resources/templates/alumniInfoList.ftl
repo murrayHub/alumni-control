@@ -488,6 +488,9 @@
                     managerId: "4000001",
                     currentPage:this.currentPage,
                     pageSize:this.pageSize,
+                    degreeType:this.degreeType,
+                    identifyType:this.identifyType,
+                    genderType:this.genderType,
                     identifyStatus:command
                 });
                 json.then((respData) => {
@@ -513,6 +516,9 @@
                     managerId: "4000001",
                     currentPage:this.currentPage,
                     pageSize:this.pageSize,
+                    identifyStatus:this.identifyStatus,
+                    identifyType:this.identifyType,
+                    genderType:this.genderType,
                     degreeType:command
                 });
                 json.then((respData) => {
@@ -538,6 +544,9 @@
                     managerId: "4000001",
                     currentPage:this.currentPage,
                     pageSize:this.pageSize,
+                    identifyStatus:this.identifyStatus,
+                    degreeType:this.degreeType,
+                    genderType:this.genderType,
                     identifyType:command
                 });
                 json.then((respData) => {
@@ -563,6 +572,9 @@
                     managerId: "4000001",
                     currentPage:this.currentPage,
                     pageSize:this.pageSize,
+                    identifyStatus:this.identifyStatus,
+                    degreeType:this.degreeType,
+                    identifyType:this.identifyType,
                     genderType:command
                 });
                 json.then((respData) => {

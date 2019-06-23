@@ -572,7 +572,6 @@
                     pageSize:this.pageSize,
                     identifyStatus:this.identifyStatus,
                     degreeType:this.degreeType,
-                    identifyType:this.identifyType,
                     genderType:this.genderType,
                 });
                 json.then((respData) => {
@@ -598,6 +597,8 @@
                     managerId: "4000001",
                     currentPage:this.currentPage,
                     pageSize:this.pageSize,
+                    degreeType:this.degreeType,
+                    genderType:this.genderType,
                     identifyStatus:command
                 });
                 json.then((respData) => {
@@ -623,32 +624,9 @@
                     managerId: "4000001",
                     currentPage:this.currentPage,
                     pageSize:this.pageSize,
+                    identifyStatus:this.identifyStatus,
+                    genderType:this.genderType,
                     degreeType:command
-                });
-                json.then((respData) => {
-                    if(respData.data.code == 0){
-                    this.tableDataResp = respData.data.result.list;
-                    this.currentPage = respData.data.result.pagination.current;
-                    this.pageSize = respData.data.result.pagination.pageSize;
-                    this.pages = respData.data.result.pagination.pages;
-                    this.total = respData.data.result.pagination.total;
-                    console.log(respData);
-                } else{
-                    this.$message({
-                        message: respData.data.message,
-                        type: 'error'
-                    });
-                }
-            });
-            },
-            handleIdentifyType(command){
-                this.identifyType = command;
-                let json = getLevelOneIdentifyInfo({
-                    collegeNo: "4111014430",
-                    managerId: "4000001",
-                    currentPage:this.currentPage,
-                    pageSize:this.pageSize,
-                    identifyType:command
                 });
                 json.then((respData) => {
                     if(respData.data.code == 0){
@@ -672,6 +650,8 @@
                     managerId: "4000001",
                     currentPage:this.currentPage,
                     pageSize:this.pageSize,
+                    identifyStatus:this.identifyStatus,
+                    degreeType:this.degreeType,
                     genderType:command
                 });
                 json.then((respData) => {
@@ -698,7 +678,6 @@
                     managerId: "4000001",
                     identifyStatus:this.identifyStatus,
                     degreeType:this.degreeType,
-                    identifyType:this.identifyType,
                     genderType:this.genderType,
                     currentPage:this.currentPage,
                     pageSize:this.pageSize,

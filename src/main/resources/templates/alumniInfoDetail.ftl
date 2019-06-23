@@ -35,7 +35,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="年级">
-                    <el-input id="detail_grade" style="width: 300px;" v-model="tableRowData.grade"></el-input>
+                    <el-input maxlength="50" id="detail_grade" style="width: 300px;" v-model="tableRowData.grade"></el-input>
                 </el-form-item>
                 <el-form-item label="入学时间">
                     <div class="block">
@@ -65,7 +65,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="专业">
-                    <el-input style="width: 300px;" v-model="professionName"></el-input>
+                    <el-input maxlength="20" style="width: 300px;" v-model="professionName"></el-input>
                 </el-form-item>
                 <el-form-item label="工作经历">
                     <el-input disabled style="width: 500px;" autosize type="textarea" v-model="jobsList"></el-input>
@@ -74,7 +74,7 @@
                     <el-input disabled style="width: 500px;" autosize type="textarea" v-model="partTimejobList"></el-input>
                 </el-form-item>
                 <el-form-item label="学号">
-                    <el-input style="width: 300px;" v-model="studentNo"></el-input>
+                    <el-input maxlength="30" style="width: 300px;" v-model="studentNo"></el-input>
                 </el-form-item>
                 <el-form-item label="身份证号">
                     <el-input disabled style="width: 300px;" v-model="tableRowData.idCardNo"></el-input>

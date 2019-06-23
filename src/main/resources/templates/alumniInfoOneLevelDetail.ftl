@@ -47,19 +47,19 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="录取单位">
-                    <el-input style="width: 300px;" v-model="admissionUnit"></el-input>
+                    <el-input maxlength="32" style="width: 300px;" v-model="admissionUnit"></el-input>
                 </el-form-item>
                 <el-form-item label="管理单位">
-                    <el-input style="width: 300px;" v-model="manageUnit"></el-input>
+                    <el-input maxlength="32" style="width: 300px;" v-model="manageUnit"></el-input>
                 </el-form-item>
                 <el-form-item label="培养单位">
-                    <el-input style="width: 300px;" v-model="trainingUnit"></el-input>
+                    <el-input maxlength="32" style="width: 300px;" v-model="trainingUnit"></el-input>
                 </el-form-item>
                 <el-form-item label="学号">
-                    <el-input style="width: 300px;" v-model="studentNo"></el-input>
+                    <el-input maxlength="32" style="width: 300px;" v-model="studentNo"></el-input>
                 </el-form-item>
                 <el-form-item label="新学号">
-                    <el-input style="width: 300px;" v-model="newStudentNo"></el-input>
+                    <el-input maxlength="32" style="width: 300px;" v-model="newStudentNo"></el-input>
                 </el-form-item>
                 <el-form-item label="认证状态">
                     <el-input disabled style="width: 300px;" v-model="tableRowData.identifyStatusStr"></el-input>
