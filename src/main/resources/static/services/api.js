@@ -40,6 +40,18 @@ function getLevelOneIdentifyInfo(data) {
     var url = '/audit/get-level-one-identify-info';
     return requestHeaderPost(url, data)
 }
+function getColleges(data) {
+    var url = '/base/get-colleges';
+    return requestHeaderPost(url, data)
+}
+function getInstitute(data) {
+    var url = '/base/get-institute';
+    return requestHeaderPost(url, data)
+}
+function registerSubmit(data) {
+    var url = '/base/register-submit';
+    return requestHeaderPost(url, data)
+}
 
   //暴露行为
 //   window.detailModule = { getGoodsDetail, goodsSpec }

@@ -162,6 +162,14 @@ public enum ErrorCodeEnum implements ErrorCode {
      * 认证状态不能为空
      */
     ERROR_CODE_000036("000036", "认证状态不能为空"),
+    /**
+     * 注册邀请码不正确
+     */
+    ERROR_CODE_000037("000037", "注册邀请码不正确"),
+    /**
+     * 所在学院不能为空
+     */
+    ERROR_CODE_000038("000038", "所在学院不能为空"),
 
 
 

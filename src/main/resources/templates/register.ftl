@@ -11,19 +11,35 @@
         <div class="layout_content">
         <div class="login-control">
             <div style="margin: 20px;"></div>
-            <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+            <el-form :model="registerForm" status-icon :rules="rules2" ref="registerForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="用户姓名" prop="username" >
+                    <el-input v-model="registerForm.username" placeholder="请输入姓名" ></el-input>
+                </el-form-item>
+                <el-form-item label="所在学校" prop="college" >
+                    <el-select size="large" v-model="registerForm.college" filterable clearable style="width: 300px;" placeholder="请选择所在学校" v-model="collegeNo" @change="selectCollege($event)">
+                        <el-option :label="item.schoolName" v-for="(item,index) in collegeList" :value="item.schoolId"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="所在学院" prop="institute" >
+                    <el-select size="large" filterable clearable style="width: 300px;" placeholder="请选择所在学院" v-model="registerForm.institute" @change="selectInstitute($event)">
+                        <el-option :label="item.instituteName" v-for="(item,index) in instituteList" :value="item.instituteNo"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="账号" prop="accountNo" >
-                    <el-input v-model.number="ruleForm2.accountNo" placeholder="仅支持手机号" ></el-input>
+                    <el-input v-model="registerForm.accountNo" placeholder="仅支持手机号" ></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="pass">
-                    <el-input type="password" v-model="ruleForm2.pass" auto-complete="off" ></el-input>
+                    <el-input type="password" v-model="registerForm.pass" auto-complete="off" placeholder="请输入密码" ></el-input>
                 </el-form-item>
                 <el-form-item label="确认密码" prop="checkPass">
-                    <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off" ></el-input>
+                    <el-input type="password" v-model="registerForm.checkPass" auto-complete="off" placeholder="请输入确认密码" ></el-input>
+                </el-form-item>
+                <el-form-item label="注册邀请码" prop="invitation" >
+                    <el-input v-model.number="registerForm.invitation" placeholder="请输入注册邀请码" ></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
-                    <el-button @click="resetForm('ruleForm2')">重置</el-button>
+                    <el-button type="primary" @click="submitForm('registerForm')">提交</el-button>
+                    <el-button @click="resetForm('registerForm')">重置</el-button>
                 </el-form-item>
             </el-form>
             </div>
@@ -57,8 +73,8 @@
                 if (value === '') {
                     callback(new Error('请输入密码'));
                 } else {
-                    if (this.ruleForm2.checkPass !== '') {
-                        this.$refs.ruleForm2.validateField('checkPass');
+                    if (this.registerForm.checkPass !== '') {
+                        this.$refs.registerForm.validateField('checkPass');
                     }
                     callback();
                 }
@@ -66,27 +82,51 @@
             var validatePass2 = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('请再次输入密码'));
-                } else if (value !== this.ruleForm2.pass) {
+                } else if (value !== this.registerForm.pass) {
                     callback(new Error('两次输入密码不一致!'));
                 } else {
                     callback();
                 }
             };
+            var validateUsername = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('用户姓名不能为空'));
+                }else {
+                    callback();
+                }
+            };
+            var checkInvitation = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('注册邀请码不能为空'));
+                }else {
+                    callback();
+                }
+            };
+            var checkCollege = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('所在学校不能为空'));
+                }else {
+                    callback();
+                }
+            };
             return {
-                tableRowData:'',
-                collegeNo: "4111014430",
-                identifyCollegeId: "1000001",
-                managerId: "4000001",
                 instituteNo:'',
-                pass: '',
-                checkPass: '',
-                accountNo: '',
-                ruleForm2: {
+                managerId: "4000001",
+                instituteList:[],
+                collegeList:[],
+                registerForm: {
                     pass: '',
                     checkPass: '',
-                    accountNo: ''
+                    accountNo: '',
+                    invitation: '',
+                    college: '',
+                    institute: '',
+                    username: ''
                 },
                 rules2: {
+                    username: [
+                        { validator: validateUsername, trigger: 'blur' }
+                    ],
                     pass: [
                         { validator: validatePass, trigger: 'blur' }
                     ],
@@ -95,24 +135,50 @@
                     ],
                     accountNo: [
                         { validator: checkAccountNo, trigger: 'blur' }
-                    ]
+                    ],
+                    invitation: [
+                        { validator: checkInvitation, trigger: 'blur' }
+                    ],
+                    college: [
+                        { validator: checkCollege, trigger: 'blur' }
+                    ],
                 },
             }
         },
         mounted: function () {
-            // this.initMethod();
+            this.initMethod();
             // 菜单选择
         },
         methods: {
             submitForm(formName) {
+                var reqData = this.registerForm;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+                        let json = registerSubmit(reqData);
+                        json.then((respData) => {
+                            if(respData.data.code == 0){
+                            this.$message({
+                                message: '注册成功',
+                                type: 'success'
+                            });
+                        }else{
+                            this.$message({
+                                message: respData.data.message,
+                                type: 'error'
+                            });
+                        }
+                        });
                     } else {
-                        console.log('error submit!!');
-                return false;
+                        console.log('提交失败!');
+                        return false;
                 }
                 });
+            },
+            selectCollege(val){
+                this.collegeNo = val;
+            },
+            selectInstitute(val){
+                this.institute = val;
             },
             resetForm(formName) {
                     this.$refs[formName].resetFields();
@@ -123,15 +189,8 @@
             // 修改
             save() {
                 let reqData = {};
-                reqData.managerId = '4000004';
-                reqData.identifyCollegeId = this.identifyCollegeId;
-                reqData.identifyStatus = this.identifyStatus;
                 reqData.instituteNo = this.instituteNo;
                 reqData.degreeType = this.degreeNo;
-                reqData.entranceTime = this.format(this.entranceTime,"yyyy-MM-dd");
-                reqData.graduationTime = this.format(this.graduationTime,"yyyy-MM-dd");
-                reqData.grade = $('#detail_grade').val();
-                reqData.studentNo = $('#studentNo').val();
                 reqData.professionName = this.professionName;
                 reqData.studentNo = this.studentNo;
                 console.log('reqData',reqData);
@@ -154,42 +213,26 @@
                 });
             },
             initMethod(){
-                let json = getAlumniInfo({
-                    collegeNo: "4111014430",
-                    managerId: "4000004",
-                    identifyCollegeId: this.identifyCollegeId,
-                });
-                json.then((respData) => {
+                //获取学校集合
+                var that = this;
+                let jsonCollege = getColleges();
+                jsonCollege.then((respData) => {
                     if(respData.data.code == 0){
-                    this.tableRowData = respData.data.result;
-                    var that = this;
-                    var jobs = this.tableRowData.jobsInfoDto;
-                    var partjobs = this.tableRowData.partTimeJobsDto;
-                    this.instituteNo = this.tableRowData.instituteNo;
-                    this.grade = this.tableRowData.grade;
-                    this.entranceTime = this.tableRowData.entranceTime;
-                    this.graduationTime = this.tableRowData.graduationTime;
-                    this.degreeNo = this.tableRowData.degreeNo;
-                    this.professionName = this.tableRowData.professionName;
-                    this.studentNo = this.tableRowData.studentNo;
-                    this.identifyStatus = this.tableRowData.identifyStatus;
-                    if(jobs != null){
-                        that.jobsList = that.foreachJob(jobs);
+                    if(respData.data.result != null){
+                        that.collegeList = respData.data.result;
                     }
-                    if(partjobs != null){
-                        that.partTimejobList = that.foreachJob(partjobs);
                     }
-                    console.log(respData);
-                } else{
-                    this.$message({
-                        message: respData.data.message,
-                        type: 'error'
-                    });
+                });
+                //获取学院集合
+                let jsonInstitute = getInstitute();
+                jsonInstitute.then((respData) => {
+                    if(respData.data.code == 0){
+                    if(respData.data.result != null){
+                        that.instituteList = respData.data.result;
+                    }
                 }
-            });
+                });
             }
-
-
         }
     })
 

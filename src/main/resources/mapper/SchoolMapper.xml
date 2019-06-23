@@ -29,4 +29,11 @@
     WHERE
     school_id = #{id,jdbcType=VARCHAR}
   </select>
+
+  <select id="getSchools" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    t_school
+  </select>
 </mapper>
