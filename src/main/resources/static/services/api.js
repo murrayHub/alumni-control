@@ -52,6 +52,10 @@ function registerSubmit(data) {
     var url = '/base/register-submit';
     return requestHeaderPost(url, data)
 }
+function loginSubmit(data) {
+    var url = '/base/login';
+    return requestHeaderPost(url, data)
+}
 
   //暴露行为
 //   window.detailModule = { getGoodsDetail, goodsSpec }

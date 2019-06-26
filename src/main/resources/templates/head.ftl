@@ -22,13 +22,14 @@
 <script src="${ctx}/static/element-ui/index.js"></script>
 <link rel="stylesheet" href="${ctx}/static/element-ui/index.css" />
 <script src="${ctx}/static/element-ui/en.js"></script>
+<script src="${ctx}/static/element-ui/zh.js"></script>
 <!-- index.less是最大的入口less文件，所有的模块less文件都在这里引入。必须在less.js之上 -->
 <link rel="stylesheet/less" type="text/css" href="${ctx}/static/css/index.less" />
 <script src="${ctx}/static/js/less.min.js" type="text/javascript"></script>
 <script src="${ctx}/static/js/number-precision.js" type="text/javascript"></script>
 <!-- Element-UI在线开发文档： https://element.eleme.cn/2.0/#/zh-CN/component/layout -->
 <script>
-  ELEMENT.locale(ELEMENT.lang.en)
+    ELEMENT.locale(ELEMENT.lang.zhCN);
 </script>
 
 

@@ -186,32 +186,6 @@
             goBack(){
                 window.history.back(-1);
             },
-            // 修改
-            save() {
-                let reqData = {};
-                reqData.instituteNo = this.instituteNo;
-                reqData.degreeType = this.degreeNo;
-                reqData.professionName = this.professionName;
-                reqData.studentNo = this.studentNo;
-                console.log('reqData',reqData);
-                let json = levelTwoIdentifyUpdate(reqData);
-                json.then((respData) => {
-                    if(respData.data.code == 0){
-                    this.$message({
-                        message: '修改成功',
-                        type: 'success'
-                    });
-                    setTimeout(() =>{
-                        location.reload();
-                    },1000);
-                } else{
-                    this.$message({
-                        message: respData.data.message,
-                        type: 'error'
-                    });
-                }
-                });
-            },
             initMethod(){
                 //获取学校集合
                 var that = this;

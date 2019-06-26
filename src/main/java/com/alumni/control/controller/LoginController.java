@@ -1,16 +1,26 @@
 package com.alumni.control.controller;
 
+import com.alumni.control.constant.RedisDict;
 import com.alumni.control.convert.SchoolConvert;
+import com.alumni.control.dict.NumberDict;
+import com.alumni.control.dict.NumberLongDict;
 import com.alumni.control.enums.ErrorCodeEnum;
 import com.alumni.control.enums.InvitationEnum;
 import com.alumni.control.exception.BizServiceException;
 import com.alumni.control.mapper.SchoolMapper;
+import com.alumni.control.pojo.dao.LoginInfoDo;
 import com.alumni.control.pojo.dao.SchoolDo;
 import com.alumni.control.pojo.dao.UcasInstituteDo;
+import com.alumni.control.pojo.dto.CommonParamDto;
 import com.alumni.control.pojo.vo.SchoolVo;
 import com.alumni.control.pojo.vo.UcasInstituteVo;
+import com.alumni.control.pojo.vo.UserLoginVo;
 import com.alumni.control.pojo.vo.UserRegisterVo;
+import com.alumni.control.redis.RedisManager;
 import com.alumni.control.service.CacheService;
+import com.alumni.control.service.RegisterService;
+import com.alumni.control.service.UserLoginService;
+import com.alumni.control.utils.JwtUtil;
 import com.alumni.control.utils.TechGoalObjects;
 import com.alumni.control.utils.validation.ParamValidate;
 import com.alumni.control.utils.web.AjaxResult;
@@ -22,11 +32,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -48,11 +57,27 @@ public class LoginController {
     private SchoolMapper schoolMapper;
     @Autowired
     private CacheService cacheService;
+    @Autowired
+    private RegisterService registerService;
+    @Autowired
+    private UserLoginService userLoginService;
+
+    /**
+     * 缓存服务
+     */
+    @Autowired
+    private RedisManager redisServiceImpl;
 
     @ApiOperation(value = "校友管理-注册页面")
-    @GetMapping("/register")
-    public String alumniManageDetail() {
+    @GetMapping("/registerPage")
+    public String registerPage() {
         return "/register";
+    }
+
+    @ApiOperation(value = "校友管理-登录页面")
+    @GetMapping("/loginPage")
+    public String loginPage() {
+        return "/login";
     }
 
     @ApiOperation(value = "提交注册信息")
@@ -72,9 +97,55 @@ public class LoginController {
                 throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000038);
             }
         }
+        // 检查用户账号是否已注册
+        int count = registerService.checkUserLoginInfo(userRegisterVo);
+        if (count > NumberDict.ZERO) {
+            log.error("用户注册,异常：{}", ErrorCodeEnum.ERROR_CODE_000003.getErrorDesc());
+            throw new BizServiceException(ErrorCodeEnum.ERROR_CODE_000003);
+        }
         // 数据落库
-
+        registerService.insertUserInfo(userRegisterVo);
         return result;
+    }
+
+    @WebEnhance(mode = WebResultModeEnum.AJAX)
+    @PostMapping("/login")
+    @ApiOperation(value = "登录")
+    public AjaxResult<UserLoginVo> login(@RequestBody UserLoginVo userLoginVo) throws Exception {
+        AjaxResult<UserLoginVo> result = new AjaxResult();
+        log.info("用户登录,请求参数:{}", userLoginVo);
+        ParamValidate.validate(userLoginVo);
+        // 校验登录信息
+//        String pwd = SecurityUtil.aesDecrypt(userLoginVo.getPwd(), SecurityDict.AES_LOGIN_WORD_KEY, SecurityDict.AES_LOGIN_WORD_KEY);
+//        userLoginVo.setPwd(PwdEncryptUtil.encrypt(pwd));
+        LoginInfoDo loginInfoDo = userLoginService.verifyUserLoginInfo(userLoginVo);
+        userLoginService.insertLoginLog(loginInfoDo);
+        // 设置公共参数
+        String token = setCommonParams(userLoginVo, loginInfoDo.getUserId());
+        UserLoginVo userLoginRespVo = new UserLoginVo();
+        userLoginRespVo.setToken(token);
+        result.setResult(userLoginRespVo);
+        return result;
+    }
+
+    /**
+     * 设置公共参数
+     *
+     * @param userLoginVo 用户登录信息
+     * @param userId      用户编号
+     * @return token
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeyException
+     */
+    private String setCommonParams(UserLoginVo userLoginVo, Long userId) throws NoSuchAlgorithmException, InvalidKeyException {
+        String key = JwtUtil.getKey();
+        String token = JwtUtil.getToken(String.valueOf(userId), key);
+        CommonParamDto commonParamDto = new CommonParamDto();
+        commonParamDto.setLoginNo(userLoginVo.getLoginNo());
+        commonParamDto.setUserId(String.valueOf(userId));
+        commonParamDto.setTokenKey(key);
+        redisServiceImpl.insertObject(commonParamDto, RedisDict.TOKEN + (String.valueOf(userId)), NumberLongDict.TWO_HOUR_SECOND);
+        return token;
     }
 
     @ApiOperation(value = "获取学校集合")
