@@ -8,6 +8,7 @@
 <script src="${ctx}/static/js/vendor/semantic.min.js"></script>
 <script src="${ctx}/static/services/api.js"></script>
 <script src="${ctx}/static/services/request.js"></script>
+<script src="${ctx}/static/js/public_function.js"></script>
 <#if (Request.env)?exists && Request.env=='prod'>
 <#--  开发环境  -->
 <script src="${ctx}/static/js/vue.min.js"></script>

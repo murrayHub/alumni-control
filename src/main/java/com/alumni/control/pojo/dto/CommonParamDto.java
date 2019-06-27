@@ -34,9 +34,19 @@ public class CommonParamDto {
     private String userId;
 
     /**
+     * 学校编号
+     */
+    private String collegeNo;
+
+    /**
      * tokenKey
      */
     private String tokenKey;
+
+    /**
+     * tokenVal
+     */
+    private String tokenVal;
 
     /**
      * 登录帐号

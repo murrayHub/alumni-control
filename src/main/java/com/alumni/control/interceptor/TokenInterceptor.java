@@ -6,17 +6,14 @@ import com.alumni.control.constant.RedisDict;
 import com.alumni.control.dict.CharacterDict;
 import com.alumni.control.dict.CommonDict;
 import com.alumni.control.dict.NumberLongDict;
-import com.alumni.control.enums.ErrorCodeEnum;
-import com.alumni.control.exception.BizServiceException;
-import com.alumni.control.pojo.dao.AlumniManagerInfoDo;
 import com.alumni.control.pojo.dto.CommonParamDto;
 import com.alumni.control.redis.RedisManager;
 import com.alumni.control.utils.JsonUtil;
 import com.alumni.control.utils.SecurityUtil;
 import com.alumni.control.utils.TechGoalObjects;
+import com.alumni.control.utils.web.AjaxResult;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -27,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.UUID;
 
@@ -56,9 +54,9 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         before(request, response);
-//        if (checkToken(request, response)) {
-//            return false;
-//        }
+        if (checkToken(request, response)) {
+            return false;
+        }
         return super.preHandle(request, response, handler);
     }
 
@@ -71,14 +69,19 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
      * @throws IOException
      */
     private boolean checkToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String token = getByName(request, CommonDict.TOKEN);
+        String token = request.getHeader("Authorization");
         int httpCode = 401;
-        if (StringUtils.isBlank(token)) {
-            response.sendError(httpCode, "error message");
-            log.info("token不存在，请求已拦截");
-            return true;
-        }
         try {
+            if (TechGoalObjects.isEmpty(token) || "null".equals(token)) {
+                log.info("token不存在，请求已拦截");
+                AjaxResult<String> ajaxResult = new AjaxResult<>();
+                ajaxResult.setCode(999);
+                ajaxResult.setMessage("登录Session超时");
+                response.setHeader("Content-type", "text/html;charset=UTF-8");
+                log.warn("用户登录超时，返回Ajax错误信息");
+                response.getOutputStream().write(JsonUtil.toJSONString(ajaxResult).getBytes(StandardCharsets.UTF_8));
+                return true;
+            }
             String[] split = token.split("\\.");
             //reidKey组装
             String redisKey = RedisDict.TOKEN + JsonUtil.toObject(SecurityUtil.base64Decode(split[1]), Map.class).get("sub");
@@ -86,17 +89,27 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
             CommonParamDto commonParamDto = redisManager.queryObjectByKey(redisKey, CommonParamDto.class);
             if (commonParamDto == null) {
                 log.warn("用户登录已超时或请求token不正确，请求token：{},redisKey:{}", token, redisKey);
-                response.sendError(httpCode, "登录超时或异常请求");
+                AjaxResult<String> ajaxResult = new AjaxResult<>();
+                ajaxResult.setCode(999);
+                ajaxResult.setMessage("登录Session超时");
+                response.setHeader("Content-type", "text/html;charset=UTF-8");
+                log.warn("用户登录超时，返回Ajax错误信息");
+                response.getOutputStream().write(JsonUtil.toJSONString(ajaxResult).getBytes(StandardCharsets.UTF_8));
                 return true;
             }
             //token验证
             Jwts.parser().setSigningKey(commonParamDto.getTokenKey()).parseClaimsJws(token).getBody();
             request.setAttribute("commonParam", commonParamDto);
             //新的缓存插入redis中
-            redisManager.insertObject(commonParamDto, redisKey, NumberLongDict.TWO_HOUR_SECOND);
+            redisManager.insertObject(commonParamDto, redisKey, NumberLongDict.TWO_HOUR);
         } catch (Exception e) {
-            response.sendError(httpCode, "error message");
             log.error("token不正确，请求已拦截", e);
+            AjaxResult<String> ajaxResult = new AjaxResult<>();
+            ajaxResult.setCode(999);
+            ajaxResult.setMessage("登录Session超时");
+            response.setHeader("Content-type", "text/html;charset=UTF-8");
+            log.warn("用户登录超时，返回Ajax错误信息");
+            response.getOutputStream().write(JsonUtil.toJSONString(ajaxResult).getBytes(StandardCharsets.UTF_8));
             return true;
         }
         return false;

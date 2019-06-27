@@ -1,12 +1,12 @@
-.layout_container {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    flex-flow: nowrap row;
-    justify-content: space-between;
-    align-items: flex-start;
-}
+/*.layout_container {*/
+    /*width: 100vw;*/
+    /*height: 100vh;*/
+    /*overflow: hidden;*/
+    /*display: flex;*/
+    /*flex-flow: nowrap row;*/
+    /*justify-content: space-between;*/
+    /*align-items: flex-start;*/
+/*}*/
 
 /*----------------
     layout_nav
@@ -249,8 +249,13 @@
     background: rgba(245,249,252,1);
     padding: 45px 80px;
     flex: 1;
+    width: 350px;
+    margin: 0 auto;
     /* overflow-x: hidden;
     overflow-y: auto; */
+}
+.login-control{
+    margin: 0 auto;
 }
 .header {
     display: flex;

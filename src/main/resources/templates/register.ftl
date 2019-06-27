@@ -7,6 +7,7 @@
 </head>
 <body>
 <div id="Register" class="layout_container">
+    <div><img src="/static/images/background.jpg" style="width: 100%"></div>
     <div class="register-include-control">
         <div class="layout_content">
         <div class="login-control">
@@ -40,6 +41,7 @@
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('registerForm')">提交</el-button>
                     <el-button @click="resetForm('registerForm')">重置</el-button>
+                    <el-button type="warning" @click="navToLogin" style="margin-left: 161px;">返回登录</el-button>
                 </el-form-item>
             </el-form>
             </div>
@@ -111,7 +113,6 @@
             };
             return {
                 instituteNo:'',
-                managerId: "4000001",
                 instituteList:[],
                 collegeList:[],
                 registerForm: {
@@ -150,6 +151,9 @@
             // 菜单选择
         },
         methods: {
+            navToLogin(){
+                location.href = ctx+ "/base/loginPage";
+            },
             submitForm(formName) {
                 var reqData = this.registerForm;
                 this.$refs[formName].validate((valid) => {
@@ -161,6 +165,9 @@
                                 message: '注册成功',
                                 type: 'success'
                             });
+                            setTimeout(() =>{
+                                location.href = "${ctx!}/base/loginPage";
+                            },1000);
                         }else{
                             this.$message({
                                 message: respData.data.message,

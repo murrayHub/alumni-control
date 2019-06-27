@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <#include 'head.ftl' >
+<#include 'components/top-header.ftl' >
 <head>
     <meta charset="UTF-8">
     <title>alumni-control</title>
 </head>
 <body>
-<div id="alumniInfoDetail" class="layout_container">
-    <div class="baofu-shop-nav--control">
-    <right-header></right-header>
+<div id="alumniInfoDetail" class="layout_container" style="position: relative;">
+    <div><img src="/static/images/home1.jpg" style="width: 100%"></div>
+    <div class="baofu-shop-nav--control" style="position: absolute;margin-top: -660px;">
+        <top-header></top-header>
         <div class="layout_content">
         <title-page title="Refund order"></title-page>
         <div class="refund-order-list--control">
             <div style="margin: 20px;"></div>
-            <el-form :label-position="right" label-width="80px" :model="tableRowData">
+            <el-form :label-position="right" label-width="80px" :model="tableRowData" style="margin-bottom: 50px;">
                 <el-form-item label="姓名">
                     <el-input disabled style="width: 300px;" v-model="tableRowData.studentName"></el-input>
                 </el-form-item>
@@ -176,9 +178,9 @@
             refundType:'',
             refundStatus:'',
             searchReturnId:'',
-            collegeNo: "4111014430",
-            identifyCollegeId: "1000001",
-            managerId: "4000001",
+            collegeNo: "",
+            identifyCollegeId: "",
+            managerId: "",
             genderType:'',
             degreeType:'',
             identifyType:'',
@@ -219,12 +221,12 @@
                 return result;
             },
             goBack(){
-                window.history.back(-1);
+                location.href = "${ctx!}/audit/alumni-manage";
             },
             // 修改
             save() {
                 let reqData = {};
-                reqData.managerId = '4000004';
+                reqData.managerId = localStorage.getItem("managerId"),
                 reqData.identifyCollegeId = this.identifyCollegeId;
                 reqData.identifyStatus = this.identifyStatus;
                 reqData.instituteNo = this.instituteNo;
@@ -272,8 +274,8 @@
             },
             initMethod(){
                 let json = getAlumniInfo({
-                    collegeNo: "4111014430",
-                    managerId: "4000004",
+                    collegeNo: localStorage.getItem("collegeNo"),
+                    managerId: localStorage.getItem("managerId"),
                     identifyCollegeId: this.identifyCollegeId,
                 });
                 json.then((respData) => {
@@ -302,6 +304,9 @@
                         message: respData.data.message,
                         type: 'error'
                     });
+                    setTimeout(() =>{
+                        location.href = ctx+ "/base/loginPage";
+                },1000);
                 }
             });
             }

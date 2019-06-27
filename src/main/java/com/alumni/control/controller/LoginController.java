@@ -7,7 +7,9 @@ import com.alumni.control.dict.NumberLongDict;
 import com.alumni.control.enums.ErrorCodeEnum;
 import com.alumni.control.enums.InvitationEnum;
 import com.alumni.control.exception.BizServiceException;
+import com.alumni.control.mapper.AlumniManagerInfoDoMapper;
 import com.alumni.control.mapper.SchoolMapper;
+import com.alumni.control.pojo.dao.AlumniManagerInfoDo;
 import com.alumni.control.pojo.dao.LoginInfoDo;
 import com.alumni.control.pojo.dao.SchoolDo;
 import com.alumni.control.pojo.dao.UcasInstituteDo;
@@ -61,6 +63,8 @@ public class LoginController {
     private RegisterService registerService;
     @Autowired
     private UserLoginService userLoginService;
+    @Autowired
+    private AlumniManagerInfoDoMapper alumniManagerInfoDoMapper;
 
     /**
      * 缓存服务
@@ -69,13 +73,13 @@ public class LoginController {
     private RedisManager redisServiceImpl;
 
     @ApiOperation(value = "校友管理-注册页面")
-    @GetMapping("/registerPage")
+    @RequestMapping("/registerPage")
     public String registerPage() {
         return "/register";
     }
 
     @ApiOperation(value = "校友管理-登录页面")
-    @GetMapping("/loginPage")
+    @RequestMapping("/loginPage")
     public String loginPage() {
         return "/login";
     }
@@ -110,9 +114,10 @@ public class LoginController {
 
     @WebEnhance(mode = WebResultModeEnum.AJAX)
     @PostMapping("/login")
+    @ResponseBody
     @ApiOperation(value = "登录")
-    public AjaxResult<UserLoginVo> login(@RequestBody UserLoginVo userLoginVo) throws Exception {
-        AjaxResult<UserLoginVo> result = new AjaxResult();
+    public AjaxResult<CommonParamDto> login(@RequestBody UserLoginVo userLoginVo) throws Exception {
+        AjaxResult<CommonParamDto> result = new AjaxResult();
         log.info("用户登录,请求参数:{}", userLoginVo);
         ParamValidate.validate(userLoginVo);
         // 校验登录信息
@@ -121,31 +126,33 @@ public class LoginController {
         LoginInfoDo loginInfoDo = userLoginService.verifyUserLoginInfo(userLoginVo);
         userLoginService.insertLoginLog(loginInfoDo);
         // 设置公共参数
-        String token = setCommonParams(userLoginVo, loginInfoDo.getUserId());
-        UserLoginVo userLoginRespVo = new UserLoginVo();
-        userLoginRespVo.setToken(token);
-        result.setResult(userLoginRespVo);
+        AlumniManagerInfoDo alumniManagerInfoDo = new AlumniManagerInfoDo();
+        alumniManagerInfoDo.setUserId(loginInfoDo.getUserId());
+        AlumniManagerInfoDo alumniManagerInfoDo1 = alumniManagerInfoDoMapper.selectOne(alumniManagerInfoDo);
+        CommonParamDto commonParamDto = setCommonParams(loginInfoDo.getUserId(), alumniManagerInfoDo1.getCollegeNo());
+        result.setResult(commonParamDto);
         return result;
     }
 
     /**
      * 设置公共参数
      *
-     * @param userLoginVo 用户登录信息
      * @param userId      用户编号
-     * @return token
+     * @param collegeNo      学校编号
+     * @return CommonParamDto
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeyException
      */
-    private String setCommonParams(UserLoginVo userLoginVo, Long userId) throws NoSuchAlgorithmException, InvalidKeyException {
+    private CommonParamDto setCommonParams(Long userId,String collegeNo) throws NoSuchAlgorithmException, InvalidKeyException {
         String key = JwtUtil.getKey();
         String token = JwtUtil.getToken(String.valueOf(userId), key);
         CommonParamDto commonParamDto = new CommonParamDto();
-        commonParamDto.setLoginNo(userLoginVo.getLoginNo());
+        commonParamDto.setCollegeNo(collegeNo);
         commonParamDto.setUserId(String.valueOf(userId));
+        commonParamDto.setTokenVal(token);
         commonParamDto.setTokenKey(key);
-        redisServiceImpl.insertObject(commonParamDto, RedisDict.TOKEN + (String.valueOf(userId)), NumberLongDict.TWO_HOUR_SECOND);
-        return token;
+        redisServiceImpl.insertObject(commonParamDto, RedisDict.TOKEN + (String.valueOf(userId)), NumberLongDict.TWO_HOUR);
+        return commonParamDto;
     }
 
     @ApiOperation(value = "获取学校集合")

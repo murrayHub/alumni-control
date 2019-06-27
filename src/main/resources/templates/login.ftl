@@ -6,7 +6,8 @@
     <title>alumni-control</title>
 </head>
 <body>
-<div id="Login" class="layout_container">
+<div id="Login" class="layout_container" style="position: relative;text-align: center;">
+    <div><img src="/static/images/background.jpg" style="width: 100%"></div>
     <div class="login-include-control">
         <div class="layout_content">
         <div class="login-control">
@@ -21,6 +22,7 @@
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('loginForm')">提交</el-button>
                     <el-button @click="resetForm('loginForm')">重置</el-button>
+                    <el-button type="success" @click="navToRegister">注册</el-button>
                 </el-form-item>
             </el-form>
             </div>
@@ -81,6 +83,9 @@
             // 菜单选择
         },
         methods: {
+            navToRegister(){
+                location.href = ctx+ "/base/registerPage";
+            },
             submitForm(formName) {
                 var reqData = this.loginForm;
                 this.$refs[formName].validate((valid) => {
@@ -88,16 +93,25 @@
                         let json = loginSubmit(reqData);
                         json.then((respData) => {
                             if(respData.data.code == 0){
-                            this.$message({
-                                message: '登录成功',
-                                type: 'success'
-                            });
-                        }else{
-                            this.$message({
-                                message: respData.data.message,
-                                type: 'error'
-                            });
-                        }
+                                this.$message({
+                                    message: '登录成功',
+                                    type: 'success'
+                                });
+                                var token = respData.data.result.tokenVal;
+                                var managerId = respData.data.result.userId;
+                                var collegeNo = respData.data.result.collegeNo;
+                                localStorage.setItem("Authorization",token);
+                                localStorage.setItem("managerId",managerId);
+                                localStorage.setItem("collegeNo",collegeNo);
+                                setTimeout(() =>{
+                                    location.href = "${ctx!}/audit/alumni-manage";
+                            },1000);
+                            }else{
+                                this.$message({
+                                    message: respData.data.message,
+                                    type: 'error'
+                                });
+                            }
                         });
                     } else {
                         console.log('登录失败!');

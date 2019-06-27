@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <#include 'head.ftl' >
+<#include 'components/top-header.ftl' >
 <head>
     <meta charset="UTF-8">
     <title>alumni-control</title>
 </head>
 <body>
-<div id="alumniInfoList" class="layout_container">
-    <div class="baofu-shop-nav--control">
-    <right-header></right-header>
+<div id="alumniInfoList" class="layout_container" style="position: relative;">
+    <div><img src="/static/images/home1.jpg" style="width: 100%"></div>
+    <div class="baofu-shop-nav--control" style="position: absolute;margin-top: -660px;">
+    <top-header></top-header>
         <div class="layout_content">
         <title-page title="Refund order"></title-page>
         <div class="refund-order-list--control">
@@ -264,9 +266,9 @@
             refundType:'',
             refundStatus:'',
             searchReturnId:'',
-            collegeNo: "4111014430",
-            identifyCollegeId: "1000001",
-            managerId: "4000001",
+            collegeNo: "",
+            identifyCollegeId: "",
+            managerId: "",
             genderType:'',
             degreeType:'',
             identifyType:'',
@@ -295,11 +297,11 @@
                     instance.confirmButtonText = '执行中...';
 
                     let json = levelTwoIdentifyUpdate({
-                        collegeNo: "4111014430",
-                        instituteNo: "1005",
-                        managerId: "4000004",
+                        collegeNo: localStorage.getItem("collegeNo"),
+                        instituteNo: val.instituteNo,
+                        managerId: localStorage.getItem("managerId"),
                         identifyStatus: 2,
-                        identifyCollegeId: "1000001"
+                        identifyCollegeId: val.identifyCollegeId
                     });
                     json.then((respData) => {
                         if(respData.data.code == 0){
@@ -327,11 +329,11 @@
                     instance.confirmButtonLoading = true;
                     instance.confirmButtonText = '执行中...';
                     let json = levelTwoIdentifyUpdate({
-                        collegeNo: "4111014430",
-                        instituteNo: "1005",
-                        managerId: "4000004",
+                        collegeNo: localStorage.getItem("collegeNo"),
+                        instituteNo: val.instituteNo,
+                        managerId: localStorage.getItem("managerId"),
                         identifyStatus: 3,
-                        identifyCollegeId: "1000001"
+                        identifyCollegeId: val.identifyCollegeId
                     });
                     json.then((respData) => {
                         if(respData.data.code == 0){
@@ -360,7 +362,7 @@
             }
             })
             },
-            handleSecondReview() {
+            handleSecondReview(val) {
                 this.$msgbox({
                     title: '复审操作提示',
                     showClose: false,
@@ -377,11 +379,11 @@
                     instance.confirmButtonText = '执行中...';
 
                     let json = levelTwoUpdateAudit({
-                        collegeNo: "4111014430",
-                        instituteNo: "1005",
-                        managerId: "4000003",
+                        collegeNo: localStorage.getItem("collegeNo"),
+                        instituteNo: val.instituteNo,
+                        managerId: localStorage.getItem("managerId"),
                         identifyStatus: 4,
-                        identifyCollegeId: "1000001"
+                        identifyCollegeId: val.identifyCollegeId
                     });
                     json.then((respData) => {
                         if(respData.data.code == 0){
@@ -409,11 +411,11 @@
                     instance.confirmButtonLoading = true;
                     instance.confirmButtonText = '执行中...';
                     let json = levelTwoIdentifyUpdate({
-                        collegeNo: "4111014430",
-                        instituteNo: "1005",
-                        managerId: "4000003",
+                        collegeNo: localStorage.getItem("collegeNo"),
+                        instituteNo: val.instituteNo,
+                        managerId: localStorage.getItem("managerId"),
                         identifyStatus: 5,
-                        identifyCollegeId: "1000001"
+                        identifyCollegeId: val.identifyCollegeId
                     });
                     json.then((respData) => {
                         if(respData.data.code == 0){
@@ -456,8 +458,8 @@
             },
             pageHandler(pageNo){
                 let json = getAlumniInfos({
-                    collegeNo: "4111014430",
-                    managerId: "4000001",
+                    collegeNo: localStorage.getItem("collegeNo"),
+                    managerId: localStorage.getItem("managerId"),
                     currentPage:pageNo,
                     pageSize:this.pageSize,
                     identifyStatus:this.identifyStatus,
@@ -484,8 +486,8 @@
             handleIdentifyStatus(command){
                 this.identifyStatus = command;
                 let json = getAlumniInfos({
-                    collegeNo: "4111014430",
-                    managerId: "4000001",
+                    collegeNo: localStorage.getItem("collegeNo"),
+                    managerId: localStorage.getItem("managerId"),
                     currentPage:this.currentPage,
                     pageSize:this.pageSize,
                     degreeType:this.degreeType,
@@ -512,8 +514,8 @@
             handleDegree(command){
                 this.degreeType = command;
                 let json = getAlumniInfos({
-                    collegeNo: "4111014430",
-                    managerId: "4000001",
+                    collegeNo: localStorage.getItem("collegeNo"),
+                    managerId: localStorage.getItem("managerId"),
                     currentPage:this.currentPage,
                     pageSize:this.pageSize,
                     identifyStatus:this.identifyStatus,
@@ -540,8 +542,8 @@
             handleIdentifyType(command){
                 this.identifyType = command;
                 let json = getAlumniInfos({
-                    collegeNo: "4111014430",
-                    managerId: "4000001",
+                    collegeNo: localStorage.getItem("collegeNo"),
+                    managerId: localStorage.getItem("managerId"),
                     currentPage:this.currentPage,
                     pageSize:this.pageSize,
                     identifyStatus:this.identifyStatus,
@@ -568,8 +570,8 @@
             handleGender(command){
                 this.genderType = command;
                 let json = getAlumniInfos({
-                    collegeNo: "4111014430",
-                    managerId: "4000001",
+                    collegeNo: localStorage.getItem("collegeNo"),
+                    managerId: localStorage.getItem("managerId"),
                     currentPage:this.currentPage,
                     pageSize:this.pageSize,
                     identifyStatus:this.identifyStatus,
@@ -597,8 +599,8 @@
                 // 需要加入正则校验
                 this.studentName = searchVal;
                 let json = getAlumniInfos({
-                    collegeNo: "4111014430",
-                    managerId: "4000001",
+                    collegeNo: localStorage.getItem("collegeNo"),
+                    managerId: localStorage.getItem("managerId"),
                     identifyStatus:this.identifyStatus,
                     degreeType:this.degreeType,
                     identifyType:this.identifyType,
@@ -628,8 +630,8 @@
             },
             initMethod(){
                 let json = getAlumniInfos({
-                    collegeNo: "4111014430",
-                    managerId: "4000001",
+                    collegeNo: localStorage.getItem("collegeNo"),
+                    managerId: localStorage.getItem("managerId"),
                     currentPage:this.currentPage,
                     pageSize:this.pageSize
                 });
@@ -646,10 +648,13 @@
                         message: respData.data.message,
                         type: 'error'
                     });
+                    setTimeout(() =>{
+                        location.href = ctx+ "/base/loginPage";
+                    },1000);
+
                 }
             });
             }
-
 
         }
     })

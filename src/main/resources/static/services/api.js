@@ -57,6 +57,10 @@ function loginSubmit(data) {
     return requestHeaderPost(url, data)
 }
 
+function alumniDetail(data) {
+    var url = '/audit/alumni-manage-detail';
+    return requestHeaderGet(url, data)
+}
   //暴露行为
 //   window.detailModule = { getGoodsDetail, goodsSpec }
 // })(window)
