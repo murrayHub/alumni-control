@@ -27,12 +27,27 @@ public interface CacheService {
     Map<String, RegionDo> getProvinces();
 
     /**
+     * 获取所有省份集合
+     *
+     * @return 结果集
+     */
+    List<RegionDo> getProvinceList();
+
+    /**
      * 获取城市集合
      *
      * @param proId 省份代码
      * @return 结果集
      */
     Map<String, RegionDo> getCitys(String proId);
+
+    /**
+     * 获取城市集合
+     *
+     * @param proId 省份代码
+     * @return 结果集
+     */
+    List<RegionDo> getCityList(String proId);
 
     /**
      * 按照<省份代码>获取城市集合

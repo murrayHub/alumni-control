@@ -34,6 +34,10 @@ public class CacheServiceImpl implements CacheService {
      */
     private static final Map<String, RegionDo> provinceMap = Maps.newConcurrentMap();
     /**
+     * 省份-集合
+     */
+    private static final List<RegionDo> provinceList = Lists.newArrayList();
+    /**
      * 所有城市-集合
      */
     private static final Map<String, Map<String, RegionDo>> allCitys = Maps.newConcurrentMap();
@@ -119,6 +123,9 @@ public class CacheServiceImpl implements CacheService {
         log.info("加载缓存-获取所有二级学院信息-开始");
         getInstitutes();
         log.info("加载缓存-获取所有二级学院信息-结束");
+        log.info("加载缓存-获取所有省份信息-开始");
+        getProvinceList();
+        log.info("加载缓存-获取所有省份信息-结束");
     }
 
 
@@ -150,6 +157,20 @@ public class CacheServiceImpl implements CacheService {
     }
 
     /**
+     * 获取所有省份集合
+     *
+     * @return 结果集
+     */
+    @Override
+    public List<RegionDo> getProvinceList() {
+        if (provinceList.size() == NumberDict.ZERO) {
+            List<RegionDo> provinceList = regionMapper.selectProvinceByLevel(NumberDict.ONE);
+            return provinceList;
+        }
+        return provinceList;
+    }
+
+    /**
      * 获取城市集合
      *
      * @param proId 省份代码
@@ -163,6 +184,18 @@ public class CacheServiceImpl implements CacheService {
             cityMap.put(String.valueOf(regionDo.getId()), regionDo);
         }
         return cityMap;
+    }
+
+    /**
+     * 获取城市集合
+     *
+     * @param proId 省份代码
+     * @return 结果集
+     */
+    @Override
+    public List<RegionDo> getCityList(String proId) {
+        List<RegionDo> cityList = regionMapper.selectCityByProId(Integer.valueOf(proId));
+        return cityList;
     }
 
     /**

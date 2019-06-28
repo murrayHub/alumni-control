@@ -1,8 +1,11 @@
-function requestGet(url) {
-    return axios.get(url)
-        .then(function (response) {
-            return response;
-        })
+function requestGetPathVariable(url) {
+    return axios({
+        method: 'get',
+        url: url,
+        headers: {'Authorization': localStorage.getItem('Authorization')}
+    }).then(function (response) {
+        return response;
+    })
         .catch(function (error) {
             console.log(error);
         });

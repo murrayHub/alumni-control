@@ -48,6 +48,14 @@ function getInstitute(data) {
     var url = '/base/get-institute';
     return requestHeaderPost(url, data)
 }
+function getProvinces() {
+    var url = '/cache/get-provinces';
+    return requestHeaderGet(url)
+}
+function getCities(paramVal) {
+    var url = '/cache/get-cities/'+paramVal;
+    return requestGetPathVariable(url)
+}
 function registerSubmit(data) {
     var url = '/base/register-submit';
     return requestHeaderPost(url, data)

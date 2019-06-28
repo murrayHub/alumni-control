@@ -46,10 +46,12 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         InterceptorRegistration addInterceptor = registry.addInterceptor(getTokenInterceptor());
         // 排除配置
         addInterceptor.excludePathPatterns("/base/**");
+        addInterceptor.excludePathPatterns("/cache/**");
         addInterceptor.excludePathPatterns("/audit/alumni-manage");
         addInterceptor.excludePathPatterns("/audit/alumni-manage-detail");
         addInterceptor.excludePathPatterns("/audit/alumni-manage-one-level");
         addInterceptor.excludePathPatterns("/audit/alumni-manage-one-level-detail");
+        addInterceptor.excludePathPatterns("/audit/alumni-register-special");
         addInterceptor.excludePathPatterns("/error");
         addInterceptor.excludePathPatterns("/root/**");
         addInterceptor.excludePathPatterns("/static/**");
