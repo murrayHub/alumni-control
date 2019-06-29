@@ -7,41 +7,41 @@
 </head>
 <body>
 <div id="RegisterSpecial" class="layout_container">
-    <div><img src="/static/images/background.jpg" style="width: 100%"></div>
+    <div><img src="/static/images/spec2.jpg" style="width: 100%;opacity: 0.8;"></div>
     <div class="registerSpec-include-control">
         <div class="layout_content">
         <div class="login-control">
             <div style="margin: 20px;"></div>
-            <el-form :model="registerForm" status-icon :rules="rules2" ref="registerForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="姓名">
+            <el-form :model="registerForm" :inline="true" style="text-align: -webkit-center;" status-icon :rules="rules2" ref="registerForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="姓名" style="width: 30%;">
                     <el-input v-model="registerForm.username" style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="性别">
+                <el-form-item label="性别" style="width: 30%;">
                     <el-select v-model="registerForm.gender" size="large" style="width: 300px;">
                         <el-option :label="item.value" v-for="(item,index) in genderTypes" :value="item.key"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="省">
+                <el-form-item label="省" style="width: 30%;">
                     <el-select size="large" v-model="registerForm.province" filterable clearable style="width: 300px;" placeholder="请选择所在省" @change="selectProvince($event)">
                         <el-option :label="item.name" v-for="(item,index) in provinceList" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="市">
+                <el-form-item label="市" style="width: 30%;">
                     <el-select size="large" v-model="registerForm.city" filterable clearable style="width: 300px;" placeholder="请选择所在市" @change="selectCity($event)">
                         <el-option :label="item.name" v-for="(item,index) in citiesList" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="所在学校" >
+                <el-form-item label="所在学校" style="width: 30%;" >
                     <el-select size="large" v-model="registerForm.collegeNo" filterable clearable style="width: 300px;" placeholder="请选择所在学校" @change="selectCollege($event)">
                         <el-option :label="item.schoolName" v-for="(item,index) in collegeList" :value="item.schoolId"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="培养单位" >
+                <el-form-item label="培养单位" style="width: 30%;" >
                     <el-select size="large" v-model="registerForm.instituteNo" filterable clearable style="width: 300px;" placeholder="请选择培养单位" @change="selectInstitute($event)">
                         <el-option :label="item.instituteName" v-for="(item,index) in instituteList" :value="item.instituteNo"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="年级">
+                <el-form-item label="年级" style="width: 30%;">
                     <div class="block">
                         <el-date-picker
                                 style="width: 300px;"
@@ -52,7 +52,7 @@
                         </el-date-picker>
                     </div>
                 </el-form-item>
-                <el-form-item label="入学时间">
+                <el-form-item label="入学时间" style="width: 30%;">
                     <div class="block">
                         <el-date-picker
                                 style="width: 300px;"
@@ -63,7 +63,7 @@
                         </el-date-picker>
                     </div>
                 </el-form-item>
-                <el-form-item label="毕业时间">
+                <el-form-item label="毕业时间" style="width: 30%;">
                     <div class="block">
                         <el-date-picker
                                 style="width: 300px;"
@@ -74,48 +74,49 @@
                         </el-date-picker>
                     </div>
                 </el-form-item>
-                <el-form-item label="学位">
+                <el-form-item label="学位" style="width: 30%;">
                     <el-select v-model="registerForm.degree" size="large" style="width: 300px;" @change="selectDegree($event)">
                         <el-option :label="item.value" v-for="(item,index) in degreeList" :value="item.key"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="邮箱">
+                <el-form-item label="邮箱" style="width: 30%;">
                     <el-input v-model="registerForm.email" maxlength="20" style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="手机号">
+                <el-form-item label="手机号" style="width: 30%;">
                     <el-input v-model="registerForm.phone_no" maxlength="20" style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="微信号">
+                <el-form-item label="微信号" style="width: 30%;">
                     <el-input v-model="registerForm.weixin_no" maxlength="20" style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="核心标签">
+                <el-form-item label="核心标签" style="width: 30%;">
                     <el-input v-model="registerForm.core_label" maxlength="20" style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="所属行业">
+                <el-form-item label="所属行业" style="width: 30%;">
                     <el-input v-model="registerForm.domain" maxlength="20" style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="专业">
+                <el-form-item label="专业" style="width: 30%;">
                     <el-input v-model="registerForm.profession" maxlength="20" style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="工作经历">
-                    <el-input v-model="registerForm.jobs" style="width: 500px;" autosize type="textarea"></el-input>
-                </el-form-item>
-                <el-form-item label="社会兼职">
-                    <el-input v-model="registerForm.partTimejob" style="width: 500px;" autosize type="textarea"></el-input>
-                </el-form-item>
-                <el-form-item label="认证方式">
+                <el-form-item label="认证方式" style="width: 30%;">
                     <el-select v-model="registerForm.identifyType" size="large" style="width: 300px;" @change="selectIdentifyType($event)">
                         <el-option :label="item.value" v-for="(item,index) in identifyTypes" :value="item.key"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="学号" v-if="identifyFlag == 2">
+                <el-form-item label="学号" v-if="identifyFlag == 2" style="width: 30%;">
                     <el-input v-model="registerForm.studentNo" maxlength="30" style="width: 300px;"></el-input>
                 </el-form-item>
-                <el-form-item label="身份证号" v-if="identifyFlag == 1">
+                <el-form-item label="身份证号" v-if="identifyFlag == 1" style="width: 30%;">
                     <el-input v-model="registerForm.idCardNo" style="width: 300px;"></el-input>
                 </el-form-item>
-                <div style="margin-left: 200px">
-                    <el-button type="primary" @click="submitForm('registerForm')">提交</el-button>
+                <el-form-item label="工作经历" style="width: 30%;" :label-position="left">
+                    <el-input v-model="registerForm.jobs" :autosize="{ minRows: 2, maxRows: 5}" style="width: 500px;" type="textarea"></el-input>
+                </el-form-item>
+                <br/>
+                <el-form-item label="社会兼职" style="width: 30%;">
+                    <el-input v-model="registerForm.partTimejob" :autosize="{ minRows: 2, maxRows: 5}" style="width: 500px;" type="textarea"></el-input>
+                </el-form-item>
+                <div>
+                    <el-button type="success" @click="submitForm('registerForm')">提交</el-button>
                     <el-button @click="resetForm('registerForm')">重置</el-button>
                 </div>
             </el-form>

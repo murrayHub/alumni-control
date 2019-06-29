@@ -23,7 +23,7 @@
                     <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
                     <el-button @click="resetForm('loginForm')">重置</el-button>
                     <el-button type="success" @click="navToRegister">注册</el-button>
-                    <el-button type="success" @click="navToRegisterSpec">校友注册</el-button>
+                    <el-button type="info" @click="navToRegisterSpec">校友注册</el-button>
                 </el-form-item>
             </el-form>
             </div>
