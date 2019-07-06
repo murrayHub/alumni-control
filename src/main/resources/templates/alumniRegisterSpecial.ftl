@@ -90,10 +90,15 @@
                 </el-form-item>
                 <el-form-item label="核心标签" style="width: 30%;">
 
-                    <el-input @focus="onfocus($event)" v-model="registerForm.core_label" maxlength="20" style="width: 300px;"></el-input>
+                    <el-input id="coreLabel" @focus="onfocus($event)" v-model="registerForm.core_label" maxlength="20" style="width: 300px;"></el-input>
                 </el-form-item>
                 <el-form-item label="所属行业" style="width: 30%;">
-                    <el-input v-model="registerForm.domain" maxlength="20" style="width: 300px;"></el-input>
+                    <el-cascader style="width: 300px;"
+                            :options="levelOneIndustryList"
+                            @change="handleItemChange($event)"
+                            :props="industryProps"
+                            v-model="registerForm.domain"
+                    ></el-cascader>
                 </el-form-item>
                 <el-form-item label="专业" style="width: 30%;">
                     <el-input v-model="registerForm.profession" maxlength="20" style="width: 300px;"></el-input>
@@ -175,9 +180,14 @@
             </el-form>
 
             <el-dialog title="请选择核心标签" :visible.sync="dialogTableVisible">
-                <div v-for="(item,index) in test">
+                <div v-for="(item,index) in initialLabelList">
                         <span :id="item.labelId" class="Classification" @click="onLabelcheck(item)">
                             {{item.labelName}}</span>
+                </div>
+                <br/>
+                <div style="position: absolute;margin-top: 342px;margin-left: 260px;">
+                    <el-button type="success" @click="saveLabel">确认</el-button>
+                    <el-button type="warning" @click="resetSelection">一键清空</el-button>
                 </div>
             </el-dialog>
 
@@ -230,27 +240,16 @@
             };
             return {
                 left:'',
-                test: [{
-                    labelName: '66P',
-                    labelId:'as1'
-                }, {
-                    labelName: '760P',
-                    labelId:'as2'
-                }, {
-                    labelName: '(含16G系统优盘)660P1',
-                    labelId:'as3'
-                },
-                    {
-                        labelName: '7630P',
-                        labelId:'as4'
-                    }, {
-                        labelName: '(含16G系统优化盘)7360P',
-                        labelId:'as5'
-                }],
                 active:'',
                 dialogTableVisible:false,
                 color:'',
                 labelList:[],
+                initialLabelList:[],
+                industryProps:{
+                    value: 'industryNo',
+                    label: 'industryName',
+                    children: 'subIndustries'
+                },
 
                 tableRowData:'',
                 jobsList:'',
@@ -262,6 +261,8 @@
                 collegeList:[],
                 provinceList:[],
                 citiesList:[],
+                levelOneIndustryList:[],
+                levelTwoIndustryList:[],
                 degreeList: [
                     {
                         key:1,
@@ -403,31 +404,45 @@
             // 菜单选择
         },
         methods: {
-            onfocus(){
-                this.dialogTableVisible=true
+            handleItemChange(val) {
+                console.log('二级行业节点:', val[1]);
             },
-            onLabelcheck(label){
+            saveLabel() {
+                this.dialogTableVisible = false;
+                document.getElementById("coreLabel").placeholder = '已选择' + this.labelList.length + '个标签';
+            },
+            resetSelection() {
+                var len = this.labelList.length;
+                for (var i = 0; i < len; i++) {
+                    document.getElementById(this.labelList[i]).style.background = "#f7f7f7";
+                }
+                this.labelList.length = 0;
+            },
+            onfocus() {
+                this.dialogTableVisible = true
+            },
+            onLabelcheck(label) {
                 var index = label.labelId;
-                if (document.getElementById(index).getAttribute("class") === "Classification"){
-                    document.getElementById(index).setAttribute("class","active");
+                if (document.getElementById(index).getAttribute("class") === "Classification") {
+                    document.getElementById(index).setAttribute("class", "active");
                     this.randomColor();
-                    document.getElementById(index).style.background=this.color;
+                    document.getElementById(index).style.background = this.color;
                     this.labelList.push(index);
-                }else {
-                    document.getElementById(index).setAttribute("class","Classification");
-                    document.getElementById(index).style.background="#f7f7f7";
+                } else {
+                    document.getElementById(index).setAttribute("class", "Classification");
+                    document.getElementById(index).style.background = "#f7f7f7";
                     var idx = this.labelList.indexOf(index);
-                    if (idx > -1){
-                        this.labelList.splice(idx,1);
+                    if (idx > -1) {
+                        this.labelList.splice(idx, 1);
                     }
                 }
-                console.log('labelList',this.labelList);
+                console.log('labelList', this.labelList);
             },
-            randomColor(){
+            randomColor() {
                 var colorList = [
-                    "#2ae0c8","#a2e1d4","#acf6ef","#cbf5fb","#bdf3d4","#e6e2c3","#e3c887","#fad8be","#fbb8ac","#fe6673"
+                    "#2ae0c8", "#a2e1d4", "#acf6ef", "#cbf5fb", "#bdf3d4", "#e6e2c3", "#e3c887", "#fad8be", "#fbb8ac", "#fe6673"
                 ];
-                var index = Math.floor(Math.random()*10);
+                var index = Math.floor(Math.random() * 10);
                 this.color = colorList[index];
             },
             addNormalJob() {
@@ -452,36 +467,37 @@
                 this.registerForm.beginTimePT.splice(index, 1);
                 this.registerForm.endTimePT.splice(index, 1);
             },
-            selectIdentifyType(val){
+            selectIdentifyType(val) {
                 this.identifyFlag = val;
             },
             submitForm(formName) {
                 var reqData = this.registerForm;
                 this.$refs[formName].validate((valid) => {
-                    if (valid) {
+                    if(valid) {
                         console.log('提交成功!');
-                        <#--let json = registerSubmit(reqData);-->
-                        <#--json.then((respData) => {-->
-                            <#--if(respData.data.code == 0){-->
-                            <#--this.$message({-->
-                                <#--message: '注册成功',-->
-                                <#--type: 'success'-->
-                            <#--});-->
-                            <#--setTimeout(() =>{-->
-                                <#--location.href = "${ctx!}/base/loginPage";-->
-                            <#--},1000);-->
-                        <#--}else{-->
-                            <#--this.$message({-->
-                                <#--message: respData.data.message,-->
-                                <#--type: 'error'-->
-                            <#--});-->
-                        <#--}-->
-                        <#--});-->
+                    <#--let json = registerSubmit(reqData);-->
+                    <#--json.then((respData) => {-->
+                    <#--if(respData.data.code == 0){-->
+                    <#--this.$message({-->
+                    <#--message: '注册成功',-->
+                    <#--type: 'success'-->
+                    <#--});-->
+                    <#--setTimeout(() =>{-->
+                    <#--location.href = "${ctx!}/base/loginPage";-->
+                    <#--},1000);-->
+                    <#--}else{-->
+                    <#--this.$message({-->
+                    <#--message: respData.data.message,-->
+                    <#--type: 'error'-->
+                    <#--});-->
+                    <#--}-->
+                    <#--});-->
                     } else {
                         console.log('提交失败!');
-                        return false;
-                }
-                });
+                return false;
+            }
+            })
+                ;
             },
             // 修改
             save() {
@@ -490,89 +506,154 @@
                 reqData.identifyStatus = this.identifyStatus;
                 reqData.instituteNo = this.instituteNo;
                 reqData.degreeType = this.degreeNo;
-                reqData.entranceTime = this.format(this.entranceTime,"yyyy-MM-dd");
-                reqData.graduationTime = this.format(this.graduationTime,"yyyy-MM-dd");
+                reqData.entranceTime = this.format(this.entranceTime, "yyyy-MM-dd");
+                reqData.graduationTime = this.format(this.graduationTime, "yyyy-MM-dd");
                 reqData.grade = $('#detail_grade').val();
                 reqData.studentNo = $('#studentNo').val();
                 reqData.professionName = this.professionName;
                 reqData.studentNo = this.studentNo;
-                console.log('reqData',reqData);
+                console.log('reqData', reqData);
                 let json = levelTwoIdentifyUpdate(reqData);
                 json.then((respData) => {
-                    if(respData.data.code == 0){
+                    if(respData.data.code == 0
+            )
+                {
                     this.$message({
                         message: '修改成功',
                         type: 'success'
                     });
-                    setTimeout(() =>{
+                    setTimeout(() => {
                         location.reload();
-                },1000);
-                } else{
+                },
+                    1000
+                )
+                    ;
+                }
+            else
+                {
                     this.$message({
                         message: respData.data.message,
                         type: 'error'
                     });
                 }
-            });
+            })
+                ;
             },
-            selectCollege(val){
+            selectCollege(val) {
                 this.registerForm.collegeNo = val;
             },
-            selectProvince(val){
+            selectProvince(val) {
                 this.registerForm.province = val;
                 this.getCities(val);
             },
-            selectCity(val){
+            selectCity(val) {
                 this.registerForm.city = val;
             },
-            selectInstitute(val){
+            selectInstitute(val) {
                 this.registerForm.instituteNo = val;
             },
             resetForm(formName) {
-                    this.$refs[formName].resetFields();
+                this.$refs[formName].resetFields();
             },
-            getCities(proId){
+            getCities(proId) {
                 var that = this;
                 let jsonProvinces = getCities(proId);
                 jsonProvinces.then((respData) => {
-                    if(respData.data.code == 0){
-                    if(respData.data.result != null){
+                    if(respData.data.code == 0
+            )
+                {
+                    if (respData.data.result != null) {
                         that.citiesList = respData.data.result;
+                    }
+                }
+            })
+                ;
+            },
+            getLevelTwoIndustry(parentId) {
+                var that = this;
+                let jsonLevelTwoIndustry = getLevelTwoIndustry(parentId);
+                jsonLevelTwoIndustry.then((respData) => {
+                    if(respData.data.code == 0){
+                    if (respData.data.result != null) {
+                        that.levelTwoIndustryList = respData.data.result;
+                        var subData = respData.data.result;
+                        for (var i=0;i<that.levelOneIndustryList.length;i++){
+                            if (that.levelOneIndustryList[i].industryNo == parentId){
+                                that.levelOneIndustryList[i].subIndustries = subData;
+                            }
+                        }
                     }
                 }
                 });
             },
-            initMethod(){
+            initMethod() {
                 //获取学校集合
                 var that = this;
                 let jsonCollege = getColleges();
                 jsonCollege.then((respData) => {
-                    if(respData.data.code == 0){
-                    if(respData.data.result != null){
+                    if(respData.data.code == 0
+            )
+                {
+                    if (respData.data.result != null) {
                         that.collegeList = respData.data.result;
                     }
-                    }
-                });
+                }
+            })
+                ;
                 //获取学院集合
                 let jsonInstitute = getInstitute();
                 jsonInstitute.then((respData) => {
-                    if(respData.data.code == 0){
-                    if(respData.data.result != null){
+                    if(respData.data.code == 0
+            )
+                {
+                    if (respData.data.result != null) {
                         that.instituteList = respData.data.result;
                     }
                 }
-                });
+            })
+                ;
                 //获取省份集合
                 let jsonProvinces = getProvinces();
                 jsonProvinces.then((respData) => {
-                    if(respData.data.code == 0){
-                    if(respData.data.result != null){
+                    if(respData.data.code == 0
+            )
+                {
+                    if (respData.data.result != null) {
                         that.provinceList = respData.data.result;
+                    }
+                }
+            })
+                ;
+                //获取核心标签集合
+                let jsonLabels = getLabels();
+                jsonLabels.then((respData) => {
+                    if(respData.data.code == 0
+            )
+                {
+                    if (respData.data.result != null) {
+                        that.initialLabelList = respData.data.result;
+                    }
+                }
+            })
+                ;
+
+                //获取所有一级行业信息
+                let jsonLevelOneIndustry = getLevelOneIndustry();
+                jsonLevelOneIndustry.then((respData) => {
+                    if(respData.data.code == 0)
+                {if (respData.data.result != null) {
+                        that.levelOneIndustryList = respData.data.result;
+                        //初始化二级行业数据
+                        for (var i=0;i<that.levelOneIndustryList.length;i++){
+                            if (isNotNull(that.levelOneIndustryList[i].industryNo)){
+                                this.getLevelTwoIndustry(that.levelOneIndustryList[i].industryNo);
+                            }
+                        }
                     }
                 }
             });
             }
         }
-    })
+});
 
 </script>

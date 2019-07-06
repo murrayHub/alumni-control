@@ -52,8 +52,20 @@ function getProvinces() {
     var url = '/cache/get-provinces';
     return requestHeaderGet(url)
 }
+function getLabels() {
+    var url = '/cache/get-labels';
+    return requestHeaderGet(url)
+}
 function getCities(paramVal) {
     var url = '/cache/get-cities/'+paramVal;
+    return requestGetPathVariable(url)
+}
+function getLevelOneIndustry() {
+    var url = '/cache/get-levelOneIndustry';
+    return requestHeaderGet(url)
+}
+function getLevelTwoIndustry(paramVal) {
+    var url = '/cache/get-levelTwoIndustry/'+paramVal;
     return requestGetPathVariable(url)
 }
 function registerSubmit(data) {

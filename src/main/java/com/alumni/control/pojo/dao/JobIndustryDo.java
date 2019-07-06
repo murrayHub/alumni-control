@@ -32,4 +32,7 @@ public class JobIndustryDo {
     @Column(name = "parent_no")
     private Integer parentNo;
 
+    @Transient
+    private String subIndustries;
+
 }
