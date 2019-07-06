@@ -89,7 +89,8 @@
                     <el-input v-model="registerForm.weixin_no" maxlength="20" style="width: 300px;"></el-input>
                 </el-form-item>
                 <el-form-item label="核心标签" style="width: 30%;">
-                    <el-input v-model="registerForm.core_label" maxlength="20" style="width: 300px;"></el-input>
+
+                    <el-input @focus="onfocus($event)" v-model="registerForm.core_label" maxlength="20" style="width: 300px;"></el-input>
                 </el-form-item>
                 <el-form-item label="所属行业" style="width: 30%;">
                     <el-input v-model="registerForm.domain" maxlength="20" style="width: 300px;"></el-input>
@@ -109,17 +110,77 @@
                     <el-input v-model="registerForm.idCardNo" style="width: 300px;"></el-input>
                 </el-form-item>
                 <el-form-item label="工作经历" style="width: 30%;" :label-position="left">
-                    <el-input v-model="registerForm.jobs" :autosize="{ minRows: 2, maxRows: 5}" style="width: 500px;" type="textarea"></el-input>
+                    <section v-if="normalJobList.length!=0">
+                        <div v-for="(item,index) in normalJobList" style="position: relative;line-height: 4;">
+                            <el-input v-model="registerForm.companyNameNor[index]" maxlength="20"  placeholder="公司名称"></el-input>
+                            <el-input v-model="registerForm.positionNor[index]" maxlength="16" placeholder="职位名称"></el-input>
+                            <div class="block">
+                                <el-date-picker
+                                        style="width: 100%;"
+                                        v-model="registerForm.beginTimeNor[index]"
+                                        type="date"
+                                        placeholder="请选择工作开始时间">
+                                </el-date-picker>
+                            </div>
+                            <div class="block">
+                                <el-date-picker
+                                        style="width: 100%;"
+                                        v-model="registerForm.endTimeNor[index]"
+                                        type="date"
+                                        placeholder="请选择工作结束时间">
+                                </el-date-picker>
+                            </div>
+                            <div style="position: absolute;margin-top: -134px;margin-left: 430px;">
+                                <img src="${ctx}/static/images/setting_input_del.png" @click="normalJobDelete(index)" />
+                            </div>
+                            <br/>
+                        </div>
+                    </section>
+                    <el-button type="info" @click="addNormalJob"><span>新增工作经历</span></el-button>
                 </el-form-item>
                 <br/>
-                <el-form-item label="社会兼职" style="width: 30%;">
-                    <el-input v-model="registerForm.partTimejob" :autosize="{ minRows: 2, maxRows: 5}" style="width: 500px;" type="textarea"></el-input>
+                <el-form-item label="社会兼职" style="width: 30%;" :label-position="left">
+                    <section v-if="partTimejobList.length!=0">
+                    <div v-for="(item,index) in partTimejobList" style="position: relative;line-height: 4;">
+                        <el-input v-model="registerForm.companyNamePT[index]" maxlength="20"  placeholder="兼职公司名称"></el-input>
+                        <el-input v-model="registerForm.positionPT[index]" maxlength="16" placeholder="兼职职位名称"></el-input>
+                        <div class="block">
+                            <el-date-picker
+                                    style="width: 100%;"
+                                    v-model="registerForm.beginTimePT[index]"
+                                    type="date"
+                                    placeholder="请选择工作开始时间">
+                            </el-date-picker>
+                        </div>
+                        <div class="block">
+                            <el-date-picker
+                                    style="width: 100%;"
+                                    v-model="registerForm.endTimePT[index]"
+                                    type="date"
+                                    placeholder="请选择工作结束时间">
+                            </el-date-picker>
+                        </div>
+                        <div style="position: absolute;margin-top: -134px;margin-left: 430px;">
+                            <img src="${ctx}/static/images/setting_input_del.png" @click="partTimeJobDelete(index)" />
+                        </div>
+                        <br/>
+                    </div>
+                    </section>
+                    <el-button type="info" @click="addPartTimeJob"><span>新增社会兼职</span></el-button>
                 </el-form-item>
                 <div>
                     <el-button type="success" @click="submitForm('registerForm')">提交</el-button>
                     <el-button @click="resetForm('registerForm')">重置</el-button>
                 </div>
             </el-form>
+
+            <el-dialog title="请选择核心标签" :visible.sync="dialogTableVisible">
+                <div v-for="(item,index) in test">
+                        <span :id="item.labelId" class="Classification" @click="onLabelcheck(item)">
+                            {{item.labelName}}</span>
+                </div>
+            </el-dialog>
+
             </div>
         </div>
     </div>
@@ -168,12 +229,36 @@
                 }
             };
             return {
+                left:'',
+                test: [{
+                    labelName: '66P',
+                    labelId:'as1'
+                }, {
+                    labelName: '760P',
+                    labelId:'as2'
+                }, {
+                    labelName: '(含16G系统优盘)660P1',
+                    labelId:'as3'
+                },
+                    {
+                        labelName: '7630P',
+                        labelId:'as4'
+                    }, {
+                        labelName: '(含16G系统优化盘)7360P',
+                        labelId:'as5'
+                }],
+                active:'',
+                dialogTableVisible:false,
+                color:'',
+                labelList:[],
+
                 tableRowData:'',
                 jobsList:'',
-                partTimejobList:'',
                 identifyFlag:'1',
                 ucasInstituteList: [],
                 instituteList:[],
+                partTimejobList:[],
+                normalJobList:[],
                 collegeList:[],
                 provinceList:[],
                 citiesList:[],
@@ -237,6 +322,14 @@
                     studentNo: '',
                     idCardNo: '',
                     identifyType: '身份证号',
+                    companyNamePT: [],
+                    positionPT: [],
+                    beginTimePT: [],
+                    endTimePT: [],
+                    companyNameNor: [],
+                    positionNor: [],
+                    beginTimeNor: [],
+                    endTimeNor: [],
                 },
                 rules2: {
                     // username: [
@@ -310,6 +403,55 @@
             // 菜单选择
         },
         methods: {
+            onfocus(){
+                this.dialogTableVisible=true
+            },
+            onLabelcheck(label){
+                var index = label.labelId;
+                if (document.getElementById(index).getAttribute("class") === "Classification"){
+                    document.getElementById(index).setAttribute("class","active");
+                    this.randomColor();
+                    document.getElementById(index).style.background=this.color;
+                    this.labelList.push(index);
+                }else {
+                    document.getElementById(index).setAttribute("class","Classification");
+                    document.getElementById(index).style.background="#f7f7f7";
+                    var idx = this.labelList.indexOf(index);
+                    if (idx > -1){
+                        this.labelList.splice(idx,1);
+                    }
+                }
+                console.log('labelList',this.labelList);
+            },
+            randomColor(){
+                var colorList = [
+                    "#2ae0c8","#a2e1d4","#acf6ef","#cbf5fb","#bdf3d4","#e6e2c3","#e3c887","#fad8be","#fbb8ac","#fe6673"
+                ];
+                var index = Math.floor(Math.random()*10);
+                this.color = colorList[index];
+            },
+            addNormalJob() {
+                this.normalJobList.push('');
+                console.log(this.normalJobList);
+            },
+            addPartTimeJob() {
+                this.partTimejobList.push('');
+                console.log(this.partTimejobList);
+            },
+            normalJobDelete(index) {
+                this.normalJobList.splice(index, 1);
+                this.registerForm.companyNameNor.splice(index, 1);
+                this.registerForm.positionNor.splice(index, 1);
+                this.registerForm.beginTimeNor.splice(index, 1);
+                this.registerForm.endTimeNor.splice(index, 1);
+            },
+            partTimeJobDelete(index) {
+                this.partTimejobList.splice(index, 1);
+                this.registerForm.companyNamePT.splice(index, 1);
+                this.registerForm.positionPT.splice(index, 1);
+                this.registerForm.beginTimePT.splice(index, 1);
+                this.registerForm.endTimePT.splice(index, 1);
+            },
             selectIdentifyType(val){
                 this.identifyFlag = val;
             },
