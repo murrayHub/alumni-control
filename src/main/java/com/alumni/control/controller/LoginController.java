@@ -112,6 +112,16 @@ public class LoginController {
         return result;
     }
 
+    @ApiOperation(value = "校友注册-提交注册信息")
+    @WebEnhance(mode = WebResultModeEnum.AJAX)
+    @ResponseBody
+    @RequestMapping(value = "register-spec-submit")
+    public AjaxResult registerSpecSubmit(@RequestBody UserRegisterVo userRegisterVo) {
+        AjaxResult result = new AjaxResult();
+        log.info("校友注册-提交注册信息,请求参数:{}", userRegisterVo);
+        return result;
+    }
+
     @WebEnhance(mode = WebResultModeEnum.AJAX)
     @PostMapping("/login")
     @ResponseBody
