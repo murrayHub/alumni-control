@@ -1,5 +1,6 @@
 package com.alumni.control.service;
 
+import com.alumni.control.pojo.vo.AlumniRegisterVo;
 import com.alumni.control.pojo.vo.UserRegisterVo;
 
 /**
@@ -26,5 +27,11 @@ public interface RegisterService {
      * @return 记录数
      */
     int checkUserLoginInfo(UserRegisterVo userRegisterVo);
+
+    /**
+     * 校友信息落库
+     * @param alumniRegisterVo 校友信息
+     */
+    void insertAlumniInfo(AlumniRegisterVo alumniRegisterVo);
 
 }

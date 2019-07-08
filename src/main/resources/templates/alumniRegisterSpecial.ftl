@@ -308,14 +308,6 @@
                     callback();
                 }
             };
-            var validateCoreLabel = (rule, value, callback) => {
-                var num = this.labelList.length;
-                if (num == 0) {
-                    return callback(new Error('请选择核心标签'));
-                }else {
-                    callback();
-                }
-            };
             var validateProfession = (rule, value, callback) => {
                 if (!value) {
                     return callback(new Error('请输入专业名称'));

@@ -170,6 +170,10 @@ public enum ErrorCodeEnum implements ErrorCode {
      * 所在学院不能为空
      */
     ERROR_CODE_000038("000038", "所在学院不能为空"),
+    /**
+     * 校友认证信息落库发生异常
+     */
+    ERROR_CODE_000039("000039", "校友认证信息落库发生异常"),
 
 
 

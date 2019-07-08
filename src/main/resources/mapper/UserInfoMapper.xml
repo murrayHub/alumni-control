@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alumni.control.mapper.UserInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.alumni.control.pojo.dao.UserInfoDo" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="user_real_name" property="userRealName" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="TINYINT" />
+    <result column="province" property="province" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="person_image" property="personImage" jdbcType="VARCHAR" />
+    <result column="home_image" property="homeImage" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="phone_no" property="phoneNo" jdbcType="VARCHAR" />
+    <result column="weixin_no" property="weixinNo" jdbcType="VARCHAR" />
+    <result column="email_auth" property="emailAuth" jdbcType="TINYINT" />
+    <result column="phone_no_auth" property="phoneNoAuth" jdbcType="TINYINT" />
+    <result column="weixin_no_auth" property="weixinNoAuth" jdbcType="TINYINT" />
+    <result column="core_label" property="coreLabel" jdbcType="VARCHAR" />
+    <result column="domain" property="domain" jdbcType="INTEGER" />
+    <result column="realname_status" property="realnameStatus" jdbcType="TINYINT" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, user_id, user_real_name, gender, province, city, person_image, home_image, email, phone_no, weixin_no
+    , email_auth, phone_no_auth, weixin_no_auth, core_label, domain, realname_status, create_by, update_by, create_at, update_at
+  </sql>
+
+</mapper>

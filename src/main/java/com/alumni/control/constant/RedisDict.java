@@ -36,6 +36,18 @@ public final class RedisDict {
      */
     public static final String USER_INFO_KEY = KEY.concat("USER_ID_CREATE_KEY");
     /**
+     * 学历认证编号
+     */
+    public static final String USER_DEGREE_IDENTIFY_KEY = KEY.concat("USER_DEGREE_IDENTIFY_KEY");
+    /**
+     * 工作经历编号
+     */
+    public static final String USER_JOB_IDENTIFY_KEY = KEY.concat("USER_JOB_IDENTIFY_KEY");
+    /**
+     * 社会兼职经历编号
+     */
+    public static final String USER_PART_TIME_JOB_IDENTIFY_KEY = KEY.concat("USER_PART_TIME_JOB_IDENTIFY_KEY");
+    /**
      * 圈编号
      */
     public static final String CIRCLE_NO_KEY = KEY.concat("CIRCLE_NO_CREATE_KEY");

@@ -52,10 +52,6 @@ public class AlumniRegisterVo {
     @ApiModelProperty(value = "入学时间")
     private String entranceTime;
 
-    @NotBlank(message = "入学时间不能为空")
-    @ApiModelProperty(value = "入学时间")
-    private String entranceTime;
-
     @NotBlank(message = "毕业时间不能为空")
     @ApiModelProperty(value = "毕业时间")
     private String graduationTime;

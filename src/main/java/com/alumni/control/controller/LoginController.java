@@ -14,10 +14,7 @@ import com.alumni.control.pojo.dao.LoginInfoDo;
 import com.alumni.control.pojo.dao.SchoolDo;
 import com.alumni.control.pojo.dao.UcasInstituteDo;
 import com.alumni.control.pojo.dto.CommonParamDto;
-import com.alumni.control.pojo.vo.SchoolVo;
-import com.alumni.control.pojo.vo.UcasInstituteVo;
-import com.alumni.control.pojo.vo.UserLoginVo;
-import com.alumni.control.pojo.vo.UserRegisterVo;
+import com.alumni.control.pojo.vo.*;
 import com.alumni.control.redis.RedisManager;
 import com.alumni.control.service.CacheService;
 import com.alumni.control.service.RegisterService;
@@ -116,9 +113,12 @@ public class LoginController {
     @WebEnhance(mode = WebResultModeEnum.AJAX)
     @ResponseBody
     @RequestMapping(value = "register-spec-submit")
-    public AjaxResult registerSpecSubmit(@RequestBody UserRegisterVo userRegisterVo) {
+    public AjaxResult registerSpecSubmit(@RequestBody AlumniRegisterVo alumniRegisterVo) {
         AjaxResult result = new AjaxResult();
-        log.info("校友注册-提交注册信息,请求参数:{}", userRegisterVo);
+        log.info("校友注册-提交注册信息,请求参数:{}", alumniRegisterVo);
+        ParamValidate.validate(alumniRegisterVo);
+        // 数据落库
+        registerService.insertAlumniInfo(alumniRegisterVo);
         return result;
     }
 
