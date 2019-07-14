@@ -155,7 +155,12 @@ public class AlumniManageServiceImpl implements AlumniManageService {
         List<UserDegreeIdentifyVo> userDegreeIdentifyVos = Lists.newArrayList();
         for (UserDegreeIdentifyDo userDegreeIdentifyDo : list) {
 
-            UserDegreeIdentifyVo userDegreeIdentifyVo = UserDegreeIdentifyConvert.toConvertVo(userDegreeIdentifyDo);
+            UserDegreeIdentifyVo userDegreeIdentifyVo = null;
+            try {
+                userDegreeIdentifyVo = UserDegreeIdentifyConvert.toConvertVo(userDegreeIdentifyDo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (TechGoalObjects.isNotEmpty(userDegreeIdentifyDo.getCollegeNo())) {
                 SchoolDo schoolDo = schoolMapper.getSchoolInfoById(userDegreeIdentifyDo.getCollegeNo());
                 userDegreeIdentifyVo.setCollegeName(schoolDo.getSchoolName());

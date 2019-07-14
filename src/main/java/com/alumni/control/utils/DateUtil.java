@@ -138,6 +138,10 @@ public class DateUtil {
         return date == null ? null : (new DateTime(date)).toString("yyyy-MM-dd HH:mm:ss");
     }
 
+    public static String formatYearOnly(Date date) {
+        return date == null ? null : (new DateTime(date)).toString("yyyy");
+    }
+
     public static String computeDate(String date, int day, String inPattern, String outPattern) {
         try {
             DateTime dateTime = parseTime(date, inPattern);

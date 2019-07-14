@@ -144,9 +144,11 @@ public class UserDegreeIdentifyDo {
     /**
      * 当前页
      */
+    @Transient
     private Integer currentPage;
     /**
      * 每页记录数
      */
+    @Transient
     private Integer pageSize;
 }

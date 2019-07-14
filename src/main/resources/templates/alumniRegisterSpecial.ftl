@@ -587,7 +587,7 @@
                     }
 
                     // 兼职经历校验
-                    var jobPTNum = this.normalJobList.length;
+                    var jobPTNum = this.partTimejobList.length;
                     for (var i=0;i<jobPTNum;i++){
                         if (!isNotNull(this.registerSpecForm.companyNamePT[i])){
                             this.$message({
@@ -620,7 +620,7 @@
                         });
                         return;
                     }
-                    reqData.coreLabel = this.labelList;
+                    reqData.coreLabel = this.labelList.toString();
 
                     if(!isNotNull(this.domain)){
                         this.$message({
@@ -646,7 +646,6 @@
                         return;
                     }
                     }
-
                     if(valid) {
                         console.log('提交成功!');
                     let json = registerSpecSubmit(reqData);
@@ -681,7 +680,7 @@
                 reqData.degreeType = this.degreeNo;
                 reqData.entranceTime = this.format(this.entranceTime, "yyyy-MM-dd");
                 reqData.graduationTime = this.format(this.graduationTime, "yyyy-MM-dd");
-                reqData.grade = $('#detail_grade').val();
+                reqData.grade = this.format($('#detail_grade').val(), "yyyy-MM-dd");
                 reqData.studentNo = $('#studentNo').val();
                 reqData.professionName = this.professionName;
                 reqData.studentNo = this.studentNo;

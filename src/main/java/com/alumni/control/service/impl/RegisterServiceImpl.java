@@ -126,6 +126,9 @@ public class RegisterServiceImpl implements RegisterService {
         userInfoDo.setGender(Integer.valueOf(alumniRegisterVo.getGender()));
         userInfoDo.setProvince(Integer.valueOf(alumniRegisterVo.getProvince()));
         userInfoDo.setCity(Integer.valueOf(alumniRegisterVo.getCity()));
+        userInfoDo.setEmailAuth(NumberDict.ZERO);
+        userInfoDo.setPhoneNoAuth(NumberDict.ZERO);
+        userInfoDo.setWeixinNoAuth(NumberDict.ZERO);
         userInfoDo.setEmail(alumniRegisterVo.getEmail());
         userInfoDo.setPhoneNo(alumniRegisterVo.getPhoneNo());
         userInfoDo.setWeixinNo(alumniRegisterVo.getWeixinNo());
@@ -146,6 +149,7 @@ public class RegisterServiceImpl implements RegisterService {
             userDegreeIdentifyDo.setEntranceTime(DateUtil.parseString2Date(alumniRegisterVo.getEntranceTime()));
             userDegreeIdentifyDo.setGraduationTime(DateUtil.parseString2Date(alumniRegisterVo.getGraduationTime()));
             userDegreeIdentifyDo.setDegreeNo(Integer.valueOf(alumniRegisterVo.getDegree()));
+            userDegreeIdentifyDo.setEnabled(NumberDict.ONE);
             userDegreeIdentifyDo.setProfessionName(alumniRegisterVo.getProfession());
             userDegreeIdentifyDo.setCreateBy(alumniRegisterVo.getUsername());
             userDegreeIdentifyDo.setCreateAt(new Date());

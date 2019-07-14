@@ -17,7 +17,7 @@ import com.alumni.control.utils.DateUtil;
  */
 public class UserDegreeIdentifyConvert {
 
-    public static UserDegreeIdentifyVo toConvertVo(UserDegreeIdentifyDo userDegreeIdentifyDo) {
+    public static UserDegreeIdentifyVo toConvertVo(UserDegreeIdentifyDo userDegreeIdentifyDo) throws Exception {
         if (userDegreeIdentifyDo == null) {
             return null;
         }
@@ -42,7 +42,8 @@ public class UserDegreeIdentifyConvert {
         userDegreeIdentifyVo.setIdCardNo(userDegreeIdentifyDo.getIdCardNo());
         userDegreeIdentifyVo.setIdentifyType(String.valueOf(userDegreeIdentifyDo.getIdentifyType()));
         userDegreeIdentifyVo.setIdentifyTypeValue(userDegreeIdentifyDo.getIdentifyType() == 1 ? "身份证号" : "学号");
-        userDegreeIdentifyVo.setGrade(userDegreeIdentifyDo.getGrade());
+        String gradeStr = userDegreeIdentifyDo.getGrade().substring(0,4);
+        userDegreeIdentifyVo.setGrade(gradeStr);
         userDegreeIdentifyVo.setStudentName(userDegreeIdentifyDo.getStudentName());
         userDegreeIdentifyVo.setGender(String.valueOf(userDegreeIdentifyDo.getGender()));
         userDegreeIdentifyVo.setGenderValue(userDegreeIdentifyDo.getGender() == 1 ? "男":"女" );
