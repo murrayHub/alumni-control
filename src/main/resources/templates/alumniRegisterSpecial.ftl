@@ -115,6 +115,15 @@
                 <el-form-item label="身份证号" v-if="identifyFlag == 1" style="width: 30%;">
                     <el-input v-model="registerSpecForm.idCardNo" style="width: 300px;"></el-input>
                 </el-form-item>
+                <el-form-item label="账号"  style="width: 100%;">
+                    <el-input  style="width: 300px;"></el-input>
+                </el-form-item>
+                <el-form-item label="密码"  style="width: 100%;">
+                    <el-input  style="width: 300px;"></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码"  style="width: 100%;">
+                    <el-input  style="width: 300px;"></el-input>
+                </el-form-item>
                 <el-form-item label="工作经历" style="width: 30%;" :label-position="left">
                     <section v-if="normalJobList.length!=0">
                         <div v-for="(item,index) in normalJobList" style="position: relative;line-height: 4;">

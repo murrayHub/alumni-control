@@ -13,6 +13,11 @@
         <div class="login-control">
             <div style="margin: 20px;"></div>
             <el-form :model="loginForm" status-icon :rules="rules2" ref="loginForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="选择身份类型" prop="loginNo" >
+                    <el-select>
+                        <el-option :label="item.value" v-for="(item,index) in identifyType" :value="item.key"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="账号" prop="loginNo" >
                     <el-input v-model="loginForm.loginNo" placeholder="请输入手机号" ></el-input>
                 </el-form-item>
@@ -65,6 +70,16 @@
                 managerId: "4000001",
                 instituteList:[],
                 collegeList:[],
+                identifyType: [
+                    {
+                        key:1,
+                        value:'管理员'
+                    },
+                    {
+                        key:2,
+                        value:'校友'
+                    }
+                ],
                 loginForm: {
                     pwd: '',
                     loginNo: '',
