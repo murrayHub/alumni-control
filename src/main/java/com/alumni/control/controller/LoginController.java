@@ -69,6 +69,14 @@ public class LoginController {
     @Autowired
     private RedisManager redisServiceImpl;
 
+    @ApiOperation(value = "评论Demo页面")
+    @RequestMapping("/testComment")
+    public String testComment() {
+        // 参考链接： https://blog.csdn.net/solocoder/article/details/80963255
+        return "/test";
+    }
+
+
     @ApiOperation(value = "校友管理-注册页面")
     @RequestMapping("/registerPage")
     public String registerPage() {
