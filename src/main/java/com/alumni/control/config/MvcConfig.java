@@ -52,6 +52,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         addInterceptor.excludePathPatterns("/audit/alumni-manage-one-level");
         addInterceptor.excludePathPatterns("/audit/alumni-manage-one-level-detail");
         addInterceptor.excludePathPatterns("/audit/alumni-register-special");
+        addInterceptor.excludePathPatterns("/audit/testSex");
         addInterceptor.excludePathPatterns("/error");
         addInterceptor.excludePathPatterns("/root/**");
         addInterceptor.excludePathPatterns("/static/**");

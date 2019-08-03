@@ -40,6 +40,7 @@
 <script src="${ctx}/static/mand-mobile/fastclick.js"></script>
 <script src="${ctx}/static/mand-mobile/mand-mobile.esm.js"></script>
 <script src="${ctx}/static/mand-mobile/mand-mobile.umd.js"></script>
+<script src="${ctx}/static/mand-mobile/vee-validate.js"></script>
 <link rel="stylesheet" href="${ctx}/static/mand-mobile/mand-mobile.variable.css" />
 <link rel="stylesheet" href="${ctx}/static/mand-mobile/mand-mobile.css" />
 <!-- 为标准化浏览器元素的样式，推荐引入Normalize.css -->

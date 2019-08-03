@@ -1,31 +1,49 @@
 <script type="text/x-template" id="top-header">
 <div id="top-header" v-cloak>
-    <el-menu
-            class="el-menu-demo"
-            mode="horizontal"
-            @select="handleSelect($event)"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#ffd04b">
-        <el-submenu index="2">
-            <template slot="title">校友信息管理</template>
-            <el-menu-item index="2-1">一级单位管理</el-menu-item>
-            <el-menu-item index="2-2">二级单位管理</el-menu-item>
-        </el-submenu>
-        <el-submenu index="3">
-            <template slot="title">校友圈动态</template>
-            <el-menu-item index="3-1">发现</el-menu-item>
-            <el-menu-item index="3-2">发表动态</el-menu-item>
-        </el-submenu>
-        <el-submenu index="4">
-            <template slot="title">个人中心</template>
-            <el-menu-item index="4-1">我的动态</el-menu-item>
-            <el-menu-item index="4-2">编辑资料</el-menu-item>
-            <el-menu-item index="4-3">修改密码</el-menu-item>
-        </el-submenu>
-
-        <el-button type="info" @click="logout" style="list-style: none;margin: 10px;padding-left: 20px;">退出</el-button>
-    </el-menu>
+    <el-col :span="12">
+        <el-menu
+                default-active="2"
+                class="el-menu-vertical-demo"
+                @open="handleOpen"
+                @close="handleClose"
+                @select="handleSelect($event)"
+                background-color="#545c64"
+                text-color="#fff"
+                active-text-color="#ffd04b">
+            <el-submenu index="1">
+                <template slot="title">
+                    <i class="el-icon-menu"></i>
+                    <span>校友信息管理</span>
+                </template>
+                <el-menu-item index="2-1">一级单位管理</el-menu-item>
+                <el-menu-item index="2-2">二级单位管理</el-menu-item>
+            </el-submenu>
+            <el-submenu index="3">
+                <template slot="title">
+                    <i class="el-icon-star-off"></i>
+                    <span>校友圈动态</span>
+                </template>
+                <el-menu-item index="3-1">发现</el-menu-item>
+                <el-menu-item index="3-2">发表动态</el-menu-item>
+            </el-submenu>
+            <el-submenu index="4">
+                <template slot="title">
+                    <i class="el-icon-service"></i>
+                    <span>个人中心</span>
+                </template>
+                <el-menu-item index="4-1">我的动态</el-menu-item>
+                <el-menu-item index="4-2">编辑资料</el-menu-item>
+                <el-menu-item index="4-3">修改密码</el-menu-item>
+            </el-submenu>
+            <el-submenu index="5">
+                <template slot="title">
+                    <i class="el-icon-setting"></i>
+                    <span>退出</span>
+                </template>
+                <el-menu-item index="5-1" @click="logout">退出登录</el-menu-item>
+            </el-submenu>
+        </el-menu>
+    </el-col>
 </div>
 </script>
 <script>

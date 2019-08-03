@@ -90,6 +90,12 @@ public class AlumniAuditController {
         return "/alumniRegisterSpecial";
     }
 
+    @ApiOperation(value = "校友注册-专用通道")
+    @GetMapping("/testSex")
+    public String testSex() {
+        return "/testSex";
+    }
+
     @ApiOperation(value = "获取校友详情信息")
     @WebEnhance(mode = WebResultModeEnum.AJAX)
     @ResponseBody

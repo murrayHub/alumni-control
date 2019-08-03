@@ -12,189 +12,532 @@
         <div class="layout_content">
         <div class="login-control">
             <div style="margin: 20px;"></div>
-            <el-form :model="registerSpecForm" :inline="true" style="text-align: -webkit-center;" status-icon :rules="rules2" ref="registerSpecForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="姓名" maxlength="16" prop="username" style="width: 30%;">
-                    <el-input v-model="registerSpecForm.username" style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="性别" prop="gender" style="width: 30%;">
-                    <el-select v-model="registerSpecForm.gender" size="large" style="width: 300px;">
-                        <el-option :label="item.value" v-for="(item,index) in genderTypes" :value="item.key"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="省" prop="province" style="width: 30%;">
-                    <el-select size="large" v-model="registerSpecForm.province" filterable clearable style="width: 300px;" placeholder="请选择所在省" @change="selectProvince($event)">
-                        <el-option :label="item.name" v-for="(item,index) in provinceList" :value="item.id"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="市" prop="city" style="width: 30%;">
-                    <el-select size="large" v-model="registerSpecForm.city" filterable clearable style="width: 300px;" placeholder="请选择所在市" @change="selectCity($event)">
-                        <el-option :label="item.name" v-for="(item,index) in citiesList" :value="item.id"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="所在学校" prop="collegeNo" style="width: 30%;" >
-                    <el-select size="large" v-model="registerSpecForm.collegeNo" filterable clearable style="width: 300px;" placeholder="请选择所在学校" @change="selectCollege($event)">
-                        <el-option :label="item.schoolName" v-for="(item,index) in collegeList" :value="item.schoolId"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="培养单位" prop="instituteNo" style="width: 30%;" >
-                    <el-select size="large" v-model="registerSpecForm.instituteNo" filterable clearable style="width: 300px;" placeholder="请选择培养单位" @change="selectInstitute($event)">
-                        <el-option :label="item.instituteName" v-for="(item,index) in instituteList" :value="item.instituteNo"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="年级" prop="grade" style="width: 30%;">
-                    <div class="block">
-                        <el-date-picker
-                                style="width: 300px;"
-                                v-model="registerSpecForm.grade"
-                                type="year"
-                                placeholder="选择入学年级"
-                                >
-                        </el-date-picker>
-                    </div>
-                </el-form-item>
-                <el-form-item label="入学时间" prop="entranceTime" style="width: 30%;">
-                    <div class="block">
-                        <el-date-picker
-                                style="width: 300px;"
-                                v-model="registerSpecForm.entranceTime"
-                                type="date"
-                                value-format="yyyy-MM-dd"
-                                placeholder="选择日期"
-                                default-value="1999-10-01">
-                        </el-date-picker>
-                    </div>
-                </el-form-item>
-                <el-form-item label="毕业时间" prop="graduationTime" style="width: 30%;">
-                    <div class="block">
-                        <el-date-picker
-                                style="width: 300px;"
-                                v-model="registerSpecForm.graduationTime"
-                                type="date"
-                                value-format="yyyy-MM-dd"
-                                placeholder="选择日期"
-                                default-value="1999-10-01">
-                        </el-date-picker>
-                    </div>
-                </el-form-item>
-                <el-form-item label="学位" prop="degree" style="width: 30%;">
-                    <el-select v-model="registerSpecForm.degree" size="large" style="width: 300px;" @change="selectDegree($event)">
-                        <el-option :label="item.value" v-for="(item,index) in degreeList" :value="item.key"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="邮箱" prop="email" style="width: 30%;">
-                    <el-input v-model="registerSpecForm.email" maxlength="20" style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="手机号" prop="phoneNo" style="width: 30%;">
-                    <el-input v-model="registerSpecForm.phoneNo" maxlength="20" style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="微信号" prop="weixinNo" style="width: 30%;">
-                    <el-input v-model="registerSpecForm.weixinNo" maxlength="20" style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="核心标签" style="width: 30%;">
-                    <el-input id="coreLabel" @focus="onfocus($event)" v-model="coreLabel" maxlength="20" style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="所属行业" style="width: 30%;">
-                    <el-cascader style="width: 300px;"
-                            :options="levelOneIndustryList"
-                            @change="handleItemChange($event)"
-                            :props="industryProps"
-                            v-model="domain"
-                    ></el-cascader>
-                </el-form-item>
-                <el-form-item label="专业" prop="profession" style="width: 30%;">
-                    <el-input v-model="registerSpecForm.profession" maxlength="20" style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="认证方式" style="width: 30%;">
-                    <el-select v-model="registerSpecForm.identifyType" size="large" style="width: 300px;" @change="selectIdentifyType($event)">
-                        <el-option :label="item.value" v-for="(item,index) in identifyTypes" :value="item.key"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="学号" v-if="identifyFlag == 2" style="width: 30%;">
-                    <el-input v-model="registerSpecForm.studentNo" maxlength="30" style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="身份证号" v-if="identifyFlag == 1" style="width: 30%;">
-                    <el-input v-model="registerSpecForm.idCardNo" style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="账号"  style="width: 100%;">
-                    <el-input  style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="密码"  style="width: 100%;">
-                    <el-input  style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="确认密码"  style="width: 100%;">
-                    <el-input  style="width: 300px;"></el-input>
-                </el-form-item>
-                <el-form-item label="工作经历" style="width: 30%;" :label-position="left">
-                    <section v-if="normalJobList.length!=0">
-                        <div v-for="(item,index) in normalJobList" style="position: relative;line-height: 4;">
-                            <el-input v-model="registerSpecForm.companyNameNor[index]" maxlength="20"  placeholder="公司名称"></el-input>
-                            <el-input v-model="registerSpecForm.positionNor[index]" maxlength="16" placeholder="职位名称"></el-input>
-                            <div class="block">
-                                <el-date-picker
-                                        style="width: 100%;"
-                                        v-model="registerSpecForm.beginTimeNor[index]"
-                                        type="date"
-                                        value-format="yyyy-MM-dd"
-                                        placeholder="请选择工作开始时间">
-                                </el-date-picker>
-                            </div>
-                            <div class="block">
-                                <el-date-picker
-                                        style="width: 100%;"
-                                        v-model="registerSpecForm.endTimeNor[index]"
-                                        type="date"
-                                        value-format="yyyy-MM-dd"
-                                        :picker-options="pickerOptions1"
-                                        placeholder="请选择工作结束时间">
-                                </el-date-picker>
-                            </div>
-                            <div style="position: absolute;margin-top: -134px;margin-left: 430px;">
-                                <img src="${ctx}/static/images/setting_input_del.png" @click="normalJobDelete(index)" />
-                            </div>
-                            <br/>
-                        </div>
-                    </section>
-                    <el-button type="info" @click="addNormalJob"><span>新增工作经历</span></el-button>
-                </el-form-item>
-                <br/>
-                <el-form-item label="社会兼职" style="width: 30%;" :label-position="left">
-                    <section v-if="partTimejobList.length!=0">
-                    <div v-for="(item,index) in partTimejobList" style="position: relative;line-height: 4;">
-                        <el-input v-model="registerSpecForm.companyNamePT[index]" maxlength="20"  placeholder="兼职公司名称"></el-input>
-                        <el-input v-model="registerSpecForm.positionPT[index]" maxlength="16" placeholder="兼职职位名称"></el-input>
-                        <div class="block">
-                            <el-date-picker
-                                    style="width: 100%;"
-                                    v-model="registerSpecForm.beginTimePT[index]"
-                                    type="date"
-                                    value-format="yyyy-MM-dd"
-                                    placeholder="请选择工作开始时间">
-                            </el-date-picker>
-                        </div>
-                        <div class="block">
-                            <el-date-picker
-                                    style="width: 100%;"
-                                    v-model="registerSpecForm.endTimePT[index]"
-                                    type="date"
-                                    value-format="yyyy-MM-dd"
-                                    :picker-options="pickerOptions2"
-                                    placeholder="请选择工作结束时间">
-                            </el-date-picker>
-                        </div>
-                        <div style="position: absolute;margin-top: -134px;margin-left: 430px;">
-                            <img src="${ctx}/static/images/setting_input_del.png" @click="partTimeJobDelete(index)" />
-                        </div>
-                        <br/>
-                    </div>
-                    </section>
-                    <el-button type="info" @click="addPartTimeJob"><span>新增社会兼职</span></el-button>
-                </el-form-item>
-                <div>
-                    <el-button type="success" @click="submitSpecForm('registerSpecForm')">提交</el-button>
-                    <el-button @click="resetForm('registerSpecForm')">重置</el-button>
-                </div>
-            </el-form>
 
+            <div class="md-example-child md-example-child-input-item-1
+             md-example-child-picker md-example-child-picker-2 md-example-child-popup
+             md-example-child-popup-0
+             md-example-child-radio md-example-child-radio-1
+             md-example-child-input-item-5
+             md-example-child-date-picker md-example-child-date-picker-0">
+                <md-field>
+                    <md-input-item
+                            ref="name"
+                            title="真实姓名"
+                            placeholder="真实姓名"
+                            @blur="checkRealName"
+                            v-model="realName"
+                            clearable
+                    >
+                        <p v-if="isError"
+                                class="error"
+                                slot="error">
+                            不支持当前银行
+                        </p>
+                    </md-input-item>
+                    <md-field-item title="性别" solid>
+                        <md-radio name="1" v-model="sex" label="男" inline />
+                        <md-radio name="2" v-model="sex" label="女" inline />
+                    </md-field-item>
+                    <md-field-item
+                            title="选择省市"
+                            arrow="arrow-right"
+                            :addon="pickerValue1"
+                            @click="isPickerShow1 = true">
+                    </md-field-item>
+                    <md-field-item
+                            title="所在学校"
+                            arrow="arrow-right"
+                            :addon="pickerValue2"
+                            @click="isPickerShow2 = true">
+                    </md-field-item>
+                    <md-field-item
+                            title="培养单位"
+                            arrow="arrow-right"
+                            :addon="pickerValue3"
+                            @click="isPickerShow3 = true">
+                    </md-field-item>
+                    <md-field-item
+                            title="年级"
+                            arrow="arrow-right"
+                            :addon="pickerValue4"
+                            @click="isPickerShow4 = true">
+                    </md-field-item>
+                    <md-field-item
+                            name="name"
+                            title="入学时间"
+                            arrow="arrow-right"
+                            align="right"
+                            :content="datePickerValue"
+                            @click.native="isDatePickerShow = true">
+                    </md-field-item>
+                    <md-field-item
+                            name="name"
+                            title="毕业时间"
+                            arrow="arrow-right"
+                            align="right"
+                            :content="datePickerValue"
+                            @click.native="isDatePickerShow = true">
+                    </md-field-item>
+                    <md-field-item
+                            title="学位"
+                            arrow="arrow-right"
+                            :addon="pickerValue5"
+                            @click="isPickerShow5 = true">
+                    </md-field-item>
+                    <md-input-item
+                            ref="id"
+                            title="邮箱"
+                            placeholder="邮箱"
+                            clearable
+                    ></md-input-item>
+                    <md-input-item
+                            ref="id"
+                            title="手机号"
+                            placeholder="手机号"
+                            clearable
+                    ></md-input-item>
+                    <md-input-item
+                            ref="id"
+                            title="微信号"
+                            placeholder="微信号"
+                            clearable
+                    ></md-input-item>
+                    <md-field-item
+                            title="核心标签"
+                            arrow="arrow-right"
+                            :addon="pickerValue8"
+                            @click="showPopUp('bottom')">
+                    </md-field-item>
+                    <md-field-item
+                            title="所属行业"
+                            arrow="arrow-right"
+                            :addon="pickerValue6"
+                            @click="isPickerShow6 = true">
+                    </md-field-item>
+                    <md-input-item
+                            ref="id"
+                            title="专业"
+                            placeholder="专业"
+                            clearable
+                    ></md-input-item>
+                    <md-field-item
+                            title="认证方式"
+                            arrow="arrow-right"
+                            :addon="pickerValue7"
+                            @click="isPickerShow7 = true">
+                    </md-field-item>
+                    <md-input-item
+                            ref="id"
+                            title="学号"
+                            placeholder="学号"
+                            clearable
+                    ></md-input-item>
+                    <md-input-item
+                            ref="id"
+                            title="身份证号"
+                            placeholder="身份证号"
+                            clearable
+                    ></md-input-item>
+                    <md-input-item
+                            ref="id"
+                            title="账号"
+                            placeholder="账号"
+                            clearable
+                    ></md-input-item>
+                    <md-input-item
+                            ref="id"
+                            title="密码"
+                            placeholder="密码"
+                            clearable
+                    ></md-input-item>
+                    <md-input-item
+                            ref="id"
+                            title="确认密码"
+                            placeholder="确认密码"
+                            clearable
+                    ></md-input-item>
+                    <md-field-item
+                            title="添加工作经历"
+                            arrow="arrow-right"
+                            :addon="pickerValue10"
+                            @click="showPopUpJobConfirm('bottom')">
+                    </md-field-item>
+                </md-field>
+                <md-picker
+                        ref="picker1"
+                        v-model="isPickerShow1"
+                        :data="pickerData1"
+                        :cols="2"
+                        is-cascade
+                        large-radius
+                        title="选择省市"
+                        @confirm="onPickerConfirm(1)"
+                ></md-picker>
+                <md-picker
+                        ref="picker2"
+                        v-model="isPickerShow2"
+                        :data="pickerData2"
+                        :cols="2"
+                        is-cascade
+                        large-radius
+                        title="选择学校"
+                        @confirm="onPickerConfirm(2)"
+                ></md-picker>
+                <md-picker
+                        ref="picker3"
+                        v-model="isPickerShow3"
+                        :data="pickerData3"
+                        large-radius
+                        @confirm="onPickerConfirm(3)"
+                        title="培养单位"
+                ></md-picker>
+                <md-picker
+                        ref="picker4"
+                        v-model="isPickerShow4"
+                        :data="pickerData4"
+                        large-radius
+                        @confirm="onPickerConfirm(4)"
+                        title="年级"
+                ></md-picker>
+                <md-picker
+                        ref="picker5"
+                        v-model="isPickerShow5"
+                        :data="pickerData5"
+                        large-radius
+                        @confirm="onPickerConfirm(5)"
+                        title="学位"
+                ></md-picker>
+                <md-picker
+                        ref="picker7"
+                        v-model="isPickerShow7"
+                        :data="pickerData7"
+                        large-radius
+                        @confirm="onPickerConfirm(7)"
+                        title="认证方式"
+                ></md-picker>
+                <md-picker
+                        ref="picker6"
+                        v-model="isPickerShow6"
+                        :data="pickerData6"
+                        :cols="2"
+                        is-cascade
+                        large-radius
+                        title="所属行业"
+                        @confirm="onPickerConfirm(6)"
+                ></md-picker>
+                <md-popup
+                        v-model="isPopupShow.bottom"
+                        position="bottom">
+                    <md-popup-title-bar
+                            title="Popup Title"
+                            describe="Popup Description"
+                            ok-text="ok"
+                            cancel-text="cancel"
+                            large-radius
+                            @confirm="hidePopUp('bottom')"
+                            @cancel="hidePopUp('bottom')"
+                    ></md-popup-title-bar>
+                    <div class="md-example-popup md-example-popup-bottom md-example-child md-example-child-check md-example-child-check-3">
+                        <md-check-group v-model="insurants">
+                            <md-check-box  v-for="item in labelSet" name="item.name" >{{item.name}}</md-check-box>
+                        </md-check-group>
+                    </div>
+                </md-popup>
+                <md-date-picker
+                        ref="datePicker"
+                        v-model="isDatePickerShow"
+                        type="custom"
+                        title="选择入学时间"
+                        large-radius
+                        :custom-types="['yyyy', 'MM']"
+                        :default-date="currentDate"
+                        @confirm="onDatePickerConfirm"
+                ></md-date-picker>
+                <md-date-picker
+                        ref="datePicker"
+                        v-model="isDatePickerShow"
+                        type="custom"
+                        title="选择毕业时间"
+                        large-radius
+                        :custom-types="['yyyy', 'MM']"
+                        :default-date="currentDate"
+                        @confirm="onDatePickerConfirm"
+                ></md-date-picker>
+                <md-popup
+                        v-model="isPopupShowJob.bottom"
+                        position="bottom"
+                >
+                    <md-popup-title-bar
+                            title="添加工作经历"
+                            describe="Popup Description"
+                            ok-text="ok"
+                            cancel-text="cancel"
+                            large-radius
+                            @confirm="hidePopUpJobConfirm('bottom')"
+                            @cancel="hidePopUpJobCancel('bottom')"
+                    ></md-popup-title-bar>
+                    <div class="md-example-child md-example-child-input-item-0">
+                        <md-field>
+                            <md-input-item
+                                    ref="input0"
+                                    title="公司名称"
+                                    placeholder="请输入公司名称"
+                                    v-model="companyName"
+                                    is-amount
+                                    :maxlength="5"
+                            ></md-input-item>
+                            <md-input-item
+                                    ref="input1"
+                                    title="职位名称"
+                                    placeholder="请输入职位名称"
+                                    v-model="positionName"
+                                    is-amount
+                                    :maxlength="5"
+                            ></md-input-item>
+                            <md-field-item
+                                    name="name"
+                                    title="工作开始时间"
+                                    arrow="arrow-right"
+                                    align="right"
+                                    :content="beginTimePickerValue"
+                                    @click.native="beginTimeShow = true">
+                            </md-field-item>
+                            <md-field-item
+                                    name="name"
+                                    title="工作结束时间"
+                                    arrow="arrow-right"
+                                    align="right"
+                                    :content="endTimePickerValue"
+                                    @click.native="endTimeShow = true">
+                            </md-field-item>
+                        </md-field>
+                        <md-date-picker
+                                ref="datePicker"
+                                v-if="beginTimeShow"
+                                v-model="beginTimeShowModel"
+                                type="custom"
+                                title="选择工作开始时间"
+                                large-radius
+                                :custom-types="['yyyy', 'MM']"
+                                :default-date="currentDate"
+                                @confirm="jobBeginTimeConfirm"
+                        ></md-date-picker>
+                        <md-date-picker
+                                ref="datePicker"
+                                v-if="endTimeShow"
+                                v-model="endTimeShowModel"
+                                type="custom"
+                                title="选择工作结束时间"
+                                large-radius
+                                :custom-types="['yyyy', 'MM']"
+                                :default-date="currentDate"
+                                @confirm="jobEndTimeConfirm"
+                        ></md-date-picker>
+                    </div>
+                </md-popup>
+                <div class="md-example-child md-example-child-bill-0" v-if="jobExperienceVisible">
+                    <md-bill
+                            title="工作经历"
+                            no="1"
+                            water-mark="MAND-MOBILE">
+                        <md-detail-item title="公司名称"
+                                        v-model="companyNameVal">{{companyNameVal}}
+                        </md-detail-item>
+                        <md-detail-item title="职位名称" v-model="positionNameVal">
+                            {{positionNameVal}}
+                        </md-detail-item>
+                        <md-detail-item title="工作开始时间" v-model="jobBeginTimeVal">
+                            {{jobBeginTimeVal}}
+                        </md-detail-item>
+                        <md-detail-item title="工作结束时间" v-model="jobEndTimeVal">
+                            {{jobEndTimeVal}}
+                        </md-detail-item>
+                    </md-bill>
+                </div>
+            </div>
+
+            <#--<el-form :model="registerSpecForm" :inline="true" style="text-align: -webkit-center;" status-icon :rules="rules2" ref="registerSpecForm" label-width="100px" class="demo-ruleForm">-->
+                <#--<el-form-item label="姓名" maxlength="16" prop="username" style="width: 30%;">-->
+                    <#--<el-input v-model="registerSpecForm.username" style="width: 300px;"></el-input>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="性别" prop="gender" style="width: 30%;">-->
+                    <#--<el-select v-model="registerSpecForm.gender" size="large" style="width: 300px;">-->
+                        <#--<el-option :label="item.value" v-for="(item,index) in genderTypes" :value="item.key"></el-option>-->
+                    <#--</el-select>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="省" prop="province" style="width: 30%;">-->
+                    <#--<el-select size="large" v-model="registerSpecForm.province" filterable clearable style="width: 300px;" placeholder="请选择所在省" @change="selectProvince($event)">-->
+                        <#--<el-option :label="item.name" v-for="(item,index) in provinceList" :value="item.id"></el-option>-->
+                    <#--</el-select>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="市" prop="city" style="width: 30%;">-->
+                    <#--<el-select size="large" v-model="registerSpecForm.city" filterable clearable style="width: 300px;" placeholder="请选择所在市" @change="selectCity($event)">-->
+                        <#--<el-option :label="item.name" v-for="(item,index) in citiesList" :value="item.id"></el-option>-->
+                    <#--</el-select>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="所在学校" prop="collegeNo" style="width: 30%;" >-->
+                    <#--<el-select size="large" v-model="registerSpecForm.collegeNo" filterable clearable style="width: 300px;" placeholder="请选择所在学校" @change="selectCollege($event)">-->
+                        <#--<el-option :label="item.schoolName" v-for="(item,index) in collegeList" :value="item.schoolId"></el-option>-->
+                    <#--</el-select>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="培养单位" prop="instituteNo" style="width: 30%;" >-->
+                    <#--<el-select size="large" v-model="registerSpecForm.instituteNo" filterable clearable style="width: 300px;" placeholder="请选择培养单位" @change="selectInstitute($event)">-->
+                        <#--<el-option :label="item.instituteName" v-for="(item,index) in instituteList" :value="item.instituteNo"></el-option>-->
+                    <#--</el-select>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="年级" prop="grade" style="width: 30%;">-->
+                    <#--<div class="block">-->
+                        <#--<el-date-picker-->
+                                <#--style="width: 300px;"-->
+                                <#--v-model="registerSpecForm.grade"-->
+                                <#--type="year"-->
+                                <#--placeholder="选择入学年级"-->
+                                <#-->-->
+                        <#--</el-date-picker>-->
+                    <#--</div>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="入学时间" prop="entranceTime" style="width: 30%;">-->
+                    <#--<div class="block">-->
+                        <#--<el-date-picker-->
+                                <#--style="width: 300px;"-->
+                                <#--v-model="registerSpecForm.entranceTime"-->
+                                <#--type="date"-->
+                                <#--value-format="yyyy-MM-dd"-->
+                                <#--placeholder="选择日期"-->
+                                <#--default-value="1999-10-01">-->
+                        <#--</el-date-picker>-->
+                    <#--</div>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="毕业时间" prop="graduationTime" style="width: 30%;">-->
+                    <#--<div class="block">-->
+                        <#--<el-date-picker-->
+                                <#--style="width: 300px;"-->
+                                <#--v-model="registerSpecForm.graduationTime"-->
+                                <#--type="date"-->
+                                <#--value-format="yyyy-MM-dd"-->
+                                <#--placeholder="选择日期"-->
+                                <#--default-value="1999-10-01">-->
+                        <#--</el-date-picker>-->
+                    <#--</div>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="学位" prop="degree" style="width: 30%;">-->
+                    <#--<el-select v-model="registerSpecForm.degree" size="large" style="width: 300px;" @change="selectDegree($event)">-->
+                        <#--<el-option :label="item.value" v-for="(item,index) in degreeList" :value="item.key"></el-option>-->
+                    <#--</el-select>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="邮箱" prop="email" style="width: 30%;">-->
+                    <#--<el-input v-model="registerSpecForm.email" maxlength="20" style="width: 300px;"></el-input>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="手机号" prop="phoneNo" style="width: 30%;">-->
+                    <#--<el-input v-model="registerSpecForm.phoneNo" maxlength="20" style="width: 300px;"></el-input>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="微信号" prop="weixinNo" style="width: 30%;">-->
+                    <#--<el-input v-model="registerSpecForm.weixinNo" maxlength="20" style="width: 300px;"></el-input>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="核心标签" style="width: 30%;">-->
+                    <#--<el-input id="coreLabel" @focus="onfocus($event)" v-model="coreLabel" maxlength="20" style="width: 300px;"></el-input>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="所属行业" style="width: 30%;">-->
+                    <#--<el-cascader style="width: 300px;"-->
+                            <#--:options="levelOneIndustryList"-->
+                            <#--@change="handleItemChange($event)"-->
+                            <#--:props="industryProps"-->
+                            <#--v-model="domain"-->
+                    <#--></el-cascader>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="专业" prop="profession" style="width: 30%;">-->
+                    <#--<el-input v-model="registerSpecForm.profession" maxlength="20" style="width: 300px;"></el-input>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="认证方式" style="width: 30%;">-->
+                    <#--<el-select v-model="registerSpecForm.identifyType" size="large" style="width: 300px;" @change="selectIdentifyType($event)">-->
+                        <#--<el-option :label="item.value" v-for="(item,index) in identifyTypes" :value="item.key"></el-option>-->
+                    <#--</el-select>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="学号" v-if="identifyFlag == 2" style="width: 30%;">-->
+                    <#--<el-input v-model="registerSpecForm.studentNo" maxlength="30" style="width: 300px;"></el-input>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="身份证号" v-if="identifyFlag == 1" style="width: 30%;">-->
+                    <#--<el-input v-model="registerSpecForm.idCardNo" style="width: 300px;"></el-input>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="账号"  style="width: 100%;">-->
+                    <#--<el-input  style="width: 300px;"></el-input>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="密码"  style="width: 100%;">-->
+                    <#--<el-input  style="width: 300px;"></el-input>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="确认密码"  style="width: 100%;">-->
+                    <#--<el-input  style="width: 300px;"></el-input>-->
+                <#--</el-form-item>-->
+                <#--<el-form-item label="工作经历" style="width: 30%;" :label-position="left">-->
+                    <#--<section v-if="normalJobList.length!=0">-->
+                        <#--<div v-for="(item,index) in normalJobList" style="position: relative;line-height: 4;">-->
+                            <#--<el-input v-model="registerSpecForm.companyNameNor[index]" maxlength="20"  placeholder="公司名称"></el-input>-->
+                            <#--<el-input v-model="registerSpecForm.positionNor[index]" maxlength="16" placeholder="职位名称"></el-input>-->
+                            <#--<div class="block">-->
+                                <#--<el-date-picker-->
+                                        <#--style="width: 100%;"-->
+                                        <#--v-model="registerSpecForm.beginTimeNor[index]"-->
+                                        <#--type="date"-->
+                                        <#--value-format="yyyy-MM-dd"-->
+                                        <#--placeholder="请选择工作开始时间">-->
+                                <#--</el-date-picker>-->
+                            <#--</div>-->
+                            <#--<div class="block">-->
+                                <#--<el-date-picker-->
+                                        <#--style="width: 100%;"-->
+                                        <#--v-model="registerSpecForm.endTimeNor[index]"-->
+                                        <#--type="date"-->
+                                        <#--value-format="yyyy-MM-dd"-->
+                                        <#--:picker-options="pickerOptions1"-->
+                                        <#--placeholder="请选择工作结束时间">-->
+                                <#--</el-date-picker>-->
+                            <#--</div>-->
+                            <#--<div style="position: absolute;margin-top: -134px;margin-left: 430px;">-->
+                                <#--<img src="${ctx}/static/images/setting_input_del.png" @click="normalJobDelete(index)" />-->
+                            <#--</div>-->
+                            <#--<br/>-->
+                        <#--</div>-->
+                    <#--</section>-->
+                    <#--<el-button type="info" @click="addNormalJob"><span>新增工作经历</span></el-button>-->
+                <#--</el-form-item>-->
+                <#--<br/>-->
+                <#--<el-form-item label="社会兼职" style="width: 30%;" :label-position="left">-->
+                    <#--<section v-if="partTimejobList.length!=0">-->
+                    <#--<div v-for="(item,index) in partTimejobList" style="position: relative;line-height: 4;">-->
+                        <#--<el-input v-model="registerSpecForm.companyNamePT[index]" maxlength="20"  placeholder="兼职公司名称"></el-input>-->
+                        <#--<el-input v-model="registerSpecForm.positionPT[index]" maxlength="16" placeholder="兼职职位名称"></el-input>-->
+                        <#--<div class="block">-->
+                            <#--<el-date-picker-->
+                                    <#--style="width: 100%;"-->
+                                    <#--v-model="registerSpecForm.beginTimePT[index]"-->
+                                    <#--type="date"-->
+                                    <#--value-format="yyyy-MM-dd"-->
+                                    <#--placeholder="请选择工作开始时间">-->
+                            <#--</el-date-picker>-->
+                        <#--</div>-->
+                        <#--<div class="block">-->
+                            <#--<el-date-picker-->
+                                    <#--style="width: 100%;"-->
+                                    <#--v-model="registerSpecForm.endTimePT[index]"-->
+                                    <#--type="date"-->
+                                    <#--value-format="yyyy-MM-dd"-->
+                                    <#--:picker-options="pickerOptions2"-->
+                                    <#--placeholder="请选择工作结束时间">-->
+                            <#--</el-date-picker>-->
+                        <#--</div>-->
+                        <#--<div style="position: absolute;margin-top: -134px;margin-left: 430px;">-->
+                            <#--<img src="${ctx}/static/images/setting_input_del.png" @click="partTimeJobDelete(index)" />-->
+                        <#--</div>-->
+                        <#--<br/>-->
+                    <#--</div>-->
+                    <#--</section>-->
+                    <#--<el-button type="info" @click="addPartTimeJob"><span>新增社会兼职</span></el-button>-->
+                <#--</el-form-item>-->
+                <#--<div>-->
+                    <#--<el-button type="success" @click="submitSpecForm('registerSpecForm')">提交</el-button>-->
+                    <#--<el-button @click="resetForm('registerSpecForm')">重置</el-button>-->
+                <#--</div>-->
+            <#--</el-form>-->
             <el-dialog title="请选择核心标签" :visible.sync="dialogTableVisible">
                 <div v-for="(item,index) in initialLabelList">
                         <span :id="item.labelId" class="Classification" @click="onLabelcheck(item)">
@@ -218,6 +561,8 @@
 <script>
     const vm = new Vue({
         el: '#RegisterSpecial',
+        components: {
+        },
         data: function(){
             var validateUsername = (rule, value, callback) => {
                 if (!value) {
@@ -326,6 +671,129 @@
             };
 
             return {
+                realName: '',
+                isError: false,
+
+                currentDate: new Date(),
+                isDatePickerShow: false,
+                datePickerValue: '',
+
+                beginTimeShow: false,
+                endTimeShow: false,
+                isDatePickerShow: false,
+                beginTimePickerValue: '',
+                endTimePickerValue: '',
+                beginTimeShowModel: '',
+                endTimeShowModel: '',
+                datePickerValue: '',
+                pickerValue10: '',
+                isPopupShowJob: {},
+                pickerValue8: '',
+                companyName: '',
+                companyNameVal: '',
+                positionName: '',
+                positionNameVal: '',
+                jobBeginTimeVal: '',
+                jobEndTimeVal: '',
+                jobExperienceVisible: false,
+
+                isPopupShow: {},
+                pickerValue8: '',
+                insurants: ['self'],
+                labelSet:[
+                    {
+                        name:'label1',
+                    }, {
+                        name:'label12',
+                    }, {
+                        name:'label122',
+                    },
+                ],
+
+                sex: '1',
+                pickerValue3: '',
+                pickerValue4: '',
+                pickerValue5: '',
+                pickerValue6: '',
+                pickerValue7: '',
+                isPickerShow3: false,
+                isPickerShow4: false,
+                isPickerShow5: false,
+                isPickerShow6: false,
+                isPickerShow7: false,
+                pickerData3: [
+                    [
+                        {text: '长光所', value: 1},
+                        {text: '高研院', value: 2}
+                    ],
+                ],
+                pickerData4: [
+                    [
+                        {text: '2000', value: 1},
+                        {text: '2001', value: 2}
+                    ],
+                ],
+                pickerData5: [
+                    [
+                        {text: '学士', value: 1},
+                        {text: '硕士', value: 2},
+                        {text: '博士', value: 3},
+                        {text: '其他', value: 4}
+                    ],
+                ],
+                pickerData7: [
+                    [
+                        {text: '身份证', value: 1},
+                        {text: '学号', value: 2}
+                    ],
+                ],
+                pickerData1: [[{
+                    "value": "340000",
+                    "label": "安徽省",
+                    "children": [{
+                        "value": "341500",
+                        "label": "六安市",
+                    }, {
+                        "value": "340500",
+                        "label": "马鞍山市",
+                    }, {
+                        "value": "341800",
+                        "label": "宣城市",
+                    }]
+                }]],
+                pickerData2: [[{
+                    "value": "340000",
+                    "label": "安徽省",
+                    "children": [{
+                        "value": "341500",
+                        "label": "中国科技大学",
+                    }, {
+                        "value": "340500",
+                        "label": "合肥工业大学",
+                    }, {
+                        "value": "341800",
+                        "label": "安徽大学",
+                    }]
+                }]],
+                pickerData6: [[{
+                    "value": "340000",
+                    "label": "互联网",
+                    "children": [{
+                        "value": "341500",
+                        "label": "软件",
+                    }, {
+                        "value": "340500",
+                        "label": "网站开发",
+                    }, {
+                        "value": "341800",
+                        "label": "算法",
+                    }]
+                }]],
+                isPickerShow1: false,
+                isPickerShow2: false,
+                pickerValue1: '',
+                pickerValue2: '',
+
                 username: '',
                 gender: '',
                 province: '',
@@ -496,6 +964,54 @@
             // 菜单选择
         },
         methods: {
+            checkRealName() {
+                if (this.realName && this.realName.substr(0, 4) !== '6222') {
+                    this.isError = true
+                } else {
+                    this.isError = false
+                }
+            },
+            showPopUpJobConfirm(type) {
+                this.$set(this.isPopupShowJob, type, true);
+            },
+            hidePopUpJobConfirm(type) {
+                this.$set(this.isPopupShowJob, type, false);
+                console.log('this.companyName',this.companyName);
+                this.companyNameVal = this.companyName;
+                this.positionNameVal = this.positionName;
+                this.jobBeginTimeVal = this.beginTimePickerValue;
+                this.jobEndTimeVal = this.endTimePickerValue;
+                this.jobExperienceVisible= true;
+            },
+            hidePopUpJobCancel(type) {
+                this.$set(this.isPopupShowJob, type, false);
+                this.jobExperienceVisible= false;
+            },
+            jobBeginTimeConfirm(columnsValue) {
+                this.beginTimePickerValue = this.$refs.datePicker.getFormatDate('yyyy/MM');
+            },
+            jobEndTimeConfirm(columnsValue) {
+                this.endTimePickerValue = this.$refs.datePicker.getFormatDate('yyyy/MM');
+            },
+            showPopUp(type) {
+                this.$set(this.isPopupShow, type, true)
+            },
+            hidePopUp(type) {
+                this.$set(this.isPopupShow, type, false)
+            },
+            onPickerConfirm(index) {
+                console.log('index',index)
+                const values = this.$refs[`picker`+index].getColumnValues()
+                console.log('values',values)
+                let res = ''
+                values.forEach(value => {
+                    value && (res += value.text || value.label)
+            })
+                this[`pickerValue`+index] = res
+            },
+            onDatePickerConfirm(columnsValue) {
+                this.datePickerValue = this.$refs.datePicker.getFormatDate('yyyy/MM');
+            },
             handleItemChange(val) {
                 console.log('二级行业节点:', val[1]);
                 this.registerSpecForm.domain = val[1];

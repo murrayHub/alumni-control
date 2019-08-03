@@ -11,7 +11,7 @@
     <div><img src="/static/images/home1.jpg" style="width: 100%"></div>
     <div class="baofu-shop-nav--control" style="position: absolute;margin-top: -660px;">
         <top-header></top-header>
-        <div class="layout_content">
+        <div class="layout_content" style="float: left;">
         <title-page title="Refund order"></title-page>
         <div class="refund-order-list--control">
             <div style="margin: 20px;"></div>
