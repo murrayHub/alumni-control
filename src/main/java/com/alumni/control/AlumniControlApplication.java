@@ -2,20 +2,19 @@ package com.alumni.control;
 
 import com.alumni.control.utils.ConfigUtil;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import tk.mybatis.spring.annotation.MapperScan;
 
-@SpringBootApplication
-@ComponentScan(basePackages = "com.alumni.control")
+@SpringBootApplication(scanBasePackages = "com.alumni.control",
+        exclude = {MultipartAutoConfiguration.class})
+//@ComponentScan(basePackages = "com.alumni.control")
 @MapperScan(value = "tk.mybatis.mapper.annotation", basePackages = "com.alumni.control.mapper")
 //exclude表示自动配置时不包括Multipart配置
-@EnableAutoConfiguration(exclude = {MultipartAutoConfiguration.class})
+//@EnableAutoConfiguration(exclude = {MultipartAutoConfiguration.class})
 public class AlumniControlApplication {
 
     public static void main(String[] args) {

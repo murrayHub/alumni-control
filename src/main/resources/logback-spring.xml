@@ -85,15 +85,15 @@
         <appender-ref ref="error"/>
     </root>
 
-    <logger name="jdbc.sqlonly" level="INFO" additivity="false">
+    <logger name="jdbc.sqlonly" level="OFF" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
 
-    <logger name="jdbc.resultset" level="ERROR" additivity="false">
+    <logger name="jdbc.resultset" level="OFF" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
     <!-- 执行之后的返回结果 -->
-    <logger name="jdbc.resultsettable" level="INFO" additivity="false">
+    <logger name="jdbc.resultsettable" level="OFF" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
 
